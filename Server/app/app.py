@@ -1,11 +1,11 @@
 from flask import Flask
 
-from conf.local import LocalConfig
+from .conf import config
 
 
 def create_app():
     application = Flask(__name__)
-    application.config.from_object(LocalConfig)
+    application.config.from_object(config)
     return application
 
 

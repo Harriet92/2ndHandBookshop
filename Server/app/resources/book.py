@@ -1,7 +1,7 @@
 from flask_restful import marshal_with, Resource, fields
 
-from app.models import Book
-from app.common.utils import get_object_or_404
+from ..models import Book
+from ..common.utils import get_object_or_404
 
 book_detail = {
     'name': fields.String,
