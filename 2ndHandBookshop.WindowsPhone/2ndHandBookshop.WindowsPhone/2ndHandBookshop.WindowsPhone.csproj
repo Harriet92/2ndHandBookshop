@@ -99,6 +99,10 @@
     <Compile Include="SectionPage.xaml.cs">
       <DependentUpon>SectionPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="ViewModels\MainPageViewModel.cs" />
+    <Compile Include="Views\MainPageView.xaml.cs">
+      <DependentUpon>MainPageView.xaml</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <AppxManifest Include="Package.appxmanifest">
@@ -142,12 +146,26 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Views\MainPageView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
   </ItemGroup>
   <ItemGroup>
+    <None Include="app.config" />
     <None Include="ApplicationInsights.config" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <Reference Include="Caliburn.Micro">
+      <HintPath>..\packages\Caliburn.Micro.Core.2.0.2\lib\portable-net45+win8+wp8+wpa81\Caliburn.Micro.dll</HintPath>
+    </Reference>
+    <Reference Include="Caliburn.Micro.Extensions">
+      <HintPath>..\packages\Caliburn.Micro.2.0.2\lib\wpa81\Caliburn.Micro.Extensions.dll</HintPath>
+    </Reference>
+    <Reference Include="Caliburn.Micro.Platform">
+      <HintPath>..\packages\Caliburn.Micro.2.0.2\lib\wpa81\Caliburn.Micro.Platform.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.ApplicationInsights">
       <HintPath>..\packages\Microsoft.ApplicationInsights.0.13.2-build00132\lib\portable-win81+wpa81\Microsoft.ApplicationInsights.winmd</HintPath>
     </Reference>
@@ -158,6 +176,12 @@
       <HintPath>..\packages\Microsoft.ApplicationInsights.WindowsPhone.0.13.2-build00132\lib\wpa81\Microsoft.ApplicationInsights.Extensibility.Windows.winmd</HintPath>
     </Reference>
   </ItemGroup>
+  <ItemGroup>
+    <SDKReference Include="BehaviorsXamlSDKManaged, version=12.0">
+      <Name>Behaviors SDK %28XAML%29</Name>
+    </SDKReference>
+  </ItemGroup>
+  <ItemGroup />
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '12.0' ">
     <VisualStudioVersion>12.0</VisualStudioVersion>
   </PropertyGroup>
