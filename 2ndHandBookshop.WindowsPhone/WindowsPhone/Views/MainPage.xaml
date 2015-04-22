@@ -1,0 +1,40 @@
+﻿<!-- Copyright (c) Microsoft. All rights reserved. -->
+<Page
+    x:Class="SecondHandBookshop.WindowsPhone.Views.MainPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:SecondHandBookshop.WindowsPhone.Views"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d">
+
+    <Hub Header="{Binding SearchHeader}" >
+        <HubSection Header="{Binding NewestOffersHeader}" IsHeaderInteractive="True" 
+                Background="#444444" MinWidth="250">
+            <DataTemplate>
+                <local:NewestOffersView/>
+            </DataTemplate>
+        </HubSection>
+        
+        <HubSection IsHeaderInteractive="True"  
+                Background="#222222" MinWidth="250">
+            <DataTemplate>
+                <local:SearchView/>
+            </DataTemplate>
+        </HubSection>
+
+        <HubSection Header="{Binding AddOfferHeader}" IsHeaderInteractive="True" 
+                Background="#444444" MinWidth="250">
+            <DataTemplate>
+                <local:AddOfferView/>
+            </DataTemplate>
+        </HubSection>
+
+        <HubSection Header="{Binding AccountHeader}" IsHeaderInteractive="True" 
+                Background="#444444" MinWidth="250">
+            <DataTemplate>
+                <local:AccountView/>
+            </DataTemplate>
+        </HubSection>
+    </Hub>
+</Page>
