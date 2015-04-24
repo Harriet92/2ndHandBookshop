@@ -4,15 +4,17 @@
     <MSBuildAllProjects>$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
   </PropertyGroup>
   <ItemGroup>
-    <Page Include="$(MSBuildThisFileDirectory)ItemViewer.xaml">
-      <SubType>Designer</SubType>
-    </Page>
-  </ItemGroup>
-  <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)Enums\Gender.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Enums\BookState.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Enums\TransactionStep.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Http\Helpers.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Http\HttpJsonContent.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Http\PlugInFilter.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Http\ServerRequest.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Interfaces\Services.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Models\Offer.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Models\User.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)SampleConfiguration.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)ItemViewer.xaml.cs">
-      <DependentUpon>ItemViewer.xaml</DependentUpon>
-    </Compile>
     <Compile Include="$(MSBuildThisFileDirectory)CustomGridViewItemPresenter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>

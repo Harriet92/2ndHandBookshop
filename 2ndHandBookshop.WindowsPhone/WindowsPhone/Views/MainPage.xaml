@@ -8,30 +8,26 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d">
 
-    <Hub Header="{Binding SearchHeader}" >
-        <HubSection Header="{Binding NewestOffersHeader}" IsHeaderInteractive="True" 
-                Background="#444444" MinWidth="250">
+    <Hub Header="{Binding HubHeader}" >
+        <HubSection Header="{Binding NewestOffersHeader}" IsHeaderInteractive="True" >
             <DataTemplate>
                 <local:NewestOffersView/>
             </DataTemplate>
         </HubSection>
-        
-        <HubSection IsHeaderInteractive="True"  
-                Background="#222222" MinWidth="250">
+
+        <HubSection Header="{Binding SearchHeader}" IsHeaderInteractive="True" >
             <DataTemplate>
                 <local:SearchView/>
             </DataTemplate>
         </HubSection>
 
-        <HubSection Header="{Binding AddOfferHeader}" IsHeaderInteractive="True" 
-                Background="#444444" MinWidth="250">
+        <HubSection Header="{Binding AddOfferHeader}" IsHeaderInteractive="True" >
             <DataTemplate>
                 <local:AddOfferView/>
             </DataTemplate>
         </HubSection>
 
-        <HubSection Header="{Binding AccountHeader}" IsHeaderInteractive="True" 
-                Background="#444444" MinWidth="250">
+        <HubSection Header="{Binding AccountHeader}" IsHeaderInteractive="True">
             <DataTemplate>
                 <local:AccountView/>
             </DataTemplate>

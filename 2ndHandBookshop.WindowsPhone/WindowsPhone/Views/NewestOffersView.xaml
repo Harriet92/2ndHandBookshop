@@ -5,12 +5,24 @@
     xmlns:local="using:SecondHandBookshop.WindowsPhone.Views"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:secondHandBookshop="using:SecondHandBookshop"
     mc:Ignorable="d"
     d:DesignHeight="300"
     d:DesignWidth="400">
+    <UserControl.Resources>
+        <Thickness x:Key="GridMargin">5</Thickness>
+    </UserControl.Resources>
 
-    <Grid>
-        <TextBlock Text="{Binding Header}" 
-                           Style="{ThemeResource BodyTextBlockStyle}" />
+    <Grid Margin="{StaticResource GridMargin}">
+        <ListView x:Name="NewestOffersListView"
+          ItemsSource="{Binding Offers}">
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <local:OfferControl Height="100">
+                        
+                    </local:OfferControl>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
     </Grid>
 </UserControl>

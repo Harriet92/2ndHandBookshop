@@ -5,9 +5,9 @@ VisualStudioVersion = 12.0.30501.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "2ndHandBookshopWindows", "2ndHandBookshopWindows", "{06972788-5A17-45B8-B6C0-AC0557864C7C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "2ndHandBookshop.WindowsPhone", "WindowsPhone\2ndHandBookshop.WindowsPhone.csproj", "{47DC887F-0DA3-4CA1-B175-20679DD701D5}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SecondHandBookshop.WindowsPhone", "WindowsPhone\SecondHandBookshop.WindowsPhone.csproj", "{47DC887F-0DA3-4CA1-B175-20679DD701D5}"
 EndProject
-Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "2ndHandBookshop.Shared", "Shared\2ndHandBookshop.Shared.shproj", "{823DBB06-E619-4987-863C-A9A4D475B4CF}"
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "SecondHandBookshop.Shared", "Shared\SecondHandBookshop.Shared.shproj", "{823DBB06-E619-4987-863C-A9A4D475B4CF}"
 EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution

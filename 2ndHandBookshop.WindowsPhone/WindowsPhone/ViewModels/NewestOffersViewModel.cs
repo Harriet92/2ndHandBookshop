@@ -1,8 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using SecondHandBookshop.Shared.Http;
+using SecondHandBookshop.Shared.Models;
 
 namespace SecondHandBookshop.WindowsPhone.ViewModels
 {
@@ -11,6 +10,21 @@ namespace SecondHandBookshop.WindowsPhone.ViewModels
         public string Header
         {
             get { return "Newest offers"; }
+        }
+        //just to test HTTP requests and list binding
+        public ObservableCollection<Offer> Offers { get; set; }
+
+        public NewestOffersViewModel()
+        {
+            Offers = new ObservableCollection<Offer>();
+            RefreshOffers();
+        }
+
+        private async void RefreshOffers()
+        {
+            List<Offer> users = await ServerRequest.GetLatestOffers();
+            foreach (Offer o in users)
+                Offers.Add(o);
         }
     }
 }
