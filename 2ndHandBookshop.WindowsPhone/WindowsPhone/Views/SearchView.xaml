@@ -6,11 +6,52 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
-    d:DesignHeight="300"
-    d:DesignWidth="400">
+    d:DesignHeight="400" >
+    <UserControl.Resources>
+        <Thickness x:Key="GridMargin">5</Thickness>
+        <Thickness x:Key="SmallGridMargin">5</Thickness>
+        <ItemsPanelTemplate x:Key="GridViewItemsPanel">
+            <ItemsWrapGrid Orientation="Horizontal" />
+        </ItemsPanelTemplate>
+        <DataTemplate x:Key="GroupTemplate">
+            <TextBlock Text="{Binding }" Margin="{Binding SmallGridMargin}"/>
+        </DataTemplate>
+    </UserControl.Resources>
+    <Grid Margin="{StaticResource GridMargin}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="1*"></RowDefinition>
+            <RowDefinition Height="0.5*"></RowDefinition>
+            <RowDefinition Height="1.7*"></RowDefinition>
+            <RowDefinition Height="5*"></RowDefinition>
+        </Grid.RowDefinitions>
+        <StackPanel Grid.Row="0" Orientation="Vertical">
+            <TextBlock Text="Author, title" TextAlignment="Center" VerticalAlignment="Bottom"/>
+            <TextBox Text="{Binding AuthorTitleSearchBox}" TextChanged="TextBox_OnTextChanged"/>
+        </StackPanel>
+        <Viewbox Grid.Row="1" Stretch="Uniform" HorizontalAlignment="Left">
+            <CheckBox Content="near my location"></CheckBox>
+        </Viewbox>
+        <GridView Grid.Row="2"
+                ItemTemplate="{StaticResource GroupTemplate}"
+                ItemsSource="{Binding TagList}"
+                IsSwipeEnabled="False"
+                SelectionMode="Multiple"
+                ItemsPanel="{StaticResource GridViewItemsPanel}"
+                ScrollViewer.HorizontalScrollMode="Auto"
+                ScrollViewer.VerticalScrollMode="Auto"
+                ScrollViewer.HorizontalScrollBarVisibility="Auto"
+                ScrollViewer.VerticalScrollBarVisibility="Disabled">
 
-    <Grid>
-        <TextBlock Text="{Binding Header}" 
-                           Style="{ThemeResource BodyTextBlockStyle}" />
+        </GridView>
+        <ListView Grid.Row="3" ItemsSource="{Binding Results}"  HorizontalAlignment="Stretch">
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <local:OfferControl Height="100">
+
+                    </local:OfferControl>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
     </Grid>
+
 </UserControl>

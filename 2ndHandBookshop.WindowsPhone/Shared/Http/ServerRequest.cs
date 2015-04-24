@@ -95,5 +95,69 @@ namespace SecondHandBookshop.Shared.Http
                 }
             };
         }
+
+        public static async Task<List<Offer>> GetOffers()
+        {
+            return new List<Offer>
+            {
+                new Offer()
+                {
+                    BookAuthor = "J. K. Rownling",
+                    BookTitle = "Harry Potter",
+                    CurrencyWorth = 10,
+                    DiamondsWorth = 100,
+                    Description = "Blah blah, lorem ipsum, super ksionszka",
+                    PurchaserId = 0,
+                    SellerId = 1,
+                    State = BookState.ReadSeveralTimes,
+                    GenderTags = new List<Gender> {Gender.Children, Gender.Fantasy}
+                },
+                new Offer()
+                {
+                    BookAuthor = "Stephen King",
+                    BookTitle = "Misery",
+                    CurrencyWorth = 10,
+                    DiamondsWorth = 100,
+                    Description = "Blah blah, lorem ipsum, super ksionszka",
+                    PurchaserId = 0,
+                    SellerId = 1,
+                    State = BookState.ReadSeveralTimes,
+                    GenderTags = new List<Gender> {Gender.Drama, Gender.Fantasy}
+                },
+                new Offer()
+                {
+                    BookAuthor = "Stephen King",
+                    BookTitle = "Misery",
+                    CurrencyWorth = 10,
+                    DiamondsWorth = 100,
+                    Description = "Blah blah, lorem ipsum, super ksionszka",
+                    PurchaserId = 0,
+                    SellerId = 1,
+                    State = BookState.ReadSeveralTimes
+                },
+                new Offer()
+                {
+                    BookAuthor = "Stephen King",
+                    BookTitle = "Misery",
+                    CurrencyWorth = 10,
+                    DiamondsWorth = 100,
+                    Description = "Blah blah, lorem ipsum, super ksionszka",
+                    PurchaserId = 0,
+                    SellerId = 1,
+                    State = BookState.ReadSeveralTimes
+                },
+                new Offer()
+                {
+                    BookAuthor = "Stephen King",
+                    BookTitle = "Misery",
+                    CurrencyWorth = 10,
+                    DiamondsWorth = 100,
+                    Description = "Blah blah, lorem ipsum, super ksionszka",
+                    PurchaserId = 0,
+                    SellerId = 1,
+                    State = BookState.ReadSeveralTimes
+                }
+            };
+        }
     }
 }

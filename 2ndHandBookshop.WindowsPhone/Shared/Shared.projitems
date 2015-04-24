@@ -22,6 +22,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Common\SuspensionManager.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="$(MSBuildThisFileDirectory)Assets\pies.jpg" />
     <Content Include="$(MSBuildThisFileDirectory)Assets\mediumtile-sdk.png" />
     <Content Include="$(MSBuildThisFileDirectory)Assets\microsoft-sdk.png" />
     <Content Include="$(MSBuildThisFileDirectory)Assets\smalltile-Windows-sdk.png" />
@@ -37,5 +38,8 @@
     <ApplicationDefinition Include="$(MSBuildThisFileDirectory)App.xaml">
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="$(MSBuildThisFileDirectory)Extensions\" />
   </ItemGroup>
 </Project>

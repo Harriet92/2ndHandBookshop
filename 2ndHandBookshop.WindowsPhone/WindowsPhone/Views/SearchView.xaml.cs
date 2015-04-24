@@ -12,5 +12,10 @@ namespace SecondHandBookshop.WindowsPhone.Views
             viewModel = new SearchViewModel();
             DataContext = viewModel;
         }
+
+        private void TextBox_OnTextChanged(object sender, TextChangedEventArgs e)
+        {
+            viewModel.TextBox_OnTextChanged(sender, e);
+        }
     }
 }

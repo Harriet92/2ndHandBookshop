@@ -21,7 +21,11 @@
                 <ColumnDefinition Width="2*"></ColumnDefinition>
                 <ColumnDefinition Width="1.5*"></ColumnDefinition>
             </Grid.ColumnDefinitions>
-            <Image Grid.Column="0" Stretch="Uniform" Source="{Binding Photo}"/>
+            <Ellipse Grid.Column="0" Width="50" Height="50">
+                <Ellipse.Fill>
+                    <ImageBrush  Stretch="UniformToFill" ImageSource="{Binding Photo}"/>
+                </Ellipse.Fill>
+            </Ellipse>
             <Grid Grid.Column="1" Margin="{StaticResource SmallGridMargin}">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="1.5*"></RowDefinition>

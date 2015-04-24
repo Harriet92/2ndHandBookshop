@@ -31,7 +31,7 @@ namespace SecondHandBookshop.Shared.Models
             TransactionStep = TransactionStep.Added;
             GenderTags = new List<Gender>();
             //TODO: Remove placeholder!
-            Photo = new BitmapImage(new Uri("ms-appx:///Assets/mediumtile-sdk.png", UriKind.RelativeOrAbsolute));
+            Photo = new BitmapImage(new Uri("ms-appx:///Assets/pies.jpg", UriKind.RelativeOrAbsolute));
         }
     }
 }
