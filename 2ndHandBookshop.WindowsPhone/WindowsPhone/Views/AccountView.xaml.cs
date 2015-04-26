@@ -5,12 +5,9 @@ namespace SecondHandBookshop.WindowsPhone.Views
 {
     public sealed partial class AccountView : UserControl
     {
-        private AccountViewModel viewModel;
         public AccountView()
         {
             this.InitializeComponent();
-            viewModel = new AccountViewModel();
-            DataContext = viewModel;
         }
     }
 }

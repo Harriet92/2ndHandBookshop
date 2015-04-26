@@ -5,13 +5,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Windows.UI.Xaml.Controls;
+using Caliburn.Micro;
 using SecondHandBookshop.Shared.Enums;
 using SecondHandBookshop.Shared.Http;
 using SecondHandBookshop.Shared.Models;
 
 namespace SecondHandBookshop.WindowsPhone.ViewModels
 {
-    public class SearchViewModel : ISectionViewModel
+    public class SearchViewModel : PropertyChangedBase, ISectionViewModel
     {
         public SearchViewModel()
         {
@@ -38,7 +39,7 @@ namespace SecondHandBookshop.WindowsPhone.ViewModels
             return null;
         }
 
-        public void TextBox_OnTextChanged(object sender, TextChangedEventArgs e)
+        public void SearchTextBox(object sender, TextChangedEventArgs e)
         {
             var offers = Results.Where(x =>!( x.BookTitle.Contains(e.ToString()) || x.BookAuthor.Contains(e.ToString()))).ToList();
             foreach (var offer in offers)

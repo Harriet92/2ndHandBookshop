@@ -12,7 +12,6 @@ namespace SecondHandBookshop.WindowsPhone.Views
     public sealed partial class MainPage : Page
     {
         public static MainPage Current;
-        private MainPageViewModel viewModel;
 
         public MainPage()
         {
@@ -21,8 +20,6 @@ namespace SecondHandBookshop.WindowsPhone.Views
             // This is a static public property that allows downstream pages to get a handle to the MainPage instance
             // in order to call methods that are in this class.
             Current = this;
-            viewModel = new MainPageViewModel();
-            DataContext = viewModel;
             Windows.Phone.UI.Input.HardwareButtons.BackPressed += HardwareButtons_BackPressed;
         }
 		

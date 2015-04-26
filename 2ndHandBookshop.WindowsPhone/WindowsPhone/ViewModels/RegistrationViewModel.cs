@@ -2,11 +2,11 @@
 
 namespace SecondHandBookshop.WindowsPhone.ViewModels
 {
-    public class AddOfferViewModel : PropertyChangedBase, ISectionViewModel
+    public class RegistrationViewModel : PropertyChangedBase
     {
         public string Header
         {
-            get { return "Add offer"; }
+            get { return "Register"; }
         }
     }
 }

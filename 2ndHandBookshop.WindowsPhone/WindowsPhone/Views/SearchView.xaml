@@ -26,7 +26,7 @@
         </Grid.RowDefinitions>
         <StackPanel Grid.Row="0" Orientation="Vertical">
             <TextBlock Text="Author, title" TextAlignment="Center" VerticalAlignment="Bottom"/>
-            <TextBox Text="{Binding AuthorTitleSearchBox}" TextChanged="TextBox_OnTextChanged"/>
+            <TextBox x:Name="SearchTextBox" Text="{Binding AuthorTitleSearchBox}"/>
         </StackPanel>
         <Viewbox Grid.Row="1" Stretch="Uniform" HorizontalAlignment="Left">
             <CheckBox Content="near my location"></CheckBox>

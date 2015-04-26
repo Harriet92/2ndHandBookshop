@@ -1,11 +1,13 @@
 ﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using Windows.UI.ViewManagement;
 using SecondHandBookshop.Shared.Http;
 using SecondHandBookshop.Shared.Models;
+using Caliburn.Micro;
 
 namespace SecondHandBookshop.WindowsPhone.ViewModels
 {
-    public class NewestOffersViewModel : ISectionViewModel
+    public class NewestOffersViewModel : PropertyChangedBase
     {
         public string Header
         {
@@ -18,6 +20,7 @@ namespace SecondHandBookshop.WindowsPhone.ViewModels
         {
             Offers = new ObservableCollection<Offer>();
             RefreshOffers();
+            NotifyOfPropertyChange(() => Offers);
         }
 
         private async void RefreshOffers()
@@ -25,6 +28,11 @@ namespace SecondHandBookshop.WindowsPhone.ViewModels
             List<Offer> users = await ServerRequest.GetLatestOffers();
             foreach (Offer o in users)
                 Offers.Add(o);
+        }
+
+        public void Button()
+        {
+            RefreshOffers();
         }
     }
 }

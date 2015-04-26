@@ -9,8 +9,6 @@ namespace SecondHandBookshop.WindowsPhone.Views
         public AddOfferView()
         {
             this.InitializeComponent();
-            viewModel = new AddOfferViewModel();
-            DataContext = viewModel;
         }
     }
 }

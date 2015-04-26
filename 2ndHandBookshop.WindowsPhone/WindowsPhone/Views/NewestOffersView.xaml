@@ -14,7 +14,7 @@
     </UserControl.Resources>
 
     <Grid Margin="{StaticResource GridMargin}">
-        <ListView x:Name="NewestOffersListView"
+        <ListView x:Name="Offers"
           ItemsSource="{Binding Offers}">
             <ListView.ItemTemplate>
                 <DataTemplate>

@@ -4,6 +4,7 @@ using Windows.ApplicationModel.Activation;
 using Windows.UI.Xaml.Controls;
 using Caliburn.Micro;
 using SecondHandBookshop.WindowsPhone.ViewModels;
+using SecondHandBookshop.WindowsPhone.Views;
 
 namespace SecondHandBookshop.WindowsPhone
 {
@@ -30,6 +31,8 @@ namespace SecondHandBookshop.WindowsPhone
             container.PerRequest<AddOfferViewModel>();
             container.PerRequest<NewestOffersViewModel>();
             container.PerRequest<SearchViewModel>();
+            container.PerRequest<LogInViewModel>();
+            container.PerRequest<RegistrationViewModel>();
         }
 
         protected override void PrepareViewFirst(Frame rootFrame)
@@ -39,7 +42,7 @@ namespace SecondHandBookshop.WindowsPhone
 
         protected override void OnLaunched(LaunchActivatedEventArgs args)
         {
-            DisplayRootViewFor<MainPageViewModel>();
+            DisplayRootView<LogInView>();
         }
 
         protected override object GetInstance(Type service, string key)
