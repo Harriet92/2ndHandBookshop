@@ -10,6 +10,10 @@ def get_object_or_404(cls, **kwargs):
     return obj
 
 
+def create_error_message(message):
+    return {'error': message}
+
+
 def is_email_valid(email):
     return '@' in email
 

@@ -9,6 +9,7 @@ __pycache__/
 *.so
 
 # Distribution / packaging
+migrations/
 .Python
 env/
 build/

@@ -16,8 +16,7 @@ def require_arguments(request_parser):
         @wraps(func)
         def wrapper(*args, **kwargs):
             arguments = request_parser.parse_args()
-            kwargs['params'] = arguments
-            return func(*args, **kwargs)
+            return func(params=arguments, *args, **kwargs)
         return wrapper
     return decorator
 

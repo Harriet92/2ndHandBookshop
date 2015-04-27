@@ -1,7 +1,8 @@
 from flask_restful import marshal_with, Resource, fields
+from app.common.login import require_login
 
 from ..models import Book
-from ..common.utils import get_object_or_404
+from ..common.utils import get_object_or_404, create_error_message
 
 book_detail = {
     'name': fields.String,
@@ -16,16 +17,19 @@ books_fields = {
 
 
 class BookListAPI(Resource):
+    @require_login
     @marshal_with(books_fields)
     def get(self):
         print Book.query.all()
         return {'array': Book.query.all()}
 
+    @require_login
     def post(self):
-        return {'error': 'Not implemented!'}
+        return create_error_message('Not implemented!')
 
 
 class BookAPI(Resource):
+    @require_login
     @marshal_with(book_detail)
     def get(self, id):
         book = get_object_or_404(Book, id=id)
