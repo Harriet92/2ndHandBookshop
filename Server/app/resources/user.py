@@ -1,9 +1,9 @@
 from flask_restful import fields, Resource, marshal_with, reqparse, marshal
-from app.common.login import require_login
 
 from ..models import User, db
 from ..common.utils import get_object_or_404, is_email_valid, create_error_message
 from ..common.reqparse import require_arguments
+from ..common.login import require_login
 
 user_detail = {
     'name': fields.String,

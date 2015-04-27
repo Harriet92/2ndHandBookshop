@@ -1,8 +1,8 @@
 from flask_restful import marshal_with, Resource, fields
-from app.common.login import require_login
 
 from ..models import Book
 from ..common.utils import get_object_or_404, create_error_message
+from ..common.login import require_login
 
 book_detail = {
     'name': fields.String,

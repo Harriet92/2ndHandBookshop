@@ -1,9 +1,9 @@
 import datetime
-from flask_restful import Resource, reqparse, fields, marshal, marshal_with
+from flask_restful import Resource, reqparse, fields, marshal
 
-from app.common.reqparse import require_arguments
-from app.common.utils import create_error_message
-from app.models import Session, User, db
+from ..common.reqparse import require_arguments
+from ..common.utils import create_error_message
+from ..models import Session, User, db
 
 session_data = {
     'expiration_date': fields.DateTime,
@@ -19,6 +19,11 @@ login_parameters = (
 SESSION_TIME_IN_SECONDS = 3600
 
 
+def refresh_session(session):
+    session.expiration_date = datetime.datetime.now() + datetime.timedelta(seconds=SESSION_TIME_IN_SECONDS)
+    db.session.commit()
+
+
 class SessionAPI(Resource):
     @require_arguments(login_parameters)
     def post(self, params):
@@ -29,7 +34,7 @@ class SessionAPI(Resource):
             return create_error_message('Password not match!')
 
         if user.session:
-            self._refresh_session(user.session)
+            refresh_session(user.session)
             return marshal(user.session, session_data)
         else:
             session = Session.create(user.id, SESSION_TIME_IN_SECONDS)
@@ -37,7 +42,3 @@ class SessionAPI(Resource):
             db.session.commit()
             return marshal(session, session_data), 201
 
-    @staticmethod
-    def _refresh_session(session):
-        session.expiration_date = datetime.datetime.now() + datetime.timedelta(seconds=SESSION_TIME_IN_SECONDS)
-        db.session.commit()
