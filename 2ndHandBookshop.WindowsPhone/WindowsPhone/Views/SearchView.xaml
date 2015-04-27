@@ -5,6 +5,7 @@
     xmlns:local="using:SecondHandBookshop.WindowsPhone.Views"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:micro="using:Caliburn.Micro"
     mc:Ignorable="d"
     d:DesignHeight="400" >
     <UserControl.Resources>
@@ -26,24 +27,33 @@
         </Grid.RowDefinitions>
         <StackPanel Grid.Row="0" Orientation="Vertical">
             <TextBlock Text="Author, title" TextAlignment="Center" VerticalAlignment="Bottom"/>
-            <TextBox x:Name="SearchTextBox" Text="{Binding AuthorTitleSearchBox}"/>
+            <TextBox x:Name="SearchTextBox" Text="{Binding AuthorTitleSearchBox}" micro:Message.Attach="[Event KeyUp] = [Action SearchTextBox_TextChanged($source)]"/>
         </StackPanel>
         <Viewbox Grid.Row="1" Stretch="Uniform" HorizontalAlignment="Left">
             <CheckBox Content="near my location"></CheckBox>
         </Viewbox>
-        <GridView Grid.Row="2"
-                ItemTemplate="{StaticResource GroupTemplate}"
-                ItemsSource="{Binding TagList}"
+        <!--<Viewbox Grid.Row="2" Stretch="Fill">-->
+        <GridView x:Name="GenderTags"  Grid.Row="2"
+                ItemsSource="{Binding GenderTags}" 
                 IsSwipeEnabled="False"
                 SelectionMode="Multiple"
                 ItemsPanel="{StaticResource GridViewItemsPanel}"
                 ScrollViewer.HorizontalScrollMode="Auto"
                 ScrollViewer.VerticalScrollMode="Auto"
                 ScrollViewer.HorizontalScrollBarVisibility="Auto"
-                ScrollViewer.VerticalScrollBarVisibility="Disabled">
+                ScrollViewer.VerticalScrollBarVisibility="Disabled"
+                  micro:Message.Attach="[Event SelectionChanged] = [Action TagGridView_SelectionChanged($source)]" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+            <GridView.ItemTemplate>
+                <DataTemplate>
+                    <StackPanel HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="{StaticResource SmallGridMargin}" >
+                        <TextBlock Text="{Binding }" Width="50"/>
+                    </StackPanel>
+                </DataTemplate>
+            </GridView.ItemTemplate>
 
         </GridView>
-        <ListView Grid.Row="3" ItemsSource="{Binding Results}"  HorizontalAlignment="Stretch">
+        <!--</Viewbox>-->
+        <ListView Grid.Row="3" ItemsSource="{Binding Results}"  HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
             <ListView.ItemTemplate>
                 <DataTemplate>
                     <local:OfferControl Height="100">

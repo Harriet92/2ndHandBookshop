@@ -15,7 +15,7 @@
             </DataTemplate>
         </HubSection>
 
-        <HubSection Header="{Binding SearchHeader}" IsHeaderInteractive="True" >
+        <HubSection Header="{Binding SearchSectionHeader}" IsHeaderInteractive="True" >
             <DataTemplate x:Name="SearchView">
                 <local:SearchView DataContext="{Binding SearchViewModel}"/>
             </DataTemplate>

@@ -126,25 +126,27 @@ namespace SecondHandBookshop.Shared.Http
                 },
                 new Offer()
                 {
-                    BookAuthor = "Stephen King",
-                    BookTitle = "Misery",
+                    BookAuthor = "Super kucharz",
+                    BookTitle = "Kucharkowanie",
                     CurrencyWorth = 10,
                     DiamondsWorth = 100,
                     Description = "Blah blah, lorem ipsum, super ksionszka",
                     PurchaserId = 0,
                     SellerId = 1,
-                    State = BookState.ReadSeveralTimes
+                    State = BookState.ReadSeveralTimes,
+                    GenderTags = new List<Gender> {Gender.Cooking}
                 },
                 new Offer()
                 {
-                    BookAuthor = "Stephen King",
-                    BookTitle = "Misery",
+                    BookAuthor = "Wołoszański",
+                    BookTitle = "XXI wiek",
                     CurrencyWorth = 10,
                     DiamondsWorth = 100,
                     Description = "Blah blah, lorem ipsum, super ksionszka",
                     PurchaserId = 0,
                     SellerId = 1,
-                    State = BookState.ReadSeveralTimes
+                    State = BookState.ReadSeveralTimes,
+                    GenderTags = new List<Gender> {Gender.Historical }
                 },
                 new Offer()
                 {
