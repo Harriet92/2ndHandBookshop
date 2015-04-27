@@ -1,0 +1,67 @@
+﻿<UserControl
+    x:Class="SecondHandBookshop.WindowsPhone.Views.SearchView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:SecondHandBookshop.WindowsPhone.Views"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:micro="using:Caliburn.Micro"
+    mc:Ignorable="d"
+    d:DesignHeight="400" >
+    <UserControl.Resources>
+        <Thickness x:Key="GridMargin">5</Thickness>
+        <Thickness x:Key="SmallGridMargin">5</Thickness>
+        <ItemsPanelTemplate x:Key="GridViewItemsPanel">
+            <ItemsWrapGrid Orientation="Horizontal" />
+        </ItemsPanelTemplate>
+        <DataTemplate x:Key="GroupTemplate">
+            <TextBlock Text="{Binding }" Margin="{Binding SmallGridMargin}"/>
+        </DataTemplate>
+    </UserControl.Resources>
+    <Grid Margin="{StaticResource GridMargin}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="1*"></RowDefinition>
+            <RowDefinition Height="0.5*"></RowDefinition>
+            <RowDefinition Height="1.7*"></RowDefinition>
+            <RowDefinition Height="5*"></RowDefinition>
+        </Grid.RowDefinitions>
+        <StackPanel Grid.Row="0" Orientation="Vertical">
+            <TextBlock Text="Author, title" TextAlignment="Center" VerticalAlignment="Bottom"/>
+            <TextBox x:Name="SearchTextBox" Text="{Binding AuthorTitleSearchBox}" micro:Message.Attach="[Event KeyUp] = [Action SearchTextBox_TextChanged($source)]"/>
+        </StackPanel>
+        <Viewbox Grid.Row="1" Stretch="Uniform" HorizontalAlignment="Left">
+            <CheckBox Content="near my location"></CheckBox>
+        </Viewbox>
+        <!--<Viewbox Grid.Row="2" Stretch="Fill">-->
+        <GridView x:Name="GenderTags"  Grid.Row="2"
+                ItemsSource="{Binding GenderTags}" 
+                IsSwipeEnabled="False"
+                SelectionMode="Multiple"
+                ItemsPanel="{StaticResource GridViewItemsPanel}"
+                ScrollViewer.HorizontalScrollMode="Auto"
+                ScrollViewer.VerticalScrollMode="Auto"
+                ScrollViewer.HorizontalScrollBarVisibility="Auto"
+                ScrollViewer.VerticalScrollBarVisibility="Disabled"
+                  micro:Message.Attach="[Event SelectionChanged] = [Action TagGridView_SelectionChanged($source)]" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+            <GridView.ItemTemplate>
+                <DataTemplate>
+                    <StackPanel HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="{StaticResource SmallGridMargin}" >
+                        <TextBlock Text="{Binding }" Width="50"/>
+                    </StackPanel>
+                </DataTemplate>
+            </GridView.ItemTemplate>
+
+        </GridView>
+        <!--</Viewbox>-->
+        <ListView Grid.Row="3" ItemsSource="{Binding Results}"  HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <local:OfferControl Height="100">
+
+                    </local:OfferControl>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+    </Grid>
+
+</UserControl>
