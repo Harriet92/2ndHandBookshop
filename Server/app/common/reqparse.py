@@ -1,6 +1,18 @@
 from functools import wraps
 
-from flask_restful import reqparse
+from flask_restful import reqparse, marshal
+
+
+def marshal_except_error(fields):
+    def decorator(func):
+        @wraps(func)
+        def wrapper(*args, **kwargs):
+            result = func(*args, **kwargs)
+            if isinstance(result, dict) and result.get('error'):
+                return result
+            return marshal(result, fields)
+        return wrapper
+    return decorator
 
 
 def require_arguments(request_parser):

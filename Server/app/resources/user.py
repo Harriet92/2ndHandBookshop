@@ -1,8 +1,8 @@
-from flask_restful import fields, Resource, marshal_with, reqparse, marshal
+from flask_restful import fields, Resource, reqparse, marshal
 
 from ..models import User, db
 from ..common.utils import get_object_or_404, is_email_valid, create_error_message
-from ..common.reqparse import require_arguments
+from ..common.reqparse import require_arguments, marshal_except_error
 from ..common.login import require_login
 
 user_detail = {
@@ -24,7 +24,7 @@ register_parameters = (
 
 class UserListAPI(Resource):
     @require_login
-    @marshal_with(users_fields)
+    @marshal_except_error(users_fields)
     def get(self):
         return {'array': User.query.all()}
 
@@ -49,7 +49,7 @@ class UserListAPI(Resource):
 
 class UserAPI(Resource):
     @require_login
-    @marshal_with(user_detail)
+    @marshal_except_error(user_detail)
     def get(self, id):
         user = get_object_or_404(User, id=id)
         return user
