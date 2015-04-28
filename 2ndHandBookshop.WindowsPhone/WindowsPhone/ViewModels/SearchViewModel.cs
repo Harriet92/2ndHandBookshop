@@ -92,7 +92,7 @@ namespace SecondHandBookshop.WindowsPhone.ViewModels
         }
         private async void RefreshOffers()
         {
-            offersCache = await ServerRequest.GetOffers();
+            offersCache = await ServerRequest.GetOffers(); 
         }
     }
 }
