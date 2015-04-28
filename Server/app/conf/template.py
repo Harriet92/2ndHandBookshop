@@ -7,7 +7,9 @@ DB = 'db_name'
 
 
 class LocalConfig(object):
-    SQLALCHEMY_DATABASE_URI = 'postgres://{0}:{1}@{2}:{3}/{4}'.format(
-        USER, PASS, URL, '5432', DB
-    )
+    # uncomment for postgres
+    # SQLALCHEMY_DATABASE_URI = 'postgres://{0}:{1}@{2}:{3}/{4}'.format(
+    #     USER, PASS, URL, '5432', DB
+    # )
+    SQLALCHEMY_DATABASE_URI = "sqlite:///wpam.db"
     DEBUG = True
