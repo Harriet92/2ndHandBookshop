@@ -7,9 +7,9 @@ from .resources.user import UserListAPI, UserAPI
 
 
 def register_resources(api):
-    api.add_resource(SessionAPI, '/login', endpoint='login')
     api.add_resource(UserListAPI, '/users', endpoint='users')
     api.add_resource(UserAPI, '/users/<int:id>', endpoint='user')
+    api.add_resource(SessionAPI, '/users/login', endpoint='login')
     api.add_resource(BookListAPI, '/books', endpoint='books')
     api.add_resource(BookAPI, '/books/<int:id>', endpoint='book')
 
