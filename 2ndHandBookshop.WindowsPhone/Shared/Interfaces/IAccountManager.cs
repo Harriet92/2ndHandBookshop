@@ -6,7 +6,6 @@ namespace SecondHandBookshop.Shared.Interfaces
 {
     public interface IAccountManager<TUser>
     {
-        TUser LoggedUser { get; }
-        TUser LogIn { get; set; }
+        TUser LoggedUser { get; set; }
     }
 }

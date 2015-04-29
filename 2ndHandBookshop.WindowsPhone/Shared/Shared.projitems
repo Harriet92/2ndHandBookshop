@@ -12,11 +12,16 @@
     <Compile Include="$(MSBuildThisFileDirectory)Enums\Gender.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Enums\BookState.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Enums\TransactionStep.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Extensions\HashHelper.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Extensions\SettingsHelper.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Http\ErrorMessage.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Http\Helpers.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Http\HttpJsonContent.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Http\Params\IRequestResponse.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Http\Params\GetUsersParams.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Http\Params\RegisterParams.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Http\Params\LoginParams.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Http\PlugInFilter.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Http\ServerRequest.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Http\Services\OfferService.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Http\Services\Service.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Http\Services\UserService.cs" />
@@ -24,6 +29,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Interfaces\IOfferService.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Interfaces\IUserService.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Interfaces\IUserSettings.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Models\Message.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Models\Offer.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Models\User.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)SampleConfiguration.cs" />

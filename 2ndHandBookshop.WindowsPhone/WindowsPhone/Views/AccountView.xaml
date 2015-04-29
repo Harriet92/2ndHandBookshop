@@ -5,12 +5,52 @@
     xmlns:local="using:SecondHandBookshop.WindowsPhone.Views"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:controls="using:SecondHandBookshop.WindowsPhone.Views.Controls"
     mc:Ignorable="d"
-    d:DesignHeight="300"
-    d:DesignWidth="400">
+    d:DesignHeight="446.667" Width="279.667">
 
+    <UserControl.Resources>
+        <Thickness x:Key="GridMargin">5</Thickness>
+    </UserControl.Resources>
     <Grid>
-        <TextBlock Text="{Binding Header}" 
-                           Style="{ThemeResource BodyTextBlockStyle}" />
+        <Grid.RowDefinitions>
+            <RowDefinition Height="1*"></RowDefinition>
+            <RowDefinition Height="1*"></RowDefinition>
+            <RowDefinition Height="6*"></RowDefinition>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="3*"></ColumnDefinition>
+            <ColumnDefinition Width="1*"></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+        <Viewbox Grid.Row="0" Grid.Column="0" Margin="{StaticResource GridMargin}">
+            <TextBlock x:Name="Nickname" Text="{Binding Nickname}"></TextBlock>
+        </Viewbox>
+        <Viewbox Grid.Row="0" Grid.Column="1" Margin="{StaticResource GridMargin}">
+            <TextBlock x:Name="Currency" Text="{Binding Currency}"></TextBlock>
+        </Viewbox>
+        <Viewbox Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" HorizontalAlignment="Left">
+        <StackPanel  Orientation="Vertical" Margin="{StaticResource GridMargin}">
+            
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Text="Bought: "></TextBlock>
+                <TextBlock x:Name="Bought" Text="{Binding Bought}"></TextBlock>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Text="Sold: "></TextBlock>
+                <TextBlock x:Name="Sold" Text="{Binding Sold}"></TextBlock>
+            </StackPanel>
+            </StackPanel>
+        </Viewbox>
+        <ListView Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2"
+          ItemsSource="{Binding Messages}" Margin="{StaticResource GridMargin}">
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <controls:MessageControl Height="100">
+
+                    </controls:MessageControl>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+
     </Grid>
 </UserControl>

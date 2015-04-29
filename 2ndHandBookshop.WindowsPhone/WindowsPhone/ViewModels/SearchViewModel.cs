@@ -5,14 +5,20 @@ using System.Linq;
 using Windows.UI.Xaml.Controls;
 using Caliburn.Micro;
 using SecondHandBookshop.Shared.Enums;
-using SecondHandBookshop.Shared.Http;
+using SecondHandBookshop.Shared.Interfaces;
 using SecondHandBookshop.Shared.Models;
-using Enumerable = System.Linq.Enumerable;
 
 namespace SecondHandBookshop.WindowsPhone.ViewModels
 {
     public class SearchViewModel : PropertyChangedBase, ISectionViewModel
     {
+        private readonly IOfferService<Offer> offerService;
+        public SearchViewModel(IOfferService<Offer> _offerService)
+        {
+            offerService = _offerService;
+            RefreshOffers();
+            Results = new ObservableCollection<Offer>(offersCache);
+        }
         public string Header
         {
             get { return "Search"; }
@@ -41,11 +47,6 @@ namespace SecondHandBookshop.WindowsPhone.ViewModels
         public ObservableCollection<Offer> Results { get; set; }
 
         private List<Offer> offersCache;
-        public SearchViewModel()
-        {
-            RefreshOffers();
-            Results = new ObservableCollection<Offer>(offersCache);
-        }
 
         private bool AuthorTitleFilter(Offer offer, string filterText)
         {
@@ -92,7 +93,7 @@ namespace SecondHandBookshop.WindowsPhone.ViewModels
         }
         private async void RefreshOffers()
         {
-            offersCache = await ServerRequest.GetOffers(); 
+            offersCache = await offerService.GetOffers(); 
         }
     }
 }

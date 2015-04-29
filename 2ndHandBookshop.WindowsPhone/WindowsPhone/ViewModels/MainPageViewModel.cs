@@ -1,4 +1,6 @@
 ﻿using Caliburn.Micro;
+using SecondHandBookshop.Shared.Interfaces;
+using SecondHandBookshop.Shared.Models;
 
 namespace SecondHandBookshop.WindowsPhone.ViewModels
 {
@@ -12,12 +14,12 @@ namespace SecondHandBookshop.WindowsPhone.ViewModels
         public NewestOffersViewModel NewestOffersViewModel { get; set; }
         public AddOfferViewModel AddOfferViewModel { get; set; }
         public AccountViewModel AccountViewModel { get; set; }
-        public MainPageViewModel()
+        public MainPageViewModel(IOfferService<Offer> offerService, IAccountManager<User> accountManager  )
         {
-            SearchViewModel = new SearchViewModel();
-            NewestOffersViewModel = new NewestOffersViewModel();
+            SearchViewModel = new SearchViewModel(offerService);
+            NewestOffersViewModel = new NewestOffersViewModel(offerService);
             AddOfferViewModel = new AddOfferViewModel();
-            AccountViewModel = new AccountViewModel();
+            AccountViewModel = new AccountViewModel(accountManager);
         }
         public string SearchSectionHeader
         {
