@@ -5,12 +5,66 @@
     xmlns:local="using:SecondHandBookshop.WindowsPhone.Views"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    mc:Ignorable="d"
-    d:DesignHeight="300"
-    d:DesignWidth="400">
+    xmlns:micro="using:Caliburn.Micro"
+    mc:Ignorable="d" d:DesignWidth="219.833" d:DesignHeight="353.333">
 
-    <Grid>
-        <TextBlock Text="{Binding Header}" 
-                           Style="{ThemeResource BodyTextBlockStyle}" />
+    <UserControl.Resources>
+        <micro:BooleanToVisibilityConverter x:Key="converter" />
+        <Thickness x:Key="GridMargin">5</Thickness>
+        <Thickness x:Key="SmallGridMargin">2</Thickness>
+    </UserControl.Resources>
+    <Grid Margin="{StaticResource GridMargin}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="2*"></RowDefinition>
+            <RowDefinition Height="1*"></RowDefinition>
+            <RowDefinition Height="3*"></RowDefinition>
+            <RowDefinition Height="1*"></RowDefinition>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="1*"></ColumnDefinition>
+            <ColumnDefinition Width="2*"></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+        <TextBlock Text="Cover"></TextBlock>
+        <Viewbox Grid.Row="0" Grid.Column="0">
+            <Ellipse Width="50" Height="50" micro:Message.Attach="[Event Tapped] = [Action AddImage]">
+                <Ellipse.Fill>
+                    <ImageBrush  Stretch="UniformToFill" ImageSource="{Binding Photo}" />
+                </Ellipse.Fill>
+            </Ellipse>
+        </Viewbox>
+        <Grid Margin="{StaticResource GridMargin}" Grid.Row="0" Grid.Column="1" >
+            <Grid.RowDefinitions>
+                <RowDefinition Height="1*"></RowDefinition>
+                <RowDefinition Height="1*"></RowDefinition>
+            </Grid.RowDefinitions>
+            <TextBox x:Name="Author"  Text="{Binding Author, Mode=TwoWay}" PlaceholderText="Author"></TextBox>
+            <TextBox Grid.Row="1" x:Name="Title" Text="{Binding Title, Mode=TwoWay}" PlaceholderText="Title"></TextBox>
+        </Grid>
+        <Viewbox Grid.Row="1" Grid.Column="0" Margin="10,10,10,0" VerticalAlignment="Bottom">
+            <TextBlock Text="Description" ></TextBlock>
+        </Viewbox>
+        <Viewbox Grid.Row="1" Grid.Column="1">
+            <TextBox x:Name="Price" Text="{Binding Price, Mode=TwoWay}" PlaceholderText="Price"></TextBox>
+        </Viewbox>
+        <TextBox Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" VerticalAlignment="Stretch" PlaceholderText="More details..."
+                 Text="{Binding Description, Mode=TwoWay}"></TextBox>
+        <Viewbox Grid.Row="3" Grid.Column="0">
+            <Button x:Name="Post" Content="Post" 
+                    micro:Message.Attach="[Event Click] = [Action Post]"></Button>
+        </Viewbox>
+        <Viewbox Grid.Row="3" Grid.Column="1" Margin="10,0,10,10" VerticalAlignment="Top">
+            <CheckBox  Content="Add my localization info" IsChecked="{Binding AddLocalizationInfo, Mode=TwoWay}"></CheckBox>
+        </Viewbox>
+
+        <Grid Grid.Row="0" Grid.RowSpan="4" Grid.ColumnSpan="2" Visibility="{Binding ShowCaptureFrame, Converter={StaticResource converter}}" Background="Black" Opacity="50">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="8*"></RowDefinition>
+                <RowDefinition Height="1*"></RowDefinition>
+            </Grid.RowDefinitions>
+            <ContentControl Content="{Binding CaptureElement}"/>
+            <Viewbox Grid.Row="1">
+                <Button  Content="Done" micro:Message.Attach="[Event Click] = [Action TakeAPhoto]" />
+            </Viewbox>
+        </Grid>
     </Grid>
 </UserControl>

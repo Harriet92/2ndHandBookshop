@@ -9,6 +9,7 @@
   <ItemGroup>
     <Compile Include="$(MSBuildThisFileDirectory)Common\AccountManager.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Common\AppDataSettings.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Common\CameraManager.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Enums\Gender.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Enums\BookState.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Enums\TransactionStep.cs" />
@@ -40,6 +41,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Common\SuspensionManager.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="$(MSBuildThisFileDirectory)Assets\add.png" />
     <Content Include="$(MSBuildThisFileDirectory)Assets\pies.jpg" />
     <Content Include="$(MSBuildThisFileDirectory)Assets\mediumtile-sdk.png" />
     <Content Include="$(MSBuildThisFileDirectory)Assets\microsoft-sdk.png" />

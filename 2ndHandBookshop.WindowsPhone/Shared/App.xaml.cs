@@ -49,7 +49,7 @@ namespace SecondHandBookshop.WindowsPhone
 
         protected override void OnLaunched(LaunchActivatedEventArgs args)
         {
-            DisplayRootView<LogInView>();
+            DisplayRootView<MainPageView>();
         }
 
         protected override object GetInstance(Type service, string key)
