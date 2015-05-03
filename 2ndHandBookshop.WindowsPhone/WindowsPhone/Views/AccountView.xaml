@@ -1,4 +1,4 @@
-﻿<UserControl
+﻿<Page
     x:Class="SecondHandBookshop.WindowsPhone.Views.AccountView"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
@@ -6,6 +6,8 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:controls="using:SecondHandBookshop.WindowsPhone.Views.Controls"
+    xmlns:micro="using:Caliburn.Micro" 
+    NavigationCacheMode="Disabled"
     mc:Ignorable="d"
     d:DesignHeight="446.667" Width="279.667">
 
@@ -27,6 +29,9 @@
         </Viewbox>
         <Viewbox Grid.Row="0" Grid.Column="1" Margin="{StaticResource GridMargin}">
             <TextBlock x:Name="Currency" Text="{Binding Currency}"></TextBlock>
+        </Viewbox>
+        <Viewbox Grid.Row="1" Grid.Column="1" Margin="{StaticResource GridMargin}" VerticalAlignment="Top">
+            <Button Content="purchase" micro:Message.Attach="[Event Click] = [Action Buy]"></Button>
         </Viewbox>
         <Viewbox Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" HorizontalAlignment="Left">
         <StackPanel  Orientation="Vertical" Margin="{StaticResource GridMargin}">
@@ -53,4 +58,4 @@
         </ListView>
 
     </Grid>
-</UserControl>
+</Page>

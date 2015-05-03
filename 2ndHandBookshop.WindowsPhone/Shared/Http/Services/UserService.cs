@@ -11,9 +11,11 @@ namespace SecondHandBookshop.Shared.Http.Services
 {
     public class UserService : Service, IUserService
     {
-        public UserService()
+        private IAccountManager<User> accountManager; 
+        public UserService(IAccountManager<User> _accountManager )
             :base("/users")
         {
+            accountManager = _accountManager;
         }
 
         public async Task<LoginResponseParams> LogIn(string login, string password)
@@ -35,6 +37,12 @@ namespace SecondHandBookshop.Shared.Http.Services
         public async Task<GetUsersResponseParams> GetUsers()
         {
             return await GetRequest<GetUsersResponseParams>(base.serviceUri);
+        }
+
+        public async Task<bool> AddCurrencyToUser(int userId, int amount)
+        {
+            accountManager.LoggedUser.CurrencyCount += amount;
+            return true;
         }
     }
 }

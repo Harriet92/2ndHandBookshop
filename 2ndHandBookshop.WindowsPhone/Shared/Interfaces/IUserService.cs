@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using SecondHandBookshop.Shared.Http.Params;
 
 namespace SecondHandBookshop.Shared.Interfaces
@@ -11,5 +8,6 @@ namespace SecondHandBookshop.Shared.Interfaces
         Task<LoginResponseParams> LogIn(string login, string password);
         Task<RegisterResponseParams> Register(string name, string email, string password);
         Task<GetUsersResponseParams> GetUsers();
+        Task<bool> AddCurrencyToUser(int userId, int amount);
     }
 }

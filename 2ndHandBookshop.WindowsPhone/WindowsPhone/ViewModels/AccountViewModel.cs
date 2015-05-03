@@ -6,11 +6,13 @@ using Message = SecondHandBookshop.Shared.Models.Message;
 
 namespace SecondHandBookshop.WindowsPhone.ViewModels
 {
-    public class AccountViewModel : PropertyChangedBase
+    public class AccountViewModel : Screen
     {
         private readonly IAccountManager<User> accountManager;
-        public AccountViewModel(IAccountManager<User> _accountManager)
+        private readonly INavigationService navigationService;
+        public AccountViewModel(IAccountManager<User> _accountManager, INavigationService _navigationService)
         {
+            navigationService = _navigationService;
             accountManager = _accountManager;
             Messages = new BindableCollection<Message>()
             {
@@ -39,6 +41,18 @@ namespace SecondHandBookshop.WindowsPhone.ViewModels
         {
             get { return accountManager.LoggedUser.Sold.ToString(); }
         }
-        public ObservableCollection<Shared.Models.Message> Messages { get; set; }
+        public ObservableCollection<Message> Messages { get; set; }
+
+        public void Buy()
+        {
+            navigationService.NavigateToViewModel<AddCurrencyViewModel>();
+        }
+        public void Refresh()
+        {
+            NotifyOfPropertyChange(() => Nickname);
+            NotifyOfPropertyChange(() => Currency);
+            NotifyOfPropertyChange(() => Bought);
+            NotifyOfPropertyChange(() => Sold);
+        }
     }
 }

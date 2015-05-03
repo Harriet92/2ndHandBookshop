@@ -29,9 +29,9 @@ namespace SecondHandBookshop.WindowsPhone
             container = new WinRTContainer();
 
             container.RegisterWinRTServices();
-            container.RegisterInstance(typeof(IOfferService<Offer>), "", new OfferService());
-            container.RegisterInstance(typeof(IUserService), "", new UserService());
             container.RegisterInstance(typeof(IAccountManager<User>), "", new AccountManager());
+            container.RegisterInstance(typeof(IOfferService<Offer>), "", new OfferService());
+            container.RegisterInstance(typeof(IUserService), "", new UserService(container.GetInstance<IAccountManager<User>>()));
 
             container.PerRequest<MainPageViewModel>();
             container.PerRequest<AccountViewModel>();
@@ -41,6 +41,7 @@ namespace SecondHandBookshop.WindowsPhone
             container.PerRequest<LogInViewModel>();
             container.PerRequest<RegistrationViewModel>();
             container.PerRequest<OfferDetailsViewModel>();
+            container.PerRequest<AddCurrencyViewModel>();
         }
 
         protected override void PrepareViewFirst(Frame rootFrame)

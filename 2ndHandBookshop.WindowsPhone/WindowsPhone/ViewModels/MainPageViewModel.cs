@@ -21,7 +21,7 @@ namespace SecondHandBookshop.WindowsPhone.ViewModels
             SearchViewModel = new SearchViewModel(offerService, navigationService);
             NewestOffersViewModel = new NewestOffersViewModel(offerService, navigationService);
             AddOfferViewModel = new AddOfferViewModel();
-            AccountViewModel = new AccountViewModel(accountManager);
+            AccountViewModel = new AccountViewModel(accountManager, navigationService);
         }
         public string SearchSectionHeader
         {
@@ -41,5 +41,10 @@ namespace SecondHandBookshop.WindowsPhone.ViewModels
             get { return "Newest offers"; }
         }
 
+        protected override void OnActivate()
+        {
+            base.OnActivate();
+            AccountViewModel.Refresh();
+        }
     }
 }

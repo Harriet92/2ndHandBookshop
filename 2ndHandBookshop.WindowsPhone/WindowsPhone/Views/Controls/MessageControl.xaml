@@ -28,7 +28,7 @@
         <Viewbox>
             <Button x:Name="SenderNickname" Content="{Binding SenderNickname}"></Button>
         </Viewbox>
-        <TextBlock Grid.Row="0" Grid.Column="1" x:Name="New" Text="New!" HorizontalAlignment="Center" Visibility="{Binding IsRead, Converter = {StaticResource converter}}"></TextBlock>
+        <TextBlock Grid.Row="0" Grid.Column="1" x:Name="New" Text="New!" HorizontalAlignment="Center" Visibility="{Binding IsNotRead, Converter = {StaticResource converter}}"></TextBlock>
         <Viewbox  Grid.Row="0" Grid.Column="2">
             <StackPanel Orientation="Horizontal" Margin="{StaticResource SmallGridMargin}">
                 <Button Content="Ok" Margin="{StaticResource SmallGridMargin}"></Button>
