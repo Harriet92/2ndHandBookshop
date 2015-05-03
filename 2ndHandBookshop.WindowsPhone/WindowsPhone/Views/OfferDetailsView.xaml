@@ -1,0 +1,77 @@
+﻿<Page
+    x:Class="SecondHandBookshop.WindowsPhone.Views.OfferDetailsView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:SecondHandBookshop.WindowsPhone.Views"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:micro="using:Caliburn.Micro"
+    mc:Ignorable="d" >
+
+    <UserControl.Resources>
+        <micro:BooleanToVisibilityConverter x:Key="converter" />
+        <Thickness x:Key="GridMargin">5</Thickness>
+        <Thickness x:Key="SmallGridMargin">2</Thickness>
+    </UserControl.Resources>
+    <Grid Margin="{StaticResource GridMargin}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="2*"></RowDefinition>
+            <RowDefinition Height="1*"></RowDefinition>
+            <RowDefinition Height="3*"></RowDefinition>
+            <RowDefinition Height="1*"></RowDefinition>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="1*"></ColumnDefinition>
+            <ColumnDefinition Width="2*"></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+        <TextBlock Text="Cover"></TextBlock>
+        <Viewbox Grid.Row="0" Grid.Column="0">
+            <Ellipse Width="50" Height="50" micro:Message.Attach="[Event Tapped] = [Action AddImage]">
+                <Ellipse.Fill>
+                    <ImageBrush  Stretch="UniformToFill" ImageSource="{Binding Photo}" />
+                </Ellipse.Fill>
+            </Ellipse>
+        </Viewbox>
+        <Grid Margin="{StaticResource GridMargin}" Grid.Row="0" Grid.Column="1" >
+            <Grid.RowDefinitions>
+                <RowDefinition Height="1*"></RowDefinition>
+                <RowDefinition Height="2*"></RowDefinition>
+            </Grid.RowDefinitions>
+            <Viewbox>
+                <TextBlock x:Name="Author"  Text="{Binding Author, Mode=TwoWay}" ></TextBlock>
+            </Viewbox>
+            <Viewbox Grid.Row="1">
+                <TextBlock  x:Name="Title" Text="{Binding Title, Mode=TwoWay}" ></TextBlock>
+            </Viewbox>
+        </Grid>
+        <Viewbox Grid.Row="1" Grid.Column="0" Margin="10,10,10,0" VerticalAlignment="Bottom">
+            <TextBlock Text="Description" ></TextBlock>
+        </Viewbox>
+        <Viewbox Grid.Row="1" Grid.Column="1">
+            <TextBlock x:Name="Price" Text="{Binding Price, Mode=TwoWay}"></TextBlock>
+        </Viewbox>
+        <TextBlock Margin="{StaticResource GridMargin}" Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" VerticalAlignment="Stretch"
+                 Text="{Binding Description, Mode=TwoWay}" FontSize="25" TextWrapping="WrapWholeWords"></TextBlock>
+
+        <Grid Margin="{StaticResource GridMargin}" Grid.Row="3" Grid.Column="0" >
+            <Grid.RowDefinitions>
+                <RowDefinition Height="2*"></RowDefinition>
+                <RowDefinition Height="1*"></RowDefinition>
+            </Grid.RowDefinitions>
+            <Viewbox>
+                <Button x:Name="Post" Content="Buy"  FontWeight="ExtraBold" 
+                    micro:Message.Attach="[Event Click] = [Action Post]"></Button>
+            </Viewbox>
+            <Viewbox Grid.Row="1">
+                <Button  x:Name="Back" Content="Back" 
+                    micro:Message.Attach="[Event Click] = [Action Back]"></Button>
+            </Viewbox>
+        </Grid>
+        <Viewbox Grid.Row="3" Grid.Column="1" Margin="10,0,10,10" VerticalAlignment="Top">
+            <StackPanel Orientation="Vertical">
+                <TextBlock Text="Location: "></TextBlock>
+                <TextBlock Text="{Binding Location}"></TextBlock>
+            </StackPanel>
+        </Viewbox>
+    </Grid>
+</Page>

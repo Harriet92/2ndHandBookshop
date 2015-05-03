@@ -40,6 +40,7 @@ namespace SecondHandBookshop.WindowsPhone
             container.PerRequest<SearchViewModel>();
             container.PerRequest<LogInViewModel>();
             container.PerRequest<RegistrationViewModel>();
+            container.PerRequest<OfferDetailsViewModel>();
         }
 
         protected override void PrepareViewFirst(Frame rootFrame)

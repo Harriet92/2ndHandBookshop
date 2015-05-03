@@ -2,7 +2,9 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
+using Windows.UI.Xaml.Navigation;
 using Caliburn.Micro;
 using SecondHandBookshop.Shared.Enums;
 using SecondHandBookshop.Shared.Interfaces;
@@ -13,9 +15,11 @@ namespace SecondHandBookshop.WindowsPhone.ViewModels
     public class SearchViewModel : PropertyChangedBase, ISectionViewModel
     {
         private readonly IOfferService<Offer> offerService;
-        public SearchViewModel(IOfferService<Offer> _offerService)
+        private readonly INavigationService navigationService;
+        public SearchViewModel(IOfferService<Offer> _offerService, INavigationService _navigationService)
         {
             offerService = _offerService;
+            navigationService = _navigationService;
             RefreshOffers();
             Results = new ObservableCollection<Offer>(offersCache);
         }
@@ -90,6 +94,21 @@ namespace SecondHandBookshop.WindowsPhone.ViewModels
                 }
                 NotifyOfPropertyChange(() => Results);
             }
+        }
+        public void OfferClick(ItemClickEventArgs e)
+        {
+            navigationService.Navigated += NavigationServiceOnNavigated;
+            navigationService.NavigateToViewModel<OfferDetailsViewModel>(e.ClickedItem as Offer);
+            navigationService.Navigated -= NavigationServiceOnNavigated;
+        }
+        private static void NavigationServiceOnNavigated(object sender, NavigationEventArgs args)
+        {
+            FrameworkElement view;
+            OfferDetailsViewModel viewModel;
+            if ((view = args.Content as FrameworkElement) == null ||
+                (viewModel = view.DataContext as OfferDetailsViewModel) == null) return;
+
+            viewModel.CurrentOffer = args.Parameter as Offer;
         }
         private async void RefreshOffers()
         {

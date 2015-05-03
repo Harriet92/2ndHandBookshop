@@ -20,7 +20,7 @@ namespace SecondHandBookshop.WindowsPhone.ViewModels
 
         public LogInViewModel(INavigationService _navigationService, IUserService _userService, IAccountManager<User> _accountManager)
         {
-            navigationService = _navigationService;
+            navigationService = _navigationService; 
             userService = _userService;
             accountManager = _accountManager;
         }

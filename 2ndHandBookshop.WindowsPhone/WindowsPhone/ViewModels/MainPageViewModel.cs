@@ -1,10 +1,12 @@
 ﻿using Caliburn.Micro;
 using SecondHandBookshop.Shared.Interfaces;
 using SecondHandBookshop.Shared.Models;
+using Windows.Devices.Geolocation;
+using Windows.UI.Xaml.Navigation;
 
 namespace SecondHandBookshop.WindowsPhone.ViewModels
 {
-    public class MainPageViewModel : PropertyChangedBase
+    public class MainPageViewModel : Screen
     {
         public string HubHeader
         {
@@ -14,10 +16,10 @@ namespace SecondHandBookshop.WindowsPhone.ViewModels
         public NewestOffersViewModel NewestOffersViewModel { get; set; }
         public AddOfferViewModel AddOfferViewModel { get; set; }
         public AccountViewModel AccountViewModel { get; set; }
-        public MainPageViewModel(IOfferService<Offer> offerService, IAccountManager<User> accountManager  )
+        public MainPageViewModel(IOfferService<Offer> offerService, IAccountManager<User> accountManager , INavigationService navigationService )
         {
-            SearchViewModel = new SearchViewModel(offerService);
-            NewestOffersViewModel = new NewestOffersViewModel(offerService);
+            SearchViewModel = new SearchViewModel(offerService, navigationService);
+            NewestOffersViewModel = new NewestOffersViewModel(offerService, navigationService);
             AddOfferViewModel = new AddOfferViewModel();
             AccountViewModel = new AccountViewModel(accountManager);
         }
@@ -33,9 +35,11 @@ namespace SecondHandBookshop.WindowsPhone.ViewModels
         {
             get { return "Account"; }
         }
+
         public string NewestOffersHeader
         {
             get { return "Newest offers"; }
         }
+
     }
 }
