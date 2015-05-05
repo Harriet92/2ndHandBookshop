@@ -17,3 +17,7 @@ def create_error_message(message):
 def is_email_valid(email):
     return '@' in email
 
+
+def enum(**enums):
+    return type('Enum', (), enums)
+

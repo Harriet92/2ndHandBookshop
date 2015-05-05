@@ -6,7 +6,7 @@ from ..common.utils import get_object_or_404, create_error_message
 from ..common.login import require_login
 
 book_detail = {
-    'name': fields.String,
+    'title': fields.String,
     'category': fields.String,
     'author': fields.String,
     'url': fields.Url('books')
@@ -21,7 +21,7 @@ class BookListAPI(Resource):
     @require_login
     @marshal_except_error(books_fields)
     def get(self):
-        print Book.query.all()
+        print(Book.query.all())
         return {'array': Book.query.all()}
 
     @require_login
