@@ -29,20 +29,17 @@ offers_fields = {
 
 new_offer_parameters = (
     reqparse.Argument('booktitle', type=str, required=True, help="You must provide book title!"),
-    reqparse.Argument('ownerid', type=str, required=True, help="You must provide id of the owner!"),
-    reqparse.Argument('title', type=str),
     reqparse.Argument('expiresat', type=str),
     reqparse.Argument('bookauthor', type=str),
     reqparse.Argument('description', type=str),
     reqparse.Argument('photobase64', type=str),
     reqparse.Argument('price', type=str),
-    reqparse.Argument('tags', type=str),
+    reqparse.Argument('tags', type=str)
 )
 
 set_status_parameters = (
     reqparse.Argument('offerid', type=int, required=True, help="You must provide offer id!"),
-    reqparse.Argument('status', type=int, required=True, help="You must provide new status!"),
-    reqparse.Argument('purchaserid', type=str, required=False)
+    reqparse.Argument('status', type=int, required=True, help="You must provide new status!")
 )
 
 
@@ -61,7 +58,7 @@ class BookOfferListAPI(Resource):
 
         offer = BookOffer.create(
             title=params.booktitle,
-            ownerid=params.ownerid,
+            ownerid=g.user.id,
             expiresat=params.expiresat,
             author=params.bookauthor,
             description=params.description,
@@ -94,9 +91,6 @@ class SetOfferStatus(Resource):
     #@require_login
     @require_arguments(set_status_parameters)
     def post(self, params):
-        if params.status == OfferStatus.PURCHASE_REQUESTED and (not params.purchaserid or len(params.purchaserid) == 0):
-            return create_error_message('Purchase request must include id of the purchaser!')
-
         offer = BookOffer.query.filter_by(id=params.offerid).first()
         if not offer:
             return create_error_message('Offer with provided id does not exist!')
@@ -104,12 +98,10 @@ class SetOfferStatus(Resource):
             return create_error_message('Cannot purchase your own offer!')
         if params.status == OfferStatus.PURCHASE_REQUESTED and not _is_offer_available(offer):
             return create_error_message('Offer has already been purchased')
-        #if params.status != OfferStatus.PURCHASE_REQUESTED and g.user.id != offer.ownerid:
-        #    return create_error_message('Cannot modify someone else s offer!')
 
         if params.status == OfferStatus.PURCHASE_REQUESTED:
             result = db.session.query(BookOffer).filter(BookOffer.id == params.offerid). \
-                update({'status': params.status, 'purchaserid': params.purchaserid})
+                update({'status': params.status, 'purchaserid': g.user.id})
         else:
             result = db.session.query(BookOffer).filter(BookOffer.id == params.offerid). \
                 update({'status': params.status})
@@ -117,10 +109,11 @@ class SetOfferStatus(Resource):
 
         return result == 1
 
+    @staticmethod
+    def _is_offer_available(offer):
+        return offer.status == OfferStatus.ADDED and (not offer.expiresat or offer.expiresat > datetime.datetime.now())
+
 
 def _is_string_long_enough(string):
     return len(string) > 3
 
-
-def _is_offer_available(offer):
-    return offer.status == OfferStatus.ADDED and (not offer.expiresat or offer.expiresat > datetime.datetime.now())

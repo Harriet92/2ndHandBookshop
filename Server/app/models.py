@@ -15,7 +15,7 @@ class User(db.Model):
     name = db.Column(db.String(255), unique=True, nullable=False)
     email = db.Column(db.String(255), unique=True, nullable=False)
     token = db.Column(db.String(128))
-    currency_count = db.Column(db.Integer, default=0, nullable=False)
+    currency_count = db.Column(db.Integer, nullable=False)
     bought = db.Column(db.Integer, default=0, nullable=False)
     sold = db.Column(db.Integer, default=0, nullable=False)
 
