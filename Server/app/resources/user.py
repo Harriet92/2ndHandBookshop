@@ -1,19 +1,11 @@
-from flask_restful import fields, Resource, reqparse, marshal
+from flask_restful import Resource, reqparse, marshal
+
+from .representations import users_fields, user_detail
 
 from ..models import User, db
 from ..common.utils import get_object_or_404, is_email_valid, create_error_message
 from ..common.reqparse import require_arguments, marshal_except_error
 from ..common.login import require_login
-
-user_detail = {
-    'name': fields.String,
-    'url': fields.Url('user'),
-    'email': fields.String
-}
-
-users_fields = {
-    'array': fields.Nested(user_detail)
-}
 
 register_parameters = (
     reqparse.Argument('name', type=str, required=True, help="You must provide name!"),
