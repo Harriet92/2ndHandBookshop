@@ -14,12 +14,15 @@ class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(255), unique=True, nullable=False)
     email = db.Column(db.String(255), unique=True, nullable=False)
-    token = db.Column(db.String(128))
+    token = db.Column(db.String(128), nullable=False)
+    register_timestamp = db.Column(db.DateTime, nullable=False, default=datetime.datetime.utcnow)
+    login_timestamp = db.Column(db.DateTime, nullable=False, default=datetime.datetime.utcnow)
+    money = db.Column(db.Integer)
 
     @classmethod
-    def create(cls, name, email, password):
+    def create(cls, name, email, password, money=0):
         token = cls._get_password_token(password)
-        return User(token=token, name=name, email=email)
+        return User(token=token, name=name, email=email, money=money)
 
     def check_password(self, password):
         return self.token == self._get_password_token(password)
@@ -35,7 +38,7 @@ class User(db.Model):
         return self.__unicode__()
 
 
-class Book(db.Model):
+class Offer(db.Model):
     __tablename__ = "books"
 
     id = db.Column(db.Integer, primary_key=True)
@@ -114,7 +117,7 @@ class Session(db.Model):
 
 def md5(word):
     m = hashlib.md5()
-    m.update(word)
+    m.update(word + app.config.get('SALT', ''))
     return m.hexdigest()
 
 

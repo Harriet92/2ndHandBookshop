@@ -13,3 +13,4 @@ class LocalConfig(object):
     # )
     SQLALCHEMY_DATABASE_URI = "sqlite:///wpam.db"
     DEBUG = True
+    SALT = 'soliiimy'

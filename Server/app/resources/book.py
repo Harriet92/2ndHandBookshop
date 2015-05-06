@@ -1,20 +1,10 @@
-from flask_restful import Resource, fields
+from flask_restful import Resource
 
+from .representations import books_fields, book_detail
 from ..models import Book
 from ..common.reqparse import marshal_except_error
 from ..common.utils import get_object_or_404, create_error_message
 from ..common.login import require_login
-
-book_detail = {
-    'name': fields.String,
-    'category': fields.String,
-    'author': fields.String,
-    'url': fields.Url('books')
-}
-
-books_fields = {
-    'array': fields.Nested(book_detail)
-}
 
 
 class BookListAPI(Resource):

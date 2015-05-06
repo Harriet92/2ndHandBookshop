@@ -1,15 +1,14 @@
 import datetime
-from flask_restful import Resource, reqparse, fields, marshal
+
+from flask_restful import Resource, reqparse, marshal
+from sqlalchemy.sql.functions import user
+
+from .representations import session_data
 
 from ..common.reqparse import require_arguments
 from ..common.utils import create_error_message
 from ..models import Session, User, db
 
-session_data = {
-    'expiration_date': fields.DateTime,
-    'user_id': fields.Integer,
-    'token': fields.String
-}
 
 login_parameters = (
     reqparse.Argument('login', type=str, required=True, help="You must provide login!"),
@@ -38,6 +37,7 @@ class SessionAPI(Resource):
             return marshal(user.session, session_data)
         else:
             session = Session.create(user.id, SESSION_TIME_IN_SECONDS)
+            user.logintime = datetime.datetime.utcnow()
             db.session.add(session)
             db.session.commit()
             return marshal(session, session_data), 201
