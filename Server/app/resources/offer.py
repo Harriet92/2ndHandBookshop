@@ -5,6 +5,7 @@ from flask import g
 
 from ..resources.representations import offers_fields, offer_detail
 from ..models import BookOffer, db
+from ..common.log import Loggable
 from ..common.reqparse import marshal_except_error, require_arguments
 from ..common.utils import get_object_or_404, create_error_message
 from ..common.login import require_login
@@ -25,7 +26,7 @@ set_status_parameters = (
 )
 
 
-class BookOfferListAPI(Resource):
+class BookOfferListAPI(Loggable, Resource):
 
     BOOK_EXPIRATION_TIME = 3600 * 24 * 7
 
@@ -62,7 +63,7 @@ class BookOfferListAPI(Resource):
         return len(string) > 3
 
 
-class BookOfferAPI(Resource):
+class BookOfferAPI(Loggable, Resource):
     @require_login
     @marshal_except_error(offer_detail)
     def get(self, id):

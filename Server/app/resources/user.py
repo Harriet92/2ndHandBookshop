@@ -5,6 +5,7 @@ from .representations import users_fields, user_detail
 from ..models import User, db
 from ..common.utils import get_object_or_404, is_email_valid, create_error_message
 from ..common.reqparse import require_arguments, marshal_except_error
+from ..common.log import Loggable
 from ..common.login import require_login
 
 register_parameters = (
@@ -14,10 +15,11 @@ register_parameters = (
 )
 
 
-class UserListAPI(Resource):
+class UserListAPI(Loggable, Resource):
     @require_login
     @marshal_except_error(users_fields)
     def get(self):
+
         return {'array': User.query.all()}
 
     @require_arguments(register_parameters)
@@ -39,7 +41,7 @@ class UserListAPI(Resource):
         return marshal(user, user_detail), 201
 
 
-class UserAPI(Resource):
+class UserAPI(Loggable, Resource):
     @require_login
     @marshal_except_error(user_detail)
     def get(self, id):

@@ -5,6 +5,7 @@ from sqlalchemy.sql.functions import user
 
 from .representations import session_data
 
+from ..common.log import Loggable
 from ..common.reqparse import require_arguments
 from ..common.utils import create_error_message
 from ..models import Session, User, db
@@ -23,7 +24,7 @@ def refresh_session(session):
     db.session.commit()
 
 
-class SessionAPI(Resource):
+class SessionAPI(Loggable, Resource):
     @require_arguments(login_parameters)
     def post(self, params):
         user = User.query.filter((User.name == params.login) | (User.email == params.login)).first()
