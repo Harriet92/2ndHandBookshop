@@ -1,6 +1,8 @@
 from functools import wraps
+import flask
 
 from flask_restful import reqparse, marshal
+import flask_restful
 
 from ..app import app
 
@@ -18,17 +20,20 @@ def marshal_except_error(fields):
 
 
 def log_requested_arguments(request_parser):
-    debug_str = 'requested arguments:'
+    debug_str = 'requested arguments: '
     for arg in request_parser.args:
-        debug_str += '\n\tname "{0}", type {1}'.format(arg.name, str(arg.type))
+        debug_str += '("{0}", type {1}), '.format(arg.name, str(arg.type))
     app.logger.debug(debug_str)
 
 
-def log_received_arguments(args):
-    debug_str = 'received arguments:'
-    for arg in args.iteritems():
-        debug_str += '\n\tname "{0}", value {1}'.format(arg[0], arg[1])
-    app.logger.debug(debug_str)
+def log_received_arguments():
+    debug_str = 'received arguments: '
+    for arg in flask.request.values.iteritems():
+        debug_str += '{0} = {1}, '.format(arg[0], arg[1])
+    if flask.request.json:
+        for arg in flask.request.json.iteritems():
+            debug_str += '{0} = {1},'.format(arg[0], arg[1])
+    app.logger.info(debug_str)
 
 
 def require_arguments(request_parser):
@@ -44,8 +49,12 @@ def require_arguments(request_parser):
         @wraps(func)
         def wrapper(*args, **kwargs):
             log_requested_arguments(request_parser)
-            arguments = request_parser.parse_args()
-            log_received_arguments(arguments)
+            log_received_arguments()
+            try:
+                arguments = request_parser.parse_args()
+            except Exception as e:
+                app.logger.error('Error while parsing arguments. More info: {0}'.format(e))
+                raise
             return func(params=arguments, *args, **kwargs)
         return wrapper
     return decorator
