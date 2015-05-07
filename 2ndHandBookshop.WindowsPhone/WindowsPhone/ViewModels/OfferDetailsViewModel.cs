@@ -1,6 +1,7 @@
 ﻿using System;
 using Windows.UI.Xaml.Media.Imaging;
 using Caliburn.Micro;
+using SecondHandBookshop.Shared.Common;
 using SecondHandBookshop.Shared.Models;
 
 namespace SecondHandBookshop.WindowsPhone.ViewModels
@@ -9,8 +10,10 @@ namespace SecondHandBookshop.WindowsPhone.ViewModels
     {
         private Offer offer;
         private readonly INavigationService navigationService;
-        public OfferDetailsViewModel(INavigationService _navigationService)
+        private readonly FacebookManager fbManager;
+        public OfferDetailsViewModel(INavigationService _navigationService, FacebookManager _fbManager)
         {
+            fbManager = _fbManager;
             navigationService = _navigationService;
         }
 
@@ -35,9 +38,10 @@ namespace SecondHandBookshop.WindowsPhone.ViewModels
         {
             throw new NotImplementedException();
         }
-        public void Back()
+
+        public async void Share()
         {
-            navigationService.GoBack();
+            await fbManager.ShareOffer(CurrentOffer);
         }
 
 

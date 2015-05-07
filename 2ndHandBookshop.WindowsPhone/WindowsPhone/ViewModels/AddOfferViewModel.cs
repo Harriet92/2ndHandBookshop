@@ -9,6 +9,11 @@ using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Media.Imaging;
 using Caliburn.Micro;
+using Newtonsoft.Json;
+using SecondHandBookshop.Shared.Enums;
+using SecondHandBookshop.Shared.Helpers;
+using SecondHandBookshop.Shared.Interfaces;
+using SecondHandBookshop.Shared.Models;
 
 namespace SecondHandBookshop.WindowsPhone.ViewModels
 {
@@ -16,8 +21,10 @@ namespace SecondHandBookshop.WindowsPhone.ViewModels
     {
         private MediaCapture _mediaCapture;
         private CaptureElement _captureElement;
-        public AddOfferViewModel()
+        private readonly IOfferService<Offer> offerService;
+        public AddOfferViewModel(IOfferService<Offer> _offerService)
         {
+            offerService = _offerService;
             SetPlaceholderImage();
             ConfigureMedia();
         }
@@ -56,9 +63,21 @@ namespace SecondHandBookshop.WindowsPhone.ViewModels
             }
         }
 
-        public void Post()
+        public async void Post()
         {
-            ClearFormula();
+            var newOffer = new Offer()
+            {
+                BookAuthor = Author,
+                BookTitle = Title,
+                CurrencyWorth = Price,
+                Description = Description,
+                StartedAt = DateTime.UtcNow,
+                Status = OfferStatus.Added
+            };
+            //newOffer.PhotoBase64 = await Photo.ConvertToBase64();
+            var result = await offerService.AddOffer(newOffer);
+            if (result != null)
+                ClearFormula();
         }
 
         public async void AddImage()

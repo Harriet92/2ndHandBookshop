@@ -20,7 +20,7 @@ namespace SecondHandBookshop.WindowsPhone.ViewModels
         {
             SearchViewModel = new SearchViewModel(offerService, navigationService);
             NewestOffersViewModel = new NewestOffersViewModel(offerService, navigationService);
-            AddOfferViewModel = new AddOfferViewModel();
+            AddOfferViewModel = new AddOfferViewModel(offerService);
             AccountViewModel = new AccountViewModel(accountManager, navigationService);
         }
         public string SearchSectionHeader
