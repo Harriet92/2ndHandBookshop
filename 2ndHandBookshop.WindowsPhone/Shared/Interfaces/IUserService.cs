@@ -1,14 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
+using SecondHandBookshop.Shared.Http.Params;
 
 namespace SecondHandBookshop.Shared.Interfaces
 {
-    public interface IUserService<TUser>
+    public interface IUserService
     {
-        Task<TUser> LogIn(string login, string password);
-        Task<TUser> Register(string login, string password);
-        Task<List<TUser>> GetUsers();
+        Task<LoginResponseParams> LogIn(string login, string password);
+        Task<RegisterResponseParams> Register(string name, string email, string password);
+        Task<GetUsersResponseParams> GetUsers();
+        Task<bool> AddCurrencyToUser(int userId, int amount);
     }
 }

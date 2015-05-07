@@ -1,6 +1,4 @@
-
-from flask_restful import abort
-
+from ..app import app
 
 def get_object_or_404(cls, **kwargs):
     obj = cls.query.filter_by(**kwargs).first()
@@ -11,9 +9,9 @@ def get_object_or_404(cls, **kwargs):
 
 
 def create_error_message(message):
+    app.logger.warning("Error message: " + str(message))
     return {'error': message}
 
 
 def is_email_valid(email):
     return '@' in email
-

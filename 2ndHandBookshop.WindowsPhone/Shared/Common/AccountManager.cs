@@ -1,29 +1,21 @@
 ﻿using System;
+using SecondHandBookshop.Shared.Interfaces;
 using SecondHandBookshop.Shared.Models;
 
 namespace SecondHandBookshop.Shared.Common
 {
-    public class AccountManager
+    public class AccountManager : IAccountManager<User>
     {
-        private static User loggedUser;
-
-        public static User LoggedUser
+        public AccountManager()
         {
-            get
+            LoggedUser = new User()
             {
-                if (loggedUser != null)
-                    return loggedUser;
-                loggedUser = LogIn();
-                return loggedUser;
-            }
-            private set
-            {
-            }
+                Name = "Emilka",
+                Sold = 10,
+                Bought = 46,
+                CurrencyCount = 200
+            };
         }
-
-        private static User LogIn()
-        {
-            throw new NotImplementedException();
-        }
+        public User LoggedUser { get; set; }
     }
 }

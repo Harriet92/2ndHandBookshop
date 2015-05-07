@@ -1,0 +1,40 @@
+﻿<UserControl
+    x:Class="SecondHandBookshop.WindowsPhone.Views.Controls.MessageControl"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:SecondHandBookshop.WindowsPhone.Views.Controls"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:micro="using:Caliburn.Micro"
+    mc:Ignorable="d"
+    d:DesignHeight="127.5"
+    d:DesignWidth="400">
+
+    <UserControl.Resources>
+        <micro:BooleanToVisibilityConverter x:Key="converter" />
+        <Thickness x:Key="GridMargin">5</Thickness>
+        <Thickness x:Key="SmallGridMargin">2</Thickness>
+    </UserControl.Resources>
+    <Grid Margin="{StaticResource GridMargin}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="1*"></RowDefinition>
+            <RowDefinition Height="1*"></RowDefinition>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="1*"></ColumnDefinition>
+            <ColumnDefinition Width="1*"></ColumnDefinition>
+            <ColumnDefinition Width="1*"></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+        <Viewbox>
+            <Button x:Name="SenderNickname" Content="{Binding SenderNickname}"></Button>
+        </Viewbox>
+        <TextBlock Grid.Row="0" Grid.Column="1" x:Name="New" Text="New!" HorizontalAlignment="Center" Visibility="{Binding IsNotRead, Converter = {StaticResource converter}}"></TextBlock>
+        <Viewbox  Grid.Row="0" Grid.Column="2">
+            <StackPanel Orientation="Horizontal" Margin="{StaticResource SmallGridMargin}">
+                <Button Content="Ok" Margin="{StaticResource SmallGridMargin}"></Button>
+                <Button Content="X" Margin="{StaticResource SmallGridMargin}"></Button>
+            </StackPanel>
+        </Viewbox>
+        <TextBlock VerticalAlignment="Center" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3" x:Name="MessageText" TextWrapping="WrapWholeWords" FontSize="14" Text="{Binding MessageText}"></TextBlock>
+    </Grid>
+</UserControl>

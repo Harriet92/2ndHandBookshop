@@ -3,9 +3,9 @@ using Windows.UI.Xaml.Controls;
 
 namespace SecondHandBookshop.WindowsPhone.Views
 {
-    public sealed partial class AccountView : Page
+    public sealed partial class AddCurrencyView : Page
     {
-        public AccountView()
+        public AddCurrencyView()
         {
             this.InitializeComponent();
         }

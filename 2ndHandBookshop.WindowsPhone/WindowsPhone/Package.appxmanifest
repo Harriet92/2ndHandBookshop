@@ -34,5 +34,8 @@
   </Applications>
   <Capabilities>
     <Capability Name="internetClient" />
+    <Capability Name="picturesLibrary" />
+    <DeviceCapability Name="location" />
+    <DeviceCapability Name="webcam" />
   </Capabilities>
 </Package>

@@ -8,7 +8,14 @@
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
-    <Grid>
-
+    <Grid VerticalAlignment="Center" HorizontalAlignment="Stretch" Margin="100">
+        <StackPanel Orientation="Vertical" HorizontalAlignment="Stretch">
+            <TextBlock x:Name="Header" />
+            <TextBox x:Name="LoginTextBox" PlaceholderText="Login"/>
+            <TextBox x:Name="EmailTextBox" PlaceholderText="Email"/>
+            <PasswordBox x:Name="PasswordTextBox" PlaceholderText="Password" />
+            <PasswordBox x:Name="RepeatPasswordTextBox" PlaceholderText="Repeat password" />
+            <Button x:Name="Register" Content="Register" HorizontalAlignment="Center"/>
+        </StackPanel>
     </Grid>
 </Page>

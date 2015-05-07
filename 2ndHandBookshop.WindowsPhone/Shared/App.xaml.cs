@@ -3,6 +3,10 @@ using System.Collections.Generic;
 using Windows.ApplicationModel.Activation;
 using Windows.UI.Xaml.Controls;
 using Caliburn.Micro;
+using SecondHandBookshop.Shared.Common;
+using SecondHandBookshop.Shared.Http.Services;
+using SecondHandBookshop.Shared.Interfaces;
+using SecondHandBookshop.Shared.Models;
 using SecondHandBookshop.WindowsPhone.ViewModels;
 using SecondHandBookshop.WindowsPhone.Views;
 
@@ -25,6 +29,9 @@ namespace SecondHandBookshop.WindowsPhone
             container = new WinRTContainer();
 
             container.RegisterWinRTServices();
+            container.RegisterInstance(typeof(IAccountManager<User>), "", new AccountManager());
+            container.RegisterInstance(typeof(IOfferService<Offer>), "", new OfferService());
+            container.RegisterInstance(typeof(IUserService), "", new UserService(container.GetInstance<IAccountManager<User>>()));
 
             container.PerRequest<MainPageViewModel>();
             container.PerRequest<AccountViewModel>();
@@ -33,6 +40,8 @@ namespace SecondHandBookshop.WindowsPhone
             container.PerRequest<SearchViewModel>();
             container.PerRequest<LogInViewModel>();
             container.PerRequest<RegistrationViewModel>();
+            container.PerRequest<OfferDetailsViewModel>();
+            container.PerRequest<AddCurrencyViewModel>();
         }
 
         protected override void PrepareViewFirst(Frame rootFrame)
@@ -42,7 +51,7 @@ namespace SecondHandBookshop.WindowsPhone
 
         protected override void OnLaunched(LaunchActivatedEventArgs args)
         {
-            DisplayRootView<LogInView>();
+            DisplayRootView<MainPageView>();
         }
 
         protected override object GetInstance(Type service, string key)

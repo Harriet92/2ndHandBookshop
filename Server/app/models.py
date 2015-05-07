@@ -3,23 +3,29 @@ import hashlib
 
 from flask_sqlalchemy import SQLAlchemy
 
-from app import app
+from .app import app
+from .common.const import OfferStatus
 
 db = SQLAlchemy(app)
 
 
 class User(db.Model):
     __tablename__ = "users"
-    
+
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(255), unique=True, nullable=False)
     email = db.Column(db.String(255), unique=True, nullable=False)
-    token = db.Column(db.String(128))
+    token = db.Column(db.String(128), nullable=False)
+    currency_count = db.Column(db.Integer, nullable=False)
+    bought = db.Column(db.Integer, default=0, nullable=False)
+    sold = db.Column(db.Integer, default=0, nullable=False)
+    register_timestamp = db.Column(db.DateTime, nullable=False, default=datetime.datetime.utcnow)
+    login_timestamp = db.Column(db.DateTime, nullable=False, default=datetime.datetime.utcnow)
 
     @classmethod
-    def create(cls, name, email, password):
+    def create(cls, name, email, password, currency_count=0):
         token = cls._get_password_token(password)
-        return User(token=token, name=name, email=email)
+        return User(token=token, name=name, email=email, currency_count=currency_count)
 
     def check_password(self, password):
         return self.token == self._get_password_token(password)
@@ -35,61 +41,42 @@ class User(db.Model):
         return self.__unicode__()
 
 
-class Book(db.Model):
-    __tablename__ = "books"
-
-    id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(255))
-    category_id = db.Column(db.Integer, db.ForeignKey('categories.id'), nullable=False)
-    category = db.relationship(
-        'Category',
-        uselist=False,
-        backref=db.backref('books', uselist=True)
-    )
-
-    author_id = db.Column(db.Integer, db.ForeignKey('authors.id'), nullable=False)
-    author = db.relationship(
-        'Author',
-        uselist=False,
-        backref=db.backref('books', uselist=True)
-    )
-
-
-class Author(db.Model):
-    __tablename__ = "authors"
-
-    id = db.Column(db.Integer, primary_key=True)
-    full_name = db.Column(db.String(255))
-
-
-class Category(db.Model):
-    __tablename__ = "categories"
-
-    id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(50))
-
-    def __repr__(self):
-        return '<Category %r>' % self.name
-
-
 class BookOffer(db.Model):
     __tablename__ = "offers"
 
     id = db.Column(db.Integer, primary_key=True)
     created = db.Column(db.DateTime, default=datetime.datetime.now)
-    owner_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
+    expiresat = db.Column(db.DateTime)
+    ownerid = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
     owner = db.relationship(
         'User',
         uselist=False,
+        foreign_keys='BookOffer.ownerid',
         backref=db.backref('offers', uselist=True)
     )
 
-    book_id = db.Column(db.Integer, db.ForeignKey('books.id'), nullable=False)
-    book = db.relationship(
-        'Book',
+    purchaserid = db.Column(db.Integer, db.ForeignKey('users.id'))
+    purchaser = db.relationship(
+        'User',
         uselist=False,
-        backref=db.backref('offers', uselist=True)
+        foreign_keys='BookOffer.purchaserid',
+        backref=db.backref('purchased', uselist=True)
     )
+
+    booktitle = db.Column(db.String(100), nullable=False)
+    bookauthor = db.Column(db.String(100))
+    description = db.Column(db.String(255))
+    price = db.Column(db.Integer, default=0, nullable=False)
+    status = db.Column(db.Integer, default=OfferStatus.ADDED, nullable=False)
+    photobase64 = db.Column(db.String)
+    tags = db.Column(db.String)
+
+    @classmethod
+    def create(cls, title, author, ownerid, description, price, photobase64, tags, expiration_time_in_sec):
+        expiration_date = datetime.datetime.utcnow() + datetime.timedelta(seconds=expiration_time_in_sec)
+        return BookOffer(
+            ownerid=ownerid, booktitle=title, bookauthor=author, description=description, price=price,
+            photobase64=photobase64, tags=tags, expiresat=expiration_date, status=OfferStatus.ADDED)
 
 
 class Session(db.Model):
@@ -114,10 +101,8 @@ class Session(db.Model):
 
 def md5(word):
     m = hashlib.md5()
-    m.update(word)
+    m.update(word + app.config.get('SALT', ''))
     return m.hexdigest()
-
-
 
 db.create_all()
 db.session.commit()

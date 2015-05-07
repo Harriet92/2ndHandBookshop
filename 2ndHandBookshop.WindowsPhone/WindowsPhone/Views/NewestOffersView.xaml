@@ -6,6 +6,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:secondHandBookshop="using:SecondHandBookshop"
+    xmlns:micro="using:Caliburn.Micro"
     mc:Ignorable="d"
     d:DesignHeight="300"
     d:DesignWidth="400">
@@ -14,8 +15,13 @@
     </UserControl.Resources>
 
     <Grid Margin="{StaticResource GridMargin}">
-        <ListView x:Name="Offers"
-          ItemsSource="{Binding Offers}">
+        <ListView x:Name="Offers" ItemsSource="{Binding Offers}"
+                  IsItemClickEnabled="True" micro:Message.Attach="[Event ItemClick] = [Action OfferClick($eventArgs)]">
+            <ListView.ItemContainerStyle>
+                <Style TargetType="ListViewItem">
+                    <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+                </Style>
+            </ListView.ItemContainerStyle>
             <ListView.ItemTemplate>
                 <DataTemplate>
                     <local:OfferControl Height="100">

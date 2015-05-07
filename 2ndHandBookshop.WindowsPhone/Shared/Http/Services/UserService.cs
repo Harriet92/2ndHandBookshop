@@ -1,31 +1,48 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Newtonsoft.Json.Linq;
+using SecondHandBookshop.Shared.Extensions;
+using SecondHandBookshop.Shared.Http.Params;
 using SecondHandBookshop.Shared.Interfaces;
 using SecondHandBookshop.Shared.Models;
 
 namespace SecondHandBookshop.Shared.Http.Services
 {
-    public class UserService : Service, IUserService<User>
+    public class UserService : Service, IUserService
     {
-        public UserService()
+        private IAccountManager<User> accountManager; 
+        public UserService(IAccountManager<User> _accountManager )
             :base("/users")
         {
+            accountManager = _accountManager;
         }
 
-        public async Task<User> LogIn(string login, string password)
+        public async Task<LoginResponseParams> LogIn(string login, string password)
         {
-            throw new NotImplementedException();
+            string path = "/login";
+            JObject content = JObject.FromObject(new LoginParams() { login = login, password = password.ToMD5Hash() });
+            var response = await PostRequest<LoginResponseParams>(path, content);
+            return response;
         }
 
-        public async Task<User> Register(string login, string password)
+        public async Task<RegisterResponseParams> Register(string name, string email, string password)
         {
-            throw new NotImplementedException();
+            string path = "";
+            JObject content = JObject.FromObject(new RegisterRequestParams() { name = name, email = email, password = password.ToMD5Hash() });
+            var response = await PostRequest<RegisterResponseParams>(path, content).ConfigureAwait(false);
+            return response;
         }
 
-        public async Task<List<User>> GetUsers()
+        public async Task<GetUsersResponseParams> GetUsers()
         {
-            return await GetRequest<List<User>>(base.serviceUri);
+            return await GetRequest<GetUsersResponseParams>(base.serviceUri);
+        }
+
+        public async Task<bool> AddCurrencyToUser(int userId, int amount)
+        {
+            accountManager.LoggedUser.CurrencyCount += amount;
+            return true;
         }
     }
 }
