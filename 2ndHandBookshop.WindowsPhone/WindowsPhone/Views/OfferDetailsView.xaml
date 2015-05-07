@@ -58,13 +58,13 @@
                 <RowDefinition Height="2*"></RowDefinition>
             </Grid.RowDefinitions>
             <Viewbox>
-                <Button x:Name="Post" Content="Buy"  FontWeight="ExtraBold" 
-                    micro:Message.Attach="[Event Click] = [Action Post]"></Button>
+                <StackPanel>
+                    <Button x:Name="Post" Content="Buy"  FontWeight="ExtraBold" 
+                    micro:Message.Attach="[Event Click] = [Action Buy]"></Button>
+                    <Button  x:Name="Back" Content="Share" 
+                    micro:Message.Attach="[Event Click] = [Action Share]"></Button>
+                </StackPanel>
             </Viewbox>
-            <!--<Viewbox Grid.Row="1">
-                <Button  x:Name="Back" Content="Back" 
-                    micro:Message.Attach="[Event Click] = [Action Back]"></Button>
-            </Viewbox>-->
         </Grid>
         <Viewbox Grid.Row="3" Grid.Column="1" Margin="10,0,10,10" VerticalAlignment="Top">
             <StackPanel Orientation="Vertical">

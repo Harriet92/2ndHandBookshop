@@ -93,6 +93,7 @@ namespace SecondHandBookshop.Shared.Http
             // communicate with servers on the internet, only the "Internet (Client)" capability should be set.
             // Similarly if an app is only intended to communicate on the intranet, only the "Home and Work
             // Networking" capability should be set.
+
             if (!Uri.TryCreate(uriString.Trim(), UriKind.Absolute, out uri))
             {
                 return false;

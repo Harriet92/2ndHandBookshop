@@ -1,9 +1,13 @@
 using System;
 using System.Collections.Generic;
+using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
+using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Caliburn.Micro;
+using SDKTemplate.Common;
 using SecondHandBookshop.Shared.Common;
+using SecondHandBookshop.Shared.Helpers;
 using SecondHandBookshop.Shared.Http.Services;
 using SecondHandBookshop.Shared.Interfaces;
 using SecondHandBookshop.Shared.Models;
@@ -18,7 +22,7 @@ namespace SecondHandBookshop.WindowsPhone
     public sealed partial class App : CaliburnApplication
     {
         private WinRTContainer container;
-
+        private readonly ContinuationManager _continuator = new ContinuationManager(); 
         public App()
         {
             InitializeComponent();
@@ -32,6 +36,7 @@ namespace SecondHandBookshop.WindowsPhone
             container.RegisterInstance(typeof(IAccountManager<User>), "", new AccountManager());
             container.RegisterInstance(typeof(IOfferService<Offer>), "", new OfferService());
             container.RegisterInstance(typeof(IUserService), "", new UserService(container.GetInstance<IAccountManager<User>>()));
+            container.RegisterInstance(typeof(FacebookManager), "", new FacebookManager());
 
             container.PerRequest<MainPageViewModel>();
             container.PerRequest<AccountViewModel>();
@@ -51,9 +56,32 @@ namespace SecondHandBookshop.WindowsPhone
 
         protected override void OnLaunched(LaunchActivatedEventArgs args)
         {
-            DisplayRootView<MainPageView>();
+            DisplayRootView<LogInView>();
         }
+        protected async override void OnActivated(IActivatedEventArgs args)
+        {
+            CreateRootFrame();
 
+            if (args.PreviousExecutionState == ApplicationExecutionState.Terminated)
+            {
+                try
+                {
+                    await SuspensionManager.RestoreAsync();
+                }
+                catch { }
+            }
+
+            if (args is IContinuationActivatedEventArgs)
+                _continuator.ContinueWith(args, container.GetInstance<LogInViewModel>());
+
+            Window.Current.Activate();
+        }
+        protected override async void OnSuspending(object sender, SuspendingEventArgs e)
+        {
+            var deferral = e.SuspendingOperation.GetDeferral();
+            await SuspensionManager.SaveAsync();
+            deferral.Complete();
+        }  
         protected override object GetInstance(Type service, string key)
         {
             return container.GetInstance(service, key);
@@ -68,5 +96,16 @@ namespace SecondHandBookshop.WindowsPhone
         {
             container.BuildUp(instance);
         }
+        
+        private void CreateRootFrame()
+        {
+            Frame rootFrame = Window.Current.Content as Frame;
+            if (rootFrame == null)
+            {
+                rootFrame = new Frame();
+                SuspensionManager.RegisterFrame(rootFrame, "AppFrame");
+                Window.Current.Content = rootFrame;
+            }
+        }  
     }
 }

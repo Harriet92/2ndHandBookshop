@@ -15,6 +15,9 @@
             <PasswordBox x:Name="PasswordTextBox" PlaceholderText="Password"/>
             <Button x:Name="LogIn" Content="Log In" HorizontalAlignment="Center"/>
             <Viewbox>
+                <Button x:Name="FbLogIn" Content="Login with Facebook" HorizontalAlignment="Center"/>
+            </Viewbox>
+            <Viewbox>
                 <Button x:Name="Register" Content="Don't have an account?" />
             </Viewbox>
         </StackPanel>
