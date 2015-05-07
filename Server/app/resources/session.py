@@ -12,8 +12,8 @@ from ..models import Session, User, db
 
 
 login_parameters = (
-    reqparse.Argument('login', type=str, required=True, help="You must provide login!"),
-    reqparse.Argument('password', type=str, required=True, help="You must provide password!")
+    reqparse.Argument('login', type=str, case_sensitive=False, required=True, help="You must provide login!"),
+    reqparse.Argument('password', type=str, case_sensitive=False, required=True, help="You must provide password!")
 )
 
 SESSION_TIME_IN_SECONDS = 3600
