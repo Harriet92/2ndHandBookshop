@@ -27,10 +27,12 @@ def log_requested_arguments(request_parser):
 
 
 def log_received_arguments():
-    debug_str = 'received arguments: '
+    debug_str = 'data: {0}, received arguments: '.format(flask.request.get_data())
     for arg in flask.request.values.iteritems():
         debug_str += '{0} = {1}, '.format(arg[0], arg[1])
-    if flask.request.json:
+    app.logger.info(debug_str)
+    debug_str = ""
+    if flask.request.json and isinstance(flask.request.json, dict):
         for arg in flask.request.json.iteritems():
             debug_str += '{0} = {1},'.format(arg[0], arg[1])
     app.logger.info(debug_str)
@@ -49,8 +51,8 @@ def require_arguments(request_parser):
         @wraps(func)
         def wrapper(*args, **kwargs):
             log_requested_arguments(request_parser)
-            log_received_arguments()
             try:
+                log_received_arguments()
                 arguments = request_parser.parse_args()
             except Exception as e:
                 app.logger.error('Error while parsing arguments. More info: {0}'.format(e))
