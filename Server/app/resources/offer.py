@@ -13,16 +13,16 @@ from ..common.const import OfferStatus
 
 
 new_offer_parameters = (
-    reqparse.Argument('booktitle', type=str, required=True, case_sensitive=False, help="You must provide book title!"),
-    reqparse.Argument('bookauthor', case_sensitive=False, type=str),
-    reqparse.Argument('description', case_sensitive=False, type=str),
-    reqparse.Argument('photobase64', case_sensitive=False, type=str),
-    reqparse.Argument('price', type=int, case_sensitive=False, required=True, help="You must provide book price!"),
-    reqparse.Argument('tags', case_sensitive=False, type=str)
+    reqparse.Argument('booktitle', type=str, required=True, help="You must provide book title!"),
+    reqparse.Argument('bookauthor', type=str),
+    reqparse.Argument('description', type=str),
+    reqparse.Argument('photobase64', type=str),
+    reqparse.Argument('price', type=int, required=True, help="You must provide book price!"),
+    reqparse.Argument('tags', type=str)
 )
 
 set_status_parameters = (
-    reqparse.Argument('status', type=int, case_sensitive=False, required=True, help="You must provide new status!"),
+    reqparse.Argument('status', type=int, required=True, help="You must provide new status!"),
 )
 
 

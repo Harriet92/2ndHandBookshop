@@ -29,7 +29,6 @@ session_data = {
 }
 
 offer_detail = {
-    'url': fields.Url('offer'),
     'id': fields.Integer,
     'ownerid': fields.Integer,
     'purchaserid': fields.Integer,

@@ -9,9 +9,9 @@ from ..common.log import Loggable
 from ..common.login import require_login
 
 register_parameters = (
-    reqparse.Argument('name', type=str, case_sensitive=False, required=True, help="You must provide name!"),
-    reqparse.Argument('email', type=str, case_sensitive=False, required=True, help="You must provide email!"),
-    reqparse.Argument('password', type=str, case_sensitive=False, required=True, help="You must provide password!")
+    reqparse.Argument('name', type=str, required=True, help="You must provide name!"),
+    reqparse.Argument('email', type=str, required=True, help="You must provide email!"),
+    reqparse.Argument('password', type=str, required=True, help="You must provide password!")
 )
 
 
