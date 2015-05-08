@@ -4,10 +4,11 @@ using System.Text;
 
 namespace SecondHandBookshop.Shared.Enums
 {
-    public enum TransactionStep
+    public enum OfferStatus
     {
-        Added,
-        Ordered,
-        Purchased
+        Added = 1,
+        PurchasedOffer,
+        Cancelled,
+        Finalized
     }
 }

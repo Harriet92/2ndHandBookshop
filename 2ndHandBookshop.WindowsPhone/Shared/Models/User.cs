@@ -1,4 +1,6 @@
-﻿namespace SecondHandBookshop.Shared.Models
+﻿using SecondHandBookshop.Shared.Models.DTOs;
+
+namespace SecondHandBookshop.Shared.Models
 {
     public class User
     {

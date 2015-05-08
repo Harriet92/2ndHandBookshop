@@ -6,12 +6,13 @@ using Windows.UI.Xaml.Navigation;
 using SecondHandBookshop.Shared.Models;
 using Caliburn.Micro;
 using SecondHandBookshop.Shared.Interfaces;
+using SecondHandBookshop.Shared.Models.DTOs;
 
 namespace SecondHandBookshop.WindowsPhone.ViewModels
 {
     public class NewestOffersViewModel : Screen
     {
-        private readonly IOfferService<Offer> offersService;
+        private readonly IOfferService<OfferDTO> offersService;
         private readonly INavigationService navigationService;
         public string Header
         {
@@ -20,13 +21,12 @@ namespace SecondHandBookshop.WindowsPhone.ViewModels
 
         public ObservableCollection<Offer> Offers { get; set; }
 
-        public NewestOffersViewModel(IOfferService<Offer> _offerService, INavigationService _navigationService)
+        public NewestOffersViewModel(IOfferService<OfferDTO> _offerService, INavigationService _navigationService)
         {
             offersService = _offerService;
             navigationService = _navigationService;
             Offers = new ObservableCollection<Offer>();
             RefreshOffers();
-            NotifyOfPropertyChange(() => Offers);
         }
 
         public void OfferClick(ItemClickEventArgs e)
@@ -46,9 +46,10 @@ namespace SecondHandBookshop.WindowsPhone.ViewModels
         }
         private async void RefreshOffers()
         {
-            List<Offer> users = await offersService.GetLatestOffers(5);
-            foreach (Offer o in users)
-                Offers.Add(o);
+            List<OfferDTO> offersDtos = await offersService.GetLatestOffers(5);
+            foreach (OfferDTO o in offersDtos)
+                Offers.Add(AutoMapper.Mapper.Map<Offer>(o));
+            NotifyOfPropertyChange(() => Offers);
         }
     }
 }

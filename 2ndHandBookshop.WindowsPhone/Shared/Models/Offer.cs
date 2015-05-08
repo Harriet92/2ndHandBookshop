@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using System.Threading.Tasks;
+using Windows.Devices.Geolocation;
 using Windows.UI.Xaml.Media.Imaging;
 using Newtonsoft.Json;
 using SecondHandBookshop.Shared.Enums;
@@ -21,8 +21,10 @@ namespace SecondHandBookshop.Shared.Models
         public int PurchaserId { get; set; }
         public DateTime StartedAt { get; set; }
         public DateTime ExpiresAt { get; set; }
-        public int CurrencyWorth { get; set; }
+        public int Price { get; set; }
         public OfferStatus Status { get; set; }
+        public BasicGeoposition Location { get; set; }
+        [JsonIgnore]
         public BitmapImage Photo { get { return photo;} set { photo = value; }}
         public string PhotoBase64
         {
@@ -42,11 +44,10 @@ namespace SecondHandBookshop.Shared.Models
             get { return SerializeTags(); }
             set { GenderTags = DeserializeTags(value); }
         }
+        [JsonIgnore]
         public List<Gender> GenderTags { get; set; }
         public Offer()
         {
-            StartedAt = DateTime.Now;
-            ExpiresAt = StartedAt + TimeSpan.FromDays(7);
             Status = OfferStatus.Added;
             GenderTags = new List<Gender>();
             //TODO: Remove placeholder!
@@ -57,6 +58,7 @@ namespace SecondHandBookshop.Shared.Models
         {
             photoBase64 = await bi.ConvertToBase64();
         }
+
         private string SerializeTags()
         {
             if (GenderTags.Count < 1)
@@ -71,6 +73,8 @@ namespace SecondHandBookshop.Shared.Models
 
         private List<Gender> DeserializeTags(string list)
         {
+            if(String.IsNullOrEmpty(list))
+                return new List<Gender>();
             string[] tags = list.Split(',');
             var result = new List<Gender>();
             if (tags.Length < 1)

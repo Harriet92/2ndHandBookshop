@@ -2,6 +2,8 @@ using System;
 using System.Collections.Generic;
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
+using Windows.Devices.Geolocation;
+using Windows.Globalization.DateTimeFormatting;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Caliburn.Micro;
@@ -11,6 +13,7 @@ using SecondHandBookshop.Shared.Helpers;
 using SecondHandBookshop.Shared.Http.Services;
 using SecondHandBookshop.Shared.Interfaces;
 using SecondHandBookshop.Shared.Models;
+using SecondHandBookshop.Shared.Models.DTOs;
 using SecondHandBookshop.WindowsPhone.ViewModels;
 using SecondHandBookshop.WindowsPhone.Views;
 
@@ -22,10 +25,11 @@ namespace SecondHandBookshop.WindowsPhone
     public sealed partial class App : CaliburnApplication
     {
         private WinRTContainer container;
-        private readonly ContinuationManager _continuator = new ContinuationManager(); 
+        private readonly ContinuationManager _continuator = new ContinuationManager();
         public App()
         {
             InitializeComponent();
+            ConfigureAutoMapper();
         }
 
         protected override void Configure()
@@ -34,9 +38,10 @@ namespace SecondHandBookshop.WindowsPhone
 
             container.RegisterWinRTServices();
             container.RegisterInstance(typeof(IAccountManager<User>), "", new AccountManager());
-            container.RegisterInstance(typeof(IOfferService<Offer>), "", new OfferService());
+            container.RegisterInstance(typeof(IOfferService<OfferDTO>), "", new OfferService());
             container.RegisterInstance(typeof(IUserService), "", new UserService(container.GetInstance<IAccountManager<User>>()));
             container.RegisterInstance(typeof(FacebookManager), "", new FacebookManager());
+            container.RegisterInstance(typeof(LocationManager), "", new LocationManager());
 
             container.PerRequest<MainPageViewModel>();
             container.PerRequest<AccountViewModel>();
@@ -81,7 +86,7 @@ namespace SecondHandBookshop.WindowsPhone
             var deferral = e.SuspendingOperation.GetDeferral();
             await SuspensionManager.SaveAsync();
             deferral.Complete();
-        }  
+        }
         protected override object GetInstance(Type service, string key)
         {
             return container.GetInstance(service, key);
@@ -96,7 +101,7 @@ namespace SecondHandBookshop.WindowsPhone
         {
             container.BuildUp(instance);
         }
-        
+
         private void CreateRootFrame()
         {
             Frame rootFrame = Window.Current.Content as Frame;
@@ -106,6 +111,17 @@ namespace SecondHandBookshop.WindowsPhone
                 SuspensionManager.RegisterFrame(rootFrame, "AppFrame");
                 Window.Current.Content = rootFrame;
             }
-        }  
+        }
+
+        private void ConfigureAutoMapper()
+        {
+            AutoMapper.Mapper.CreateMap<UserDTO, User>()
+                .ForMember(x => x.CurrencyCount, opt => opt.ResolveUsing(y => y.money))
+                .ForMember(x => x.Id, opt => opt.ResolveUsing(y => ModelHelpers.UrlToId(y.url)));
+
+            AutoMapper.Mapper.CreateMap<Offer, OfferDTO>();
+            AutoMapper.Mapper.CreateMap<OfferDTO, Offer>()
+                .ForMember(x => x.SellerId, opt => opt.ResolveUsing(y => y.ownerid));
+        }
     }
 }

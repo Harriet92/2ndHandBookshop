@@ -9,11 +9,6 @@
     mc:Ignorable="d"
     d:DesignHeight="70.5"
     d:DesignWidth="400">
-
-    <UserControl.Resources>
-        <Thickness x:Key="GridMargin">5</Thickness>
-        <Thickness x:Key="SmallGridMargin">2</Thickness>
-    </UserControl.Resources>
     <Border BorderThickness="1" BorderBrush="AliceBlue">
         <Grid Margin="{StaticResource GridMargin}">
             <Grid.ColumnDefinitions>

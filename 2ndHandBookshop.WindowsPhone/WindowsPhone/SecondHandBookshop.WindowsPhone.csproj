@@ -112,7 +112,7 @@
     <Compile Include="ViewModels\LogInViewModel.cs" />
     <Compile Include="ViewModels\NewestOffersViewModel.cs" />
     <Compile Include="ViewModels\AccountViewModel.cs" />
-    <Compile Include="ViewModels\ISectionViewModel.cs" />
+    <Compile Include="ViewModels\ViewModel.cs" />
     <Compile Include="ViewModels\MainPageViewModel.cs" />
     <Compile Include="ViewModels\AddOfferViewModel.cs" />
     <Compile Include="ViewModels\SearchViewModel.cs" />
@@ -164,6 +164,12 @@
     <Reference Include="Autofac">
       <HintPath>..\packages\Autofac.3.5.2\lib\portable-net4+sl5+netcore45+wpa81+wp8+MonoAndroid1+MonoTouch1\Autofac.dll</HintPath>
     </Reference>
+    <Reference Include="AutoMapper">
+      <HintPath>..\packages\AutoMapper.3.3.1\lib\wpa81\AutoMapper.dll</HintPath>
+    </Reference>
+    <Reference Include="AutoMapper.WPA81">
+      <HintPath>..\packages\AutoMapper.3.3.1\lib\wpa81\AutoMapper.WPA81.dll</HintPath>
+    </Reference>
     <Reference Include="Caliburn.Micro">
       <HintPath>..\packages\Caliburn.Micro.Core.2.0.2\lib\portable-net45+win8+wp8+wpa81\Caliburn.Micro.dll</HintPath>
     </Reference>
@@ -197,4 +203,5 @@
   <ItemGroup>
     <Content Include="StoreManifest.xml" />
   </ItemGroup>
+  <Import Project="..\packages\AutoMapper.3.3.1\tools\AutoMapper.targets" Condition="Exists('..\packages\AutoMapper.3.3.1\tools\AutoMapper.targets')" />
 </Project>

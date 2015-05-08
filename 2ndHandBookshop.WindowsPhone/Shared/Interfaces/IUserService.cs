@@ -8,6 +8,6 @@ namespace SecondHandBookshop.Shared.Interfaces
         Task<LoginResponseParams> LogIn(string login, string password);
         Task<RegisterResponseParams> Register(string name, string email, string password);
         Task<GetUsersResponseParams> GetUsers();
-        Task<bool> AddCurrencyToUser(int userId, int amount);
+        Task<bool> AddCurrencyToUser(int amount);
     }
 }

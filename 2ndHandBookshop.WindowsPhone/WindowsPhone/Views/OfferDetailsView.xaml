@@ -8,11 +8,6 @@
     xmlns:micro="using:Caliburn.Micro"
     mc:Ignorable="d" >
 
-    <UserControl.Resources>
-        <micro:BooleanToVisibilityConverter x:Key="converter" />
-        <Thickness x:Key="GridMargin">5</Thickness>
-        <Thickness x:Key="SmallGridMargin">2</Thickness>
-    </UserControl.Resources>
     <Grid Margin="{StaticResource GridMargin}">
         <Grid.RowDefinitions>
             <RowDefinition Height="2*"></RowDefinition>
@@ -61,8 +56,6 @@
                 <StackPanel>
                     <Button x:Name="Post" Content="Buy"  FontWeight="ExtraBold" 
                     micro:Message.Attach="[Event Click] = [Action Buy]"></Button>
-                    <Button  x:Name="Back" Content="Share" 
-                    micro:Message.Attach="[Event Click] = [Action Share]"></Button>
                 </StackPanel>
             </Viewbox>
         </Grid>
@@ -73,4 +66,16 @@
             </StackPanel>
         </Viewbox>
     </Grid>
+    <Page.BottomAppBar>
+        <CommandBar IsSticky="True" x:Name="appBar">
+            <CommandBar.PrimaryCommands>
+                <AppBarButton Icon="World" IsCompact="False" Label="Share" micro:Message.Attach="[Event Click] = [Action Share]"/>
+                <AppBarButton Icon="Delete" IsCompact="False" Label="Cancel offer" Visibility="{Binding ShowCancel, Converter={StaticResource BoolToVisConv}}" micro:Message.Attach="[Event Click] = [Action Cancel]"/>
+            </CommandBar.PrimaryCommands>
+            <CommandBar.SecondaryCommands>
+                <!--<AppBarButton Label="Test01"/>
+                <AppBarButton Label="Test02"/>-->
+            </CommandBar.SecondaryCommands>
+        </CommandBar>
+    </Page.BottomAppBar>
 </Page>

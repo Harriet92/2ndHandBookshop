@@ -5,6 +5,7 @@
     xmlns:local="using:SecondHandBookshop.WindowsPhone.Views"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:micro="using:Caliburn.Micro"
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
@@ -21,5 +22,7 @@
                 <Button x:Name="Register" Content="Don't have an account?" />
             </Viewbox>
         </StackPanel>
+        <Rectangle Fill="Black" Opacity="0.5" Visibility="{Binding ProgressRing, Converter={StaticResource BoolToVisConv}}"></Rectangle>
+        <ProgressRing x:Name="ProgressRing" IsActive="{Binding ProgressRing}"></ProgressRing>
     </Grid>
 </Page>

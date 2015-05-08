@@ -9,8 +9,6 @@
     mc:Ignorable="d"
     d:DesignHeight="400" >
     <UserControl.Resources>
-        <Thickness x:Key="GridMargin">5</Thickness>
-        <Thickness x:Key="SmallGridMargin">5</Thickness>
         <ItemsPanelTemplate x:Key="GridViewItemsPanel">
             <ItemsWrapGrid Orientation="Horizontal" />
         </ItemsPanelTemplate>
@@ -30,7 +28,7 @@
             <TextBox x:Name="SearchTextBox"  micro:Message.Attach="[Event KeyUp] = [Action SearchTextBox_TextChanged($source)]"/>
         </StackPanel>
         <Viewbox Grid.Row="1" Stretch="Uniform" HorizontalAlignment="Left">
-            <CheckBox Content="near my location"></CheckBox>
+            <CheckBox Content="near my location" IsChecked="{Binding NearMyLocation, Mode=TwoWay}" ></CheckBox>
         </Viewbox>
         <!--<Viewbox Grid.Row="2" Stretch="Fill">-->
         <GridView x:Name="GenderTags"  Grid.Row="2"

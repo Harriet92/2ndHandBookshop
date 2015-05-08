@@ -23,6 +23,8 @@ namespace SecondHandBookshop.Shared.Http.Services
             string path = "/login";
             JObject content = JObject.FromObject(new LoginParams() { login = login, password = password.ToMD5Hash() });
             var response = await PostRequest<LoginResponseParams>(path, content);
+            accountManager.LoggedUser = AutoMapper.Mapper.Map<User>(response.user);
+            Service.CurrentUserToken = response.token;
             return response;
         }
 
@@ -30,7 +32,7 @@ namespace SecondHandBookshop.Shared.Http.Services
         {
             string path = "";
             JObject content = JObject.FromObject(new RegisterRequestParams() { name = name, email = email, password = password.ToMD5Hash() });
-            var response = await PostRequest<RegisterResponseParams>(path, content).ConfigureAwait(false);
+            var response = await PostRequest<RegisterResponseParams>(path, content, false).ConfigureAwait(false);
             return response;
         }
 
@@ -39,7 +41,7 @@ namespace SecondHandBookshop.Shared.Http.Services
             return await GetRequest<GetUsersResponseParams>(base.serviceUri);
         }
 
-        public async Task<bool> AddCurrencyToUser(int userId, int amount)
+        public async Task<bool> AddCurrencyToUser(int amount)
         {
             accountManager.LoggedUser.CurrencyCount += amount;
             return true;

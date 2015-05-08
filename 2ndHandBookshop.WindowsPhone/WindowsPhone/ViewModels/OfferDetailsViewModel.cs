@@ -2,19 +2,26 @@
 using Windows.UI.Xaml.Media.Imaging;
 using Caliburn.Micro;
 using SecondHandBookshop.Shared.Common;
+using SecondHandBookshop.Shared.Interfaces;
 using SecondHandBookshop.Shared.Models;
+using SecondHandBookshop.Shared.Models.DTOs;
 
 namespace SecondHandBookshop.WindowsPhone.ViewModels
 {
-    public class OfferDetailsViewModel : Screen
+    public class OfferDetailsViewModel : ViewModel
     {
         private Offer offer;
         private readonly INavigationService navigationService;
         private readonly FacebookManager fbManager;
-        public OfferDetailsViewModel(INavigationService _navigationService, FacebookManager _fbManager)
+        private readonly IAccountManager<User> accountManager;
+        private readonly IOfferService<OfferDTO> offerService;
+        public OfferDetailsViewModel(INavigationService _navigationService, FacebookManager _fbManager, IAccountManager<User> _accountManager, IOfferService<OfferDTO> _offerService)
         {
+            offerService = _offerService;
+            accountManager = _accountManager;
             fbManager = _fbManager;
             navigationService = _navigationService;
+            NotifyOfPropertyChange(() => ShowCancel);
         }
 
         public string Author { get; set; }
@@ -23,6 +30,8 @@ namespace SecondHandBookshop.WindowsPhone.ViewModels
         public string Description { get; set; }
         public BitmapImage Photo { get; set; }
         public string LocalizationInfo { get; set; }
+        public bool ShowCancel { get { return accountManager != null && accountManager.LoggedUser.Id == offer.SellerId; } }
+
         public Offer CurrentOffer
         {
             get { return offer; }
@@ -34,9 +43,22 @@ namespace SecondHandBookshop.WindowsPhone.ViewModels
             }
         }
 
-        public void Buy()
+        public async void Buy()
         {
-            throw new NotImplementedException();
+            //if (Price > accountManager.LoggedUser.CurrencyCount)
+            //{
+            //    ShowMessage("You need more currency for that!");
+            //    return;
+            //}
+            var result = await offerService.PurchaseOffer(offer.Id);
+            if (result.IsSuccess)
+            {
+                await ShowMessage("Purchase succeeded!");
+            }
+            else
+            {
+                await ShowMessage(result.error);
+            }
         }
 
         public async void Share()
@@ -44,6 +66,18 @@ namespace SecondHandBookshop.WindowsPhone.ViewModels
             await fbManager.ShareOffer(CurrentOffer);
         }
 
+        public async void Cancel()
+        {
+            var result = await offerService.SetOfferAsCancelled(offer.Id);
+            if (result.IsSuccess)
+            {
+                await ShowMessage("Offer has successfully been cancelled");
+            }
+            else
+            {
+                await ShowMessage(result.error);
+            }
+        }
 
         private void SetPlaceholderImage()
         {
@@ -60,6 +94,7 @@ namespace SecondHandBookshop.WindowsPhone.ViewModels
             NotifyOfPropertyChange(() => Description);
             NotifyOfPropertyChange(() => LocalizationInfo);
             NotifyOfPropertyChange(() => Photo);
+            NotifyOfPropertyChange(() => ShowCancel);
         }
 
         private void BindOffer()
@@ -70,7 +105,7 @@ namespace SecondHandBookshop.WindowsPhone.ViewModels
             Title = offer.BookTitle;
             Description = offer.Description;
             Photo = offer.Photo;
-            Price = offer.CurrencyWorth;
+            Price = offer.Price;
             //TODO: Add localization and tags
         }
     }

@@ -1,29 +1,30 @@
 ﻿using System;
-using Windows.Devices.Enumeration;
+using Windows.Devices.Geolocation;
 using Windows.Media.Capture;
-using Windows.Media.Devices;
 using Windows.Media.MediaProperties;
 using Windows.Storage;
-using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Media.Imaging;
+using AutoMapper;
 using Caliburn.Micro;
-using Newtonsoft.Json;
+using SecondHandBookshop.Shared.Common;
 using SecondHandBookshop.Shared.Enums;
 using SecondHandBookshop.Shared.Helpers;
 using SecondHandBookshop.Shared.Interfaces;
 using SecondHandBookshop.Shared.Models;
+using SecondHandBookshop.Shared.Models.DTOs;
 
 namespace SecondHandBookshop.WindowsPhone.ViewModels
 {
-    public class AddOfferViewModel : PropertyChangedBase
+    public class AddOfferViewModel : ViewModel
     {
         private MediaCapture _mediaCapture;
         private CaptureElement _captureElement;
-        private readonly IOfferService<Offer> offerService;
-        public AddOfferViewModel(IOfferService<Offer> _offerService)
+        private readonly IOfferService<OfferDTO> offerService;
+        private readonly LocationManager locationManager;
+        public AddOfferViewModel(IOfferService<OfferDTO> _offerService, LocationManager _locationManager)
         {
+            locationManager = _locationManager;
             offerService = _offerService;
             SetPlaceholderImage();
             ConfigureMedia();
@@ -65,19 +66,26 @@ namespace SecondHandBookshop.WindowsPhone.ViewModels
 
         public async void Post()
         {
+            ShowLoadingIndicator();
+            BasicGeoposition location = new BasicGeoposition();
+            if (AddLocalizationInfo)
+                location = await locationManager.GetCurrentLocation();
             var newOffer = new Offer()
             {
                 BookAuthor = Author,
                 BookTitle = Title,
-                CurrencyWorth = Price,
+                Price = Price,
                 Description = Description,
                 StartedAt = DateTime.UtcNow,
-                Status = OfferStatus.Added
+                Status = OfferStatus.Added,
+                Location = location
             };
+            Photo = new BitmapImage(new Uri("ms-appx:///Assets/pies.jpg", UriKind.RelativeOrAbsolute));
             //newOffer.PhotoBase64 = await Photo.ConvertToBase64();
-            var result = await offerService.AddOffer(newOffer);
+            var result = await offerService.AddOffer(Mapper.Map<OfferDTO>(newOffer));
             if (result != null)
                 ClearFormula();
+            HideLoadingIndicator();
         }
 
         public async void AddImage()

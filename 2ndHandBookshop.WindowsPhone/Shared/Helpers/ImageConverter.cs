@@ -9,6 +9,8 @@ namespace SecondHandBookshop.Shared.Helpers
     {
         public static BitmapImage GetFromBase64String(string base64)
         {
+            if (String.IsNullOrEmpty(base64))
+                return null;
             byte[] fileBytes = Convert.FromBase64String(base64);
 
             using (MemoryStream ms = new MemoryStream(fileBytes, 0, fileBytes.Length))
