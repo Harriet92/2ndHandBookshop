@@ -1,8 +1,6 @@
 package com.szlif.bookshop;
 
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -11,13 +9,13 @@ import android.widget.EditText;
 import com.octo.android.robospice.persistence.DurationInMillis;
 import com.octo.android.robospice.persistence.exception.SpiceException;
 import com.octo.android.robospice.request.listener.RequestListener;
-import com.szlif.bookshop.pojo.FollowerList;
-import com.szlif.bookshop.requests.FollowersRequest;
+import com.szlif.bookshop.pojo.User;
+import com.szlif.bookshop.requests.GetUserRequest;
 
 
 public class WelcomeActivity extends BaseActivity {
 
-    private class ListFollowersRequestListener implements RequestListener<FollowerList> {
+    private class UserRequestListener implements RequestListener<User> {
 
         @Override
         public void onRequestFailure(SpiceException e) {
@@ -25,9 +23,9 @@ public class WelcomeActivity extends BaseActivity {
         }
 
         @Override
-        public void onRequestSuccess(FollowerList listFollowers) {
+        public void onRequestSuccess(User user) {
             EditText text = (EditText) findViewById(R.id.text_field);
-            text.setText(listFollowers.toString());
+            text.setText(user.getName());
         }
     }
 
@@ -62,16 +60,15 @@ public class WelcomeActivity extends BaseActivity {
 
     public void MakeRequest(View view)
     {
-        performRequest("Valian");
+        performRequest();
     }
 
-    private void performRequest(String user) {
+    private void performRequest() {
         WelcomeActivity.this.setProgressBarIndeterminateVisibility(true);
 
-
-        FollowersRequest request = new FollowersRequest(user);
+        GetUserRequest request = new GetUserRequest();
         String lastRequestCacheKey = request.createCacheKey();
 
-        spiceManager.execute(request, lastRequestCacheKey, DurationInMillis.ONE_MINUTE, new ListFollowersRequestListener());
+        spiceManager.execute(request, lastRequestCacheKey, DurationInMillis.ONE_MINUTE, new UserRequestListener());
     }
 }
