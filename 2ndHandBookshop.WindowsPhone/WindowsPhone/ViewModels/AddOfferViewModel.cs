@@ -81,10 +81,19 @@ namespace SecondHandBookshop.WindowsPhone.ViewModels
                 Location = location
             };
             Photo = new BitmapImage(new Uri("ms-appx:///Assets/pies.jpg", UriKind.RelativeOrAbsolute));
-            //newOffer.PhotoBase64 = await Photo.ConvertToBase64();
-            var result = await offerService.AddOffer(Mapper.Map<OfferDTO>(newOffer));
+            var newOfferDTO = Mapper.Map<OfferDTO>(newOffer);
+            newOfferDTO.photoBase64 = await Photo.ConvertToBase64();
+            var result = await offerService.AddOffer(newOfferDTO);
             if (result != null)
                 ClearFormula();
+            if (result.IsSuccess)
+            {
+                ShowMessage("Offer added!");
+            }
+            else
+            {
+                ShowMessage(result.StatusCode.ToString() + ": " + result.error);
+            }
             HideLoadingIndicator();
         }
 

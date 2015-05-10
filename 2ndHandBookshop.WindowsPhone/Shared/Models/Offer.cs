@@ -11,8 +11,6 @@ namespace SecondHandBookshop.Shared.Models
 {
     public class Offer
     {
-        private string photoBase64;
-        private BitmapImage photo;
         public int Id { get; set; }
         public string BookTitle { get; set; }
         public string BookAuthor { get; set; }
@@ -25,19 +23,7 @@ namespace SecondHandBookshop.Shared.Models
         public OfferStatus Status { get; set; }
         public BasicGeoposition Location { get; set; }
         [JsonIgnore]
-        public BitmapImage Photo { get { return photo;} set { photo = value; }}
-        public string PhotoBase64
-        {
-            get
-            {
-                return photoBase64;
-            }
-            set
-            {
-                photoBase64 = value;
-                Photo = ImageConverter.GetFromBase64String(value);
-            }
-        }
+        public BitmapImage Photo { get; set; }
 
         public string Tags
         {
@@ -50,13 +36,6 @@ namespace SecondHandBookshop.Shared.Models
         {
             Status = OfferStatus.Added;
             GenderTags = new List<Gender>();
-            //TODO: Remove placeholder!
-            Photo = new BitmapImage(new Uri("ms-appx:///Assets/pies.jpg", UriKind.RelativeOrAbsolute));
-        }
-
-        public async void SetPhotoString(BitmapImage bi)
-        {
-            photoBase64 = await bi.ConvertToBase64();
         }
 
         private string SerializeTags()

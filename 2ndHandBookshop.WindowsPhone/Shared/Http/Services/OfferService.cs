@@ -22,12 +22,12 @@ namespace SecondHandBookshop.Shared.Http.Services
         }
 
 
-        public async Task<OfferDTO> AddOffer(OfferDTO newOffer)
+        public async Task<AddOfferResponseParams> AddOffer(OfferDTO newOffer)
         {
             string path = "";
             JObject content = JObject.FromObject(newOffer, JsonSerializer.Create(new JsonSerializerSettings { ContractResolver = new CamelCasePropertyNamesContractResolver() }));
             var response = await PostRequest<AddOfferResponseParams>(path, content);
-            return response != null ? response.offer : null;
+            return response;
         }
 
         public async Task<SetOfferStatusResponseParams> SetOfferAsCancelled(int offerId)

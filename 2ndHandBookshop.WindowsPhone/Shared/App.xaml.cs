@@ -121,7 +121,8 @@ namespace SecondHandBookshop.WindowsPhone
 
             AutoMapper.Mapper.CreateMap<Offer, OfferDTO>();
             AutoMapper.Mapper.CreateMap<OfferDTO, Offer>()
-                .ForMember(x => x.SellerId, opt => opt.ResolveUsing(y => y.ownerid));
+                .ForMember(x => x.SellerId, opt => opt.ResolveUsing(y => y.ownerid))
+                .ForMember(x => x.Photo, opt => opt.ResolveUsing(y => ImageConverter.GetFromBase64String(y.photoBase64)));
         }
     }
 }

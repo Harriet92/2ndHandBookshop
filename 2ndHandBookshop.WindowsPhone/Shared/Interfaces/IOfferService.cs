@@ -6,7 +6,7 @@ namespace SecondHandBookshop.Shared.Interfaces
 {
     public interface IOfferService<TOffer>
     {
-        Task<TOffer> AddOffer(TOffer newOffer);
+        Task<AddOfferResponseParams> AddOffer(TOffer newOffer);
         Task<GetOffersResponseParams> GetOffers();
         Task<List<TOffer>> GetLatestOffers(int count);
 

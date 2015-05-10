@@ -74,7 +74,7 @@ namespace SecondHandBookshop.WindowsPhone.ViewModels
 
         private bool AuthorTitleFilter(Offer offer, string filterText)
         {
-            return offer.BookTitle.ToLower().Contains(filterText) || offer.BookAuthor.ToLower().Contains(filterText);
+            return (offer.BookTitle != null && offer.BookTitle.ToLower().Contains(filterText)) || (offer.BookAuthor != null && offer.BookAuthor.ToLower().Contains(filterText));
         }
         private bool TagFilter(Offer offer, List<string> tags)
         {
