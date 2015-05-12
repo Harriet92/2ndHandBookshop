@@ -9,25 +9,12 @@ import android.widget.EditText;
 import com.octo.android.robospice.persistence.DurationInMillis;
 import com.octo.android.robospice.persistence.exception.SpiceException;
 import com.octo.android.robospice.request.listener.RequestListener;
-import com.szlif.bookshop.pojo.User;
-import com.szlif.bookshop.requests.GetUserRequest;
+import com.szlif.bookshop.models.Session;
+import com.szlif.bookshop.models.User;
+import com.szlif.bookshop.network.LoginRequest;
 
 
 public class WelcomeActivity extends BaseActivity {
-
-    private class UserRequestListener implements RequestListener<User> {
-
-        @Override
-        public void onRequestFailure(SpiceException e) {
-            //update your UI
-        }
-
-        @Override
-        public void onRequestSuccess(User user) {
-            EditText text = (EditText) findViewById(R.id.text_field);
-            text.setText(user.getName());
-        }
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,11 +51,24 @@ public class WelcomeActivity extends BaseActivity {
     }
 
     private void performRequest() {
-        WelcomeActivity.this.setProgressBarIndeterminateVisibility(true);
 
-        GetUserRequest request = new GetUserRequest();
+        LoginRequest request = new LoginRequest("Emilka1", "trudnehaslo");
         String lastRequestCacheKey = request.createCacheKey();
 
-        spiceManager.execute(request, lastRequestCacheKey, DurationInMillis.ONE_MINUTE, new UserRequestListener());
+        spiceManager.execute(request, lastRequestCacheKey, DurationInMillis.ONE_MINUTE, new LoginRequestListener());
+    }
+
+    private class LoginRequestListener implements RequestListener<Session> {
+
+        @Override
+        public void onRequestFailure(SpiceException e) {
+            //update your UI
+        }
+
+        @Override
+        public void onRequestSuccess(Session session) {
+            EditText text = (EditText) findViewById(R.id.text_field);
+            text.setText(session.token);
+        }
     }
 }
