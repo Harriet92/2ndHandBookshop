@@ -70,13 +70,17 @@ class BookOffer(db.Model):
     status = db.Column(db.Integer, default=OfferStatus.ADDED, nullable=False)
     photobase64 = db.Column(db.String)
     tags = db.Column(db.String)
+    latitude = db.Column(db.String)
+    longitude = db.Column(db.String)
 
     @classmethod
-    def create(cls, title, author, ownerid, description, price, photobase64, tags, expiration_time_in_sec):
+    def create(cls, title, author, ownerid, description, price, photobase64, tags, expiration_time_in_sec, longitude,
+               latitude):
         expiration_date = datetime.datetime.utcnow() + datetime.timedelta(seconds=expiration_time_in_sec)
         return BookOffer(
             ownerid=ownerid, booktitle=title, bookauthor=author, description=description, price=price,
-            photobase64=photobase64, tags=tags, expiresat=expiration_date, status=OfferStatus.ADDED)
+            photobase64=photobase64, tags=tags, expiresat=expiration_date, status=OfferStatus.ADDED,
+            latitude=latitude, longitude=longitude)
 
 
 class Session(db.Model):
@@ -98,11 +102,41 @@ class Session(db.Model):
         expiration_date = datetime.datetime.utcnow() + datetime.timedelta(seconds=session_expiration_time_in_sec)
         return Session(token=token, expiration_date=expiration_date, user_id=user_id)
 
+#
+# class UserMessage(db.Model):
+#     __tablename__ = "messages"
+#
+#     id = db.Column(db.Integer, primary_key=True)
+#     createdat = db.Column(db.DateTime, default=datetime.datetime.now)
+#     isread = db.Column(db.Boolean)
+#     receiverid = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
+#     receiver = db.relationship(
+#         'User',
+#         uselist=False,
+#         foreign_keys='UserMessages.receiverid',
+#         backref=db.backref('offers', uselistre=True)
+#     )
+#
+#     senderid = db.Column(db.Integer, db.ForeignKey('users.id'))
+#     sender = db.relationship(
+#         'User',
+#         uselist=False,
+#         foreign_keys='BookOffer.senderid',
+#         backref=db.backref('purchased', uselist=True)
+#     )
+#
+#     email = db.Column(db.String(100))
+#
+#     @classmethod
+#     def create(cls, createdat, isread, receiverid, senderid, email):
+#         return UserMessage(createdat=createdat, isread=isread, receiverid=receiverid, senderid=senderid, email=email)
+
 
 def md5(word):
     m = hashlib.md5()
     m.update(word + app.config.get('SALT', ''))
     return m.hexdigest()
+
 
 db.create_all()
 db.session.commit()

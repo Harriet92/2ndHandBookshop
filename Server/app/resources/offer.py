@@ -18,7 +18,9 @@ new_offer_parameters = (
     reqparse.Argument('description', type=str),
     reqparse.Argument('photobase64', type=str),
     reqparse.Argument('price', type=int, required=True, help="You must provide book price!"),
-    reqparse.Argument('tags', type=str)
+    reqparse.Argument('tags', type=str),
+    reqparse.Argument('longitude', type=str),
+    reqparse.Argument('latitude', type=str)
 )
 
 set_status_parameters = (
@@ -33,7 +35,7 @@ class BookOfferListAPI(Loggable, Resource):
     @require_login
     @marshal_except_error(offers_fields)
     def get(self):
-        return {'array': BookOffer.query.all()}
+        return {'array': BookOffer.query.filter_by(status != OfferStatus.CANCELLED).all()}
 
     @require_login
     @require_arguments(new_offer_parameters)
@@ -49,7 +51,9 @@ class BookOfferListAPI(Loggable, Resource):
             tags=params.tags,
             photobase64=params.photobase64,
             price=params.price,
-            expiration_time_in_sec=self.BOOK_EXPIRATION_TIME
+            expiration_time_in_sec=self.BOOK_EXPIRATION_TIME,
+            latitude=params.latitude,
+            longitude=params.longitude
         )
         db.session.add(offer)
         db.session.commit()
@@ -92,3 +96,14 @@ class BookOfferAPI(Loggable, Resource):
     @staticmethod
     def _is_offer_available(offer):
         return offer.status == OfferStatus.ADDED and (not offer.expiresat or offer.expiresat > datetime.datetime.now())
+
+
+class BookOfferUserListAPI(Loggable, Resource):
+
+    BOOK_EXPIRATION_TIME = 3600 * 24 * 7
+
+    @require_login
+    @marshal_except_error(offers_fields)
+    def get(self):
+        return {'array': BookOffer.query.filter_by(ownerId == g.user.id or purchaserid == g.user.id).all()}
+

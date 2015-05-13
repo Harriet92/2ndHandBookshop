@@ -3,7 +3,7 @@ from flask_restful import Api
 from .app import app
 from .resources.session import SessionAPI
 from .resources.user import UserListAPI, UserAPI
-from .resources.offer import BookOfferAPI, BookOfferListAPI
+from .resources.offer import BookOfferAPI, BookOfferListAPI, BookOfferUserListAPI
 
 
 def register_resources(api):
@@ -12,6 +12,7 @@ def register_resources(api):
     api.add_resource(SessionAPI, '/users/login', endpoint='login')
     api.add_resource(BookOfferListAPI, '/offers', endpoint='offers')
     api.add_resource(BookOfferAPI, '/offers/<int:id>', endpoint='offer')
+    api.add_resource(BookOfferUserListAPI, '/offers/byuser', endpoint='byuser')
 
 api = Api(app)
 register_resources(api)

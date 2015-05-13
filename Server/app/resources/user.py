@@ -1,5 +1,6 @@
 from flask_restful import Resource, reqparse, marshal
 
+from flask import g
 from .representations import users_fields, user_detail
 
 from ..models import User, db
@@ -13,6 +14,12 @@ register_parameters = (
     reqparse.Argument('email', type=str, required=True, help="You must provide email!"),
     reqparse.Argument('password', type=str, required=True, help="You must provide password!")
 )
+
+
+addmoney_parameters = (
+    reqparse.Argument('amount', type=int, required=True, help="You must provide amount of money!")
+)
+
 
 
 class UserListAPI(Loggable, Resource):
@@ -48,6 +55,16 @@ class UserAPI(Loggable, Resource):
         user = get_object_or_404(User, id=id)
         return user
 
+    @require_login
+    @marshal_except_error(addmoney_parameters)
+    def put(self, id, params):
+        user = get_object_or_404(User, id=id)
+        user.currency_count += params.amount
+        db.session.commit()
+        return user
+
 
 def _is_password_valid(password):
     return len(password) > 5
+
+

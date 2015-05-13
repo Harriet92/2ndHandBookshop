@@ -4,3 +4,11 @@ class OfferStatus(object):
     PURCHASE_REQUESTED = 2
     CANCELLED = 3
     FINALIZED = 4
+    PURCHASE_ACCEPTED = 5
+
+
+class MessageType(object):
+    PURCHASE_REQUEST = 1
+    PURCHASE_REQUEST_ACCEPTED = 2
+    PURCHASE_REQUEST_REJECTED = 3
+    FINALIZED = 4
