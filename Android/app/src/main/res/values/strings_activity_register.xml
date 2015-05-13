@@ -1,0 +1,10 @@
+<resources>
+    <string name="title_activity_register">Register</string>
+    <string name="prompt_name">Name</string>
+    <string name="prompt_email">Email</string>
+    <string name="prompt_password_confirm">Confirm password</string>
+    <string name="prompt_password_register">Password</string>
+    <string name="error_invalid_name">Name should be at least 5 characters long!</string>
+    <string name="error_different_password">Passwords do not match!</string>
+    <string name="error_invalid_email">Email must contain @ and be at least 5 characters long</string>
+</resources>

@@ -3,7 +3,7 @@ package com.szlif.bookshop.models;
 
 import java.util.ArrayList;
 
-public class OfferDetail {
+public class OfferDetail extends Error {
 
     public int id;
     public int ownerid;
