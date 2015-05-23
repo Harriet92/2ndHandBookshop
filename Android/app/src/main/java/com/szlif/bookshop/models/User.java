@@ -9,6 +9,7 @@ public class User extends Error {
     public String email;
     public int money;
 
-    public static class List extends ArrayList<User> {}
-
+    public static class List extends Error {
+        public ArrayList<User> array;
+    }
 }

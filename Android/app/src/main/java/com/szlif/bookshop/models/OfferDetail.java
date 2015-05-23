@@ -18,6 +18,14 @@ public class OfferDetail extends Error {
     public int price;
     public int status;
 
-    public static class List extends ArrayList<OfferDetail> {}
+    public OfferDetail(String booktitle, String bookauthor, String description) {
+        this.booktitle = booktitle;
+        this.bookauthor = bookauthor;
+        this.description = description;
+    }
+
+    public static class List extends Error {
+        public ArrayList<OfferDetail> array;
+    }
 
 }

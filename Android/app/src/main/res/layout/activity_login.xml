@@ -28,6 +28,14 @@
                 android:inputType="textPassword"
                 android:maxLines="1" android:singleLine="true" />
 
+            <CheckBox
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/login_activity_remember_text"
+                android:id="@+id/remember_box"
+                android:layout_gravity="center_horizontal"
+                android:checked="true" />
+
             <Button android:id="@+id/email_sign_in_button" style="?android:textAppearanceSmall"
                 android:layout_width="match_parent" android:layout_height="wrap_content"
                 android:layout_marginTop="16dp" android:text="@string/action_sign_in"
@@ -36,7 +44,7 @@
 
             <Button android:id="@+id/register_button" style="?android:textAppearanceSmall"
                 android:layout_width="match_parent" android:layout_height="wrap_content"
-                android:text="@string/action_register"
+                android:text="@string/button_register"
                 android:textStyle="bold"
                 android:onClick="openRegisterActivity"/>
 
