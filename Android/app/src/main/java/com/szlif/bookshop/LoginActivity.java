@@ -108,10 +108,10 @@ public class LoginActivity extends BaseActivity {
             AppData.rememberCredentials(email, password, LoginActivity.this.getApplicationContext());
         }
 
-        Intent intent = new Intent(LoginActivity.this, SearchActivity.class);
+        Intent intent = new Intent(getApplicationContext(), SearchActivity.class);
         startActivity(intent);
-
         showProgress(false);
+        finish();
     }
 
     /**

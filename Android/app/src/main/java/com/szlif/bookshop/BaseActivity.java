@@ -32,6 +32,7 @@ public class BaseActivity extends Activity {
 
         if (id == R.id.action_bar_search) {
             Intent intent = new Intent(this, SearchActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             startActivity(intent);
         }
         if (id == R.id.action_bar_profile) {
@@ -41,6 +42,10 @@ public class BaseActivity extends Activity {
         if (id == R.id.action_bar_add_offer) {
             Intent intent = new Intent(this, AddOfferActivity.class);
             startActivity(intent);
+        }
+        if(id == android.R.id.home){
+            finish();
+            return true;
         }
 
         return super.onOptionsItemSelected(item);
