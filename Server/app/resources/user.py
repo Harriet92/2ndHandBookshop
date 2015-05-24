@@ -15,11 +15,9 @@ register_parameters = (
     reqparse.Argument('password', type=str, required=True, help="You must provide password!")
 )
 
-
-addmoney_parameters = (
-    reqparse.Argument('amount', type=int, required=True, help="You must provide amount of money!")
+patch_user_parameters = (
+    reqparse.Argument('money', type=int),
 )
-
 
 
 class UserListAPI(Loggable, Resource):
@@ -56,15 +54,20 @@ class UserAPI(Loggable, Resource):
         return user
 
     @require_login
-    @marshal_except_error(addmoney_parameters)
-    def put(self, id, params):
+    @require_arguments(patch_user_parameters)
+    @marshal_except_error(user_detail)
+    def patch(self, id, params):
         user = get_object_or_404(User, id=id)
-        user.currency_count += params.amount
-        db.session.commit()
+        if user != g.user:
+            return create_error_message("You can't change other user data!")
+
+        if params.money:
+            user.money = params.money
+            db.session.commit()
+
+        user = get_object_or_404(User, id=id)
         return user
 
 
 def _is_password_valid(password):
     return len(password) > 5
-
-

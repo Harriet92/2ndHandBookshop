@@ -16,16 +16,16 @@ class User(db.Model):
     name = db.Column(db.String(255), unique=True, nullable=False)
     email = db.Column(db.String(255), unique=True, nullable=False)
     token = db.Column(db.String(128), nullable=False)
-    currency_count = db.Column(db.Integer, nullable=False)
+    money = db.Column(db.Integer, default=0, nullable=False)
     bought = db.Column(db.Integer, default=0, nullable=False)
     sold = db.Column(db.Integer, default=0, nullable=False)
     register_timestamp = db.Column(db.DateTime, nullable=False, default=datetime.datetime.utcnow)
     login_timestamp = db.Column(db.DateTime, nullable=False, default=datetime.datetime.utcnow)
 
     @classmethod
-    def create(cls, name, email, password, currency_count=0):
+    def create(cls, name, email, password, money=0):
         token = cls._get_password_token(password)
-        return User(token=token, name=name, email=email, currency_count=currency_count)
+        return User(token=token, name=name, email=email, money=money)
 
     def check_password(self, password):
         return self.token == self._get_password_token(password)

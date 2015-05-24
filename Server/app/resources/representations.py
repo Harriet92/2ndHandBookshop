@@ -15,7 +15,7 @@ user_detail = {
     'name': fields.String,
     'url': fields.Url('user'),
     'email': fields.String,
-    'money': Money
+    'money': fields.Integer
 }
 
 users_fields = {
