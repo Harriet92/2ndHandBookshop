@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.util.Base64;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -30,13 +31,18 @@ public class OfferActivity extends Activity {
         ((TextView)findViewById(R.id.book_owner)).setText(in.getStringExtra("name"));
         ((TextView)findViewById(R.id.book_description)).setText(in.getStringExtra("description"));
         String photobase64 = in.getStringExtra("photo");
-        if(photobase64 != null) {
+        if(photobase64 != null && !photobase64.isEmpty()) {
             byte[] decodedString = Base64.decode(photobase64, Base64.DEFAULT);
             ((ImageView)findViewById(R.id.book_cover)).setImageBitmap(getResizedBitmap(BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length), 150));
         }
 
         bookId = in.getIntExtra("id", -1);
         tags = in.getStringExtra("tags");
+        if(tags != null && !tags.isEmpty()) {
+            TextView tagsView = (TextView) findViewById(R.id.book_tags);
+            tagsView.setText(tags.replace(";", ", "));
+            tagsView.setVisibility(View.VISIBLE);
+        }
 
     }
 
@@ -56,6 +62,7 @@ public class OfferActivity extends Activity {
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_all, menu);
+        getActionBar().setDisplayHomeAsUpEnabled(true);
         return true;
     }
 }

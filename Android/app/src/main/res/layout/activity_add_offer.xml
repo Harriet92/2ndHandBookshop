@@ -20,6 +20,12 @@
         android:layout_weight="1"
         android:inputType="textMultiLine"
         android:minLines="3"/>
+    <Spinner
+        android:id="@+id/tags_spinner"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        </Spinner>
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -30,20 +36,28 @@
             android:layout_height="fill_parent"
             android:gravity="center"
             android:orientation="vertical">
-
-            <NumberPicker android:id="@+id/price_field"
+            <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="vertical" />
+                android:text="@string/prompt_price"
+                android:textColor="#777777"/>
+            <EditText android:id="@+id/price_field"
+                android:layout_width="100sp"
+                android:layout_height="wrap_content"
+                android:singleLine="true"
+                android:orientation="vertical"
+                android:inputType="number"/>
+
         </LinearLayout>
         <ImageView android:id="@+id/cover_field"
             android:layout_width="150sp"
             android:layout_height="150sp"
-            android:inputType="text" android:maxLines="1"
-            android:src="@drawable/book"
-            android:singleLine="true" />
+            android:src="@drawable/camera"
+            android:alpha="0.4"/>
+
     </LinearLayout>
     <Button
+        android:id="@+id/create_offer_button"
         android:layout_width="match_parent"
         android:layout_height="50sp"
         android:text="Create offer"/>

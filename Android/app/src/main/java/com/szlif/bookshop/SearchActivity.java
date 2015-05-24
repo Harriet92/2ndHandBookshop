@@ -203,7 +203,7 @@ public class SearchActivity extends BaseActivity {
             authorView.setText(offer.bookauthor);
             priceView.setText(Integer.toString(offer.price));
 
-            if(offer.photobase64 != null) {
+            if(offer.photobase64 != null && !offer.photobase64.isEmpty()) {
                 byte[] decodedString = Base64.decode(offer.photobase64, Base64.DEFAULT);
                 coverView.setImageBitmap(getResizedBitmap(BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length), 100));
             } else {

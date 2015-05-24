@@ -33,7 +33,9 @@ public interface Bookshop {
 
     @FormUrlEncoded
     @POST("/offers")
-    OfferDetail CreateOffer(@Query("token") String token, @Field("booktitle") String bookTitle, @Field("price") int price);
+    OfferDetail CreateOffer(@Query("token") String token, @Field("booktitle") String bookTitle,
+                            @Field("price") int price, @Field("bookauthor") String author, @Field("description") String description, @Field("photobase64") String photo,
+                            @Field("tags") String tags, @Field("status") int status);
 
     @GET("/offers/{id}")
     OfferDetail GetOffer(@Query("token") String token, @Path("id") int offerId);

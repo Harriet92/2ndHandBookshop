@@ -40,4 +40,16 @@
     <string name="prompt_price">Price</string>
     <string name="action_bar_add_offer">Add offer</string>
     <string name="action_bar_logout">Logout</string>
+    <string-array name="tags">
+        <item>Undefined</item>
+        <item>Drama</item>
+        <item>ScienceFiction</item>
+        <item>Historical</item>
+        <item>Education</item>
+        <item>Cooking</item>
+        <item>Fantasy</item>
+        <item>Romance</item>
+        <item>Criminal</item>
+        <item>Children</item>
+    </string-array>
 </resources>
