@@ -11,9 +11,7 @@
     d:DesignWidth="400">
 
     <UserControl.Resources>
-        <micro:BooleanToVisibilityConverter x:Key="converter" />
-        <Thickness x:Key="GridMargin">5</Thickness>
-        <Thickness x:Key="SmallGridMargin">2</Thickness>
+        
     </UserControl.Resources>
     <Grid Margin="{StaticResource GridMargin}">
         <Grid.RowDefinitions>
@@ -28,7 +26,7 @@
         <Viewbox>
             <Button x:Name="SenderNickname" Content="{Binding SenderNickname}"></Button>
         </Viewbox>
-        <TextBlock Grid.Row="0" Grid.Column="1" x:Name="New" Text="New!" HorizontalAlignment="Center" Visibility="{Binding IsNotRead, Converter = {StaticResource converter}}"></TextBlock>
+        <TextBlock Grid.Row="0" Grid.Column="1" x:Name="New" Text="New!" HorizontalAlignment="Center" Visibility="{Binding IsNotRead, Converter = {StaticResource BoolToVisConv}}"></TextBlock>
         <Viewbox  Grid.Row="0" Grid.Column="2">
             <StackPanel Orientation="Horizontal" Margin="{StaticResource SmallGridMargin}">
                 <Button Content="Ok" Margin="{StaticResource SmallGridMargin}"></Button>

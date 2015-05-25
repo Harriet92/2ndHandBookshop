@@ -7,12 +7,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:micro="using:Caliburn.Micro"
     mc:Ignorable="d" d:DesignWidth="219.833" d:DesignHeight="353.333">
-
-    <UserControl.Resources>
-        <micro:BooleanToVisibilityConverter x:Key="converter" />
-        <Thickness x:Key="GridMargin">5</Thickness>
-        <Thickness x:Key="SmallGridMargin">2</Thickness>
-    </UserControl.Resources>
+    
     <Grid Margin="{StaticResource GridMargin}">
         <Grid.RowDefinitions>
             <RowDefinition Height="2*"></RowDefinition>
@@ -56,7 +51,7 @@
             <CheckBox  Content="Add my localization info" IsChecked="{Binding AddLocalizationInfo, Mode=TwoWay}"></CheckBox>
         </Viewbox>
 
-        <Grid Grid.Row="0" Grid.RowSpan="4" Grid.ColumnSpan="2" Visibility="{Binding ShowCaptureFrame, Converter={StaticResource converter}}" Background="Black" Opacity="50">
+        <Grid Grid.Row="0" Grid.RowSpan="4" Grid.ColumnSpan="2" Visibility="{Binding ShowCaptureFrame, Converter={StaticResource BoolToVisConv}}" Background="Black" Opacity="50">
             <Grid.RowDefinitions>
                 <RowDefinition Height="8*"></RowDefinition>
                 <RowDefinition Height="1*"></RowDefinition>
@@ -66,5 +61,7 @@
                 <Button  Content="Done" micro:Message.Attach="[Event Click] = [Action TakeAPhoto]" />
             </Viewbox>
         </Grid>
+        <Rectangle Grid.RowSpan="4" Grid.ColumnSpan="2" Fill="Black" Opacity="0.5" Visibility="{Binding ProgressRing, Converter={StaticResource BoolToVisConv}}"></Rectangle>
+        <ProgressRing Grid.RowSpan="4" Grid.ColumnSpan="2" x:Name="ProgressRing" IsActive="{Binding ProgressRing}"></ProgressRing>
     </Grid>
 </UserControl>

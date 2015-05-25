@@ -3,6 +3,8 @@ using SecondHandBookshop.Shared.Interfaces;
 using SecondHandBookshop.Shared.Models;
 using Windows.Devices.Geolocation;
 using Windows.UI.Xaml.Navigation;
+using SecondHandBookshop.Shared.Common;
+using SecondHandBookshop.Shared.Models.DTOs;
 
 namespace SecondHandBookshop.WindowsPhone.ViewModels
 {
@@ -16,11 +18,11 @@ namespace SecondHandBookshop.WindowsPhone.ViewModels
         public NewestOffersViewModel NewestOffersViewModel { get; set; }
         public AddOfferViewModel AddOfferViewModel { get; set; }
         public AccountViewModel AccountViewModel { get; set; }
-        public MainPageViewModel(IOfferService<Offer> offerService, IAccountManager<User> accountManager , INavigationService navigationService )
+        public MainPageViewModel(IOfferService<OfferDTO> offerService, IAccountManager<User> accountManager , INavigationService navigationService, LocationManager locationManager)
         {
-            SearchViewModel = new SearchViewModel(offerService, navigationService);
+            SearchViewModel = new SearchViewModel(offerService, navigationService, locationManager);
             NewestOffersViewModel = new NewestOffersViewModel(offerService, navigationService);
-            AddOfferViewModel = new AddOfferViewModel();
+            AddOfferViewModel = new AddOfferViewModel(offerService, locationManager);
             AccountViewModel = new AccountViewModel(accountManager, navigationService);
         }
         public string SearchSectionHeader

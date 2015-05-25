@@ -9,11 +9,6 @@
     mc:Ignorable="d"
     d:DesignHeight="70.5"
     d:DesignWidth="400">
-
-    <UserControl.Resources>
-        <Thickness x:Key="GridMargin">5</Thickness>
-        <Thickness x:Key="SmallGridMargin">2</Thickness>
-    </UserControl.Resources>
     <Border BorderThickness="1" BorderBrush="AliceBlue">
         <Grid Margin="{StaticResource GridMargin}">
             <Grid.ColumnDefinitions>
@@ -55,16 +50,12 @@
                         <ColumnDefinition Width="1*"></ColumnDefinition>
                     </Grid.ColumnDefinitions>
                     <TextBlock Grid.Column="0" Text="{Binding CurrencyWorth}" Margin="{StaticResource SmallGridMargin}"></TextBlock>
-                    <TextBlock Grid.Column="1" Text="{Binding DiamondsWorth}" TextAlignment="Right" Margin="{StaticResource SmallGridMargin}"></TextBlock>
                 </Grid>
-                <Viewbox Grid.Row="1" Stretch="Uniform">
-                    <TextBlock Text="{Binding State}"></TextBlock>
-                </Viewbox>
-                <Viewbox Grid.Row="2" Stretch="Uniform">
+                <Viewbox Grid.Row="1" Grid.RowSpan="2" Stretch="Uniform">
                     <TextBlock Text="Tags: "></TextBlock>
                 </Viewbox>
                 <Viewbox Grid.Row="3" Stretch="Uniform" Margin="{StaticResource SmallGridMargin}">
-                    <TextBlock Text="{Binding TransactionStep}"></TextBlock>
+                    <TextBlock Text="{Binding Status}"></TextBlock>
                 </Viewbox>
             </Grid>
         </Grid>

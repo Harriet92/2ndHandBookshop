@@ -11,9 +11,6 @@
     mc:Ignorable="d"
     d:DesignHeight="446.667" Width="279.667">
 
-    <UserControl.Resources>
-        <Thickness x:Key="GridMargin">5</Thickness>
-    </UserControl.Resources>
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="1*"></RowDefinition>

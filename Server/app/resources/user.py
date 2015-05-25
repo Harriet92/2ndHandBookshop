@@ -1,5 +1,6 @@
 from flask_restful import Resource, reqparse, marshal
 
+from flask import g
 from .representations import users_fields, user_detail
 
 from ..models import User, db
@@ -12,6 +13,10 @@ register_parameters = (
     reqparse.Argument('name', type=str, required=True, help="You must provide name!"),
     reqparse.Argument('email', type=str, required=True, help="You must provide email!"),
     reqparse.Argument('password', type=str, required=True, help="You must provide password!")
+)
+
+patch_user_parameters = (
+    reqparse.Argument('money', type=int),
 )
 
 
@@ -45,6 +50,21 @@ class UserAPI(Loggable, Resource):
     @require_login
     @marshal_except_error(user_detail)
     def get(self, id):
+        user = get_object_or_404(User, id=id)
+        return user
+
+    @require_login
+    @require_arguments(patch_user_parameters)
+    @marshal_except_error(user_detail)
+    def patch(self, id, params):
+        user = get_object_or_404(User, id=id)
+        if user != g.user:
+            return create_error_message("You can't change other user data!")
+
+        if params.money:
+            user.money = params.money
+            db.session.commit()
+
         user = get_object_or_404(User, id=id)
         return user
 

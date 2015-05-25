@@ -11,7 +11,7 @@ from ..resources.session import refresh_session
 
 def require_login(func):
     def wrapper(*args, **kwargs):
-        token = flask.request.args.get('token') or flask.request.form['token']
+        token = flask.request.values.get('token') or (flask.request.json.get('token') if flask.request.json else None)
         if not token:
             return create_error_message('You must provide token parameter.')
 

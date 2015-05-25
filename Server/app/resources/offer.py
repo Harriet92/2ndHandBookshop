@@ -2,6 +2,7 @@ import datetime
 
 from flask_restful import Resource, reqparse, marshal
 from flask import g
+from sqlalchemy import desc
 
 from ..resources.representations import offers_fields, offer_detail
 from ..models import BookOffer, db
@@ -18,7 +19,21 @@ new_offer_parameters = (
     reqparse.Argument('description', type=str),
     reqparse.Argument('photobase64', type=str),
     reqparse.Argument('price', type=int, required=True, help="You must provide book price!"),
-    reqparse.Argument('tags', type=str)
+    reqparse.Argument('tags', type=str),
+    reqparse.Argument('longitude', type=str),
+    reqparse.Argument('latitude', type=str)
+)
+
+offers_filter_parameters = (
+    reqparse.Argument('offers_per_page', type=int, default=100),
+    reqparse.Argument('page', type=int, default=0),
+    reqparse.Argument('author', type=str),
+    reqparse.Argument('title', type=str),
+    reqparse.Argument('close', type=int),
+    reqparse.Argument('owner_id', type=str),
+    reqparse.Argument('purchaser_id', type=str),
+    reqparse.Argument('tags', type=str),
+    reqparse.Argument('status', type=int)
 )
 
 set_status_parameters = (
@@ -32,8 +47,38 @@ class BookOfferListAPI(Loggable, Resource):
 
     @require_login
     @marshal_except_error(offers_fields)
-    def get(self):
-        return {'array': BookOffer.query.all()}
+    @require_arguments(offers_filter_parameters)
+    def get(self, params):
+        query = BookOffer.query
+        if params.owner_id and params.purchaser_id:
+            query = query.filter(
+                (BookOffer.purchaserid == params.purchaser_id) | (BookOffer.ownerid == params.owner_id))
+        elif params.owner_id:
+            query = query.filter_by(ownerid=params.owner_id)
+        elif params.purchaser_id:
+            query = query.filter_by(purchaserid=params.purchaser_id)
+
+        if params.status:
+            query = query.filter_by(status=params.status)
+
+        if params.title:
+            query = query.filter(BookOffer.booktitle.ilike(self.filter_to_query(params.title)))
+        if params.author:
+            query = query.filter(BookOffer.bookauthor.ilike(self.filter_to_query(params.author)))
+
+        if params.tags:
+            query = query.filter(BookOffer.tags.ilike(self.filter_to_query(params.tags)))
+
+        query = query.order_by(desc(BookOffer.created)).offset(params.offers_per_page * params.page).limit(params.offers_per_page)
+
+        return {'array': query.all()}
+
+    @staticmethod
+    def filter_to_query(filter):
+        if '*' in filter or '_' in filter:
+            return filter.replace('*', '%').replace('?', '_')
+        else:
+            return '%{0}%'.format(filter)
 
     @require_login
     @require_arguments(new_offer_parameters)
@@ -49,7 +94,9 @@ class BookOfferListAPI(Loggable, Resource):
             tags=params.tags,
             photobase64=params.photobase64,
             price=params.price,
-            expiration_time_in_sec=self.BOOK_EXPIRATION_TIME
+            expiration_time_in_sec=self.BOOK_EXPIRATION_TIME,
+            latitude=params.latitude,
+            longitude=params.longitude
         )
         db.session.add(offer)
         db.session.commit()
@@ -83,6 +130,16 @@ class BookOfferAPI(Loggable, Resource):
 
         if params.status == OfferStatus.PURCHASE_REQUESTED:
             offer.purchaser = g.user
+        elif params.status == OfferStatus.ADDED:
+            offer.purchaser = None
+        elif params.status == OfferStatus.FINALIZED:
+            if offer.purchaser == None:
+                return create_error_message("You must request purchase first!")
+
+            if offer.purchaser.money >= offer.price:
+                offer.purchaser.money -= offer.price
+            else:
+                return create_error_message("Not enough money!")
 
         offer.status = params.status
         db.session.commit()

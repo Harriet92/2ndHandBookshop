@@ -4,9 +4,9 @@ using SecondHandBookshop.Shared.Models.DTOs;
 
 namespace SecondHandBookshop.Shared.Http.Params
 {
-    public class GetUsersResponseParams : RequestResponse
+    public class GetOffersResponseParams : RequestResponse
     {
-        public List<UserDTO> array { get; set; }
+        public List<OfferDTO> array { get; set; }
     }
 
 }

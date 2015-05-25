@@ -19,7 +19,7 @@ namespace SecondHandBookshop.WindowsPhone.ViewModels
 
         public async void Buy(int amount)
         {
-            var result = await userService.AddCurrencyToUser(accountManager.LoggedUser.Id, amount);
+            var result = await userService.AddCurrencyToUser(amount);
             MessageDialog msgbox = new MessageDialog(result ? "Purchase succeeded!" : "Error, try again later.");
             await msgbox.ShowAsync();  
         }

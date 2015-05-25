@@ -11,8 +11,6 @@
     <UserControl.Resources>
         <micro:BooleanToVisibilityConverter x:Key="converter" />
         <Thickness x:Key="BigGridMargin">50</Thickness>
-        <Thickness x:Key="GridMargin">5</Thickness>
-        <Thickness x:Key="SmallGridMargin">2</Thickness>
         <Style TargetType="TextBlock" x:Key="DiamondsWorthTB">
             <Setter Property="Margin" Value="{StaticResource SmallGridMargin}" />
             <Setter Property="TextAlignment" Value="Center" />

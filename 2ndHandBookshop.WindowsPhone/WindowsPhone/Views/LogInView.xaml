@@ -5,6 +5,7 @@
     xmlns:local="using:SecondHandBookshop.WindowsPhone.Views"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:micro="using:Caliburn.Micro"
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
@@ -15,8 +16,13 @@
             <PasswordBox x:Name="PasswordTextBox" PlaceholderText="Password"/>
             <Button x:Name="LogIn" Content="Log In" HorizontalAlignment="Center"/>
             <Viewbox>
+                <Button x:Name="FbLogIn" Content="Login with Facebook" HorizontalAlignment="Center"/>
+            </Viewbox>
+            <Viewbox>
                 <Button x:Name="Register" Content="Don't have an account?" />
             </Viewbox>
         </StackPanel>
+        <Rectangle Fill="Black" Opacity="0.5" Visibility="{Binding ProgressRing, Converter={StaticResource BoolToVisConv}}"></Rectangle>
+        <ProgressRing x:Name="ProgressRing" IsActive="{Binding ProgressRing}"></ProgressRing>
     </Grid>
 </Page>

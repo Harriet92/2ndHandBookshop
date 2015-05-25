@@ -15,7 +15,7 @@ user_detail = {
     'name': fields.String,
     'url': fields.Url('user'),
     'email': fields.String,
-    'money': Money
+    'money': fields.Integer
 }
 
 users_fields = {
@@ -29,7 +29,6 @@ session_data = {
 }
 
 offer_detail = {
-    'url': fields.Url('offer'),
     'id': fields.Integer,
     'ownerid': fields.Integer,
     'purchaserid': fields.Integer,
