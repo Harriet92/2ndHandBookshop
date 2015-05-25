@@ -1,63 +1,53 @@
 package com.szlif.bookshop;
 
-import android.animation.Animator;
-import android.animation.AnimatorListenerAdapter;
-import android.app.Activity;
-import android.app.ListActivity;
-import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
 import android.os.Bundle;
-import android.text.TextUtils;
 import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.ListView;
-import android.widget.ProgressBar;
 import android.widget.SearchView;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.octo.android.robospice.SpiceManager;
 import com.octo.android.robospice.persistence.exception.SpiceException;
-import com.octo.android.robospice.request.listener.RequestListener;
 import com.paging.listview.PagingBaseAdapter;
 import com.paging.listview.PagingListView;
 import com.szlif.bookshop.models.*;
 import com.szlif.bookshop.network.BookshopRequestListener;
-import com.szlif.bookshop.network.BookshopService;
-import com.szlif.bookshop.network.GetOfferRequest;
 import com.szlif.bookshop.network.GetOffersRequest;
-import com.szlif.bookshop.network.LoginRequest;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.concurrent.CopyOnWriteArrayList;
 
 
 public class SearchActivity extends BaseActivity {
 
     private PagingListView mListView;
-    private SearchView mSearchView;
+    private EditText mSearchView;
+    private CheckBox mCloseView;
+    private Spinner mTagView;
 
     private OffersArrayAdapter adapter;
 
-    private ArrayList<OfferDetail> offers = new ArrayList<>();
     private int pager = 0;
     private int offersPerPage = 15;
+
+    private Integer searchOnlyClose;
+    private String lastSearchQuery;
+    private String lastSearchTags;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,7 +58,51 @@ public class SearchActivity extends BaseActivity {
 
         mSearchView = getAndSetupSearchView(R.id.search_query_view);
         mListView = getAndSetupListView(R.id.search_list_view);
-        mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        mTagView = getAndSetupSpinnerView(R.id.tags_spinner);
+        mCloseView = (CheckBox) findViewById(R.id.close_checkbox_field);
+    }
+
+    private Spinner getAndSetupSpinnerView(int id) {
+        Spinner spinner = (Spinner) findViewById(id);
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
+                R.array.tags, android.R.layout.simple_spinner_item);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinner.setAdapter(adapter);
+
+        return spinner;
+    }
+
+    private EditText getAndSetupSearchView(int id){
+        final EditText view = (EditText) findViewById(id);
+        Button submitButton = (Button) findViewById(R.id.submit_search);
+        submitButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                searchOnlyClose = mCloseView.isChecked() ? 1 : null;
+                lastSearchQuery = mSearchView.getText().toString();
+                lastSearchTags = mTagView.getSelectedItem().toString();
+                if (lastSearchTags.contains("Undefined")) lastSearchTags = null;
+                if (lastSearchQuery.isEmpty()) lastSearchQuery = null;
+
+                clearData();
+            }
+        });
+
+        return view;
+    }
+
+    private PagingListView getAndSetupListView(int id) {
+        PagingListView view = (PagingListView) findViewById(id);
+        adapter = new OffersArrayAdapter();
+        view.setAdapter(adapter);
+        view.setHasMoreItems(false);
+        view.setPagingableListener(new PagingListView.Pagingable() {
+            @Override
+            public void onLoadMoreItems() {
+                performSearch();
+            }
+        });
+        view.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 Intent in = new Intent(getApplicationContext(), OfferActivity.class);
@@ -85,55 +119,14 @@ public class SearchActivity extends BaseActivity {
                 startActivity(in);
             }
         });
-    }
-
-    private SearchView getAndSetupSearchView(int id){
-        final SearchView view = (SearchView) findViewById(id);
-        view.setIconifiedByDefault(false);
-        view.setSubmitButtonEnabled(true);
-        view.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-
-            @Override
-            public boolean onQueryTextSubmit(String s) {
-                performSearch(s);
-                return true;
-            }
-
-            @Override
-            public boolean onQueryTextChange(String s) {
-                return false;
-            }
-        });
-
         return view;
     }
 
-    private PagingListView getAndSetupListView(int id) {
-        PagingListView view = (PagingListView) findViewById(id);
-        adapter = new OffersArrayAdapter();
-        view.setAdapter(adapter);
-        view.setHasMoreItems(false);
-        view.setPagingableListener(new PagingListView.Pagingable() {
-            @Override
-            public void onLoadMoreItems() {
-            if(pager * offersPerPage < offers.size()) {
-                Toast.makeText(SearchActivity.this, Integer.toString(Math.min(offers.size(), (pager +1) * offersPerPage)), Toast.LENGTH_LONG).show();
-                boolean hasMoreItems = (pager + 1) * offersPerPage < offers.size();
-                mListView.onFinishLoading(hasMoreItems, offers.subList(pager * offersPerPage, Math.min(offers.size(), (pager +1) * offersPerPage)));
-                mListView.scrollBy(0, 1);
-                pager++;
-            }else {
-                mListView.onFinishLoading(false, null);
-            }
-            }
-        });
-        return view;
-    }
-
-    private void performSearch(CharSequence query) {
-        mListView.setHasMoreItems(true);
-        GetOffersRequest request = new GetOffersRequest(AppData.token);
+    private void performSearch() {
+        GetOffersRequest request = new GetOffersRequest(AppData.token, offersPerPage, pager,
+                lastSearchQuery, lastSearchQuery, searchOnlyClose, null, null, lastSearchTags, 1);
         spiceManager.execute(request, new GetOffersRequestListener());
+        pager++;
     }
 
 
@@ -155,17 +148,20 @@ public class SearchActivity extends BaseActivity {
 
         @Override
         public void onRequestFailure(SpiceException spiceException) {
+            Toast.makeText(getApplicationContext(), "Unable to connect", Toast.LENGTH_SHORT);
+            mListView.onFinishLoading(false, null);
+
         }
 
         @Override
         public void onRequestCompleted(OfferDetail.List offerDetails) {
-            clearData();
-            offers = offerDetails.array;
-            mListView.setHasMoreItems(true);
+            mListView.onFinishLoading(offerDetails.array.size() == offersPerPage, offerDetails.array);
         }
 
         @Override
         public void onRequestError(com.szlif.bookshop.models.Error error) {
+            Toast.makeText(getApplicationContext(), "Error: " + error.error, Toast.LENGTH_SHORT);
+            mListView.onFinishLoading(false, null);
         }
     }
 

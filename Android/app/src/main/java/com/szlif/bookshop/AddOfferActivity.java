@@ -120,7 +120,7 @@ public class AddOfferActivity extends BaseActivity {
         }
 
         String tags = mTagsSpinner.getSelectedItem().toString();
-        if(tags == "Undefined") tags = null;
+        if(tags.contains("Undefined")) tags = null;
 
         String photobase64 = null;
         if(photoTaken) {

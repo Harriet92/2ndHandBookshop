@@ -8,12 +8,42 @@
     android:orientation="vertical"
     tools:context="com.szlif.bookshop.SearchActivity">
 
-    <SearchView
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_action_search"/>
+        <EditText
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:id="@+id/search_query_view"
+            android:hint="@string/search_hint" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <Spinner
+            android:id="@+id/tags_spinner"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"/>
+        <CheckBox
+            android:id="@+id/close_checkbox_field"
+            android:text="@string/close_checkbox_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"/>
+    </LinearLayout>
+    <Button
+        android:id="@+id/submit_search"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/search_query_view"
-        android:searchIcon="@android:drawable/ic_search_category_default"
-        android:queryHint="@string/search_hint" />
+        android:text="@string/search_button_text"
+        android:layout_gravity="center"/>
     <com.paging.listview.PagingListView
         android:layout_width="match_parent"
         android:layout_height="fill_parent"

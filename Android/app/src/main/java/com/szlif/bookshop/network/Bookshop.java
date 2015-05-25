@@ -29,7 +29,10 @@ public interface Bookshop {
     Session Login(@Field("login") String nameOrEmail, @Field("password") String password);
 
     @GET("/offers")
-    OfferDetail.List GetOffers(@Query("token") String token);
+    OfferDetail.List GetOffers(@Query("token") String token, @Query("offers_per_page") Integer per_page,
+                               @Query("page") Integer page, @Query("author") String author, @Query("title") String title,
+                               @Query("close") Integer close, @Query("owner_id") Integer ownerId, @Query("purchaser_id") Integer purchaserId,
+                               @Query("tags") String tags, @Query("status") Integer status);
 
     @FormUrlEncoded
     @POST("/offers")
