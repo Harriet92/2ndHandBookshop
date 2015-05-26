@@ -138,6 +138,9 @@ class BookOfferAPI(Loggable, Resource):
 
             if offer.purchaser.money >= offer.price:
                 offer.purchaser.money -= offer.price
+                offer.owner.money += offer.price
+                offer.purchaser.bought += 1
+                offer.owner.sold += 1
             else:
                 return create_error_message("Not enough money!")
 
@@ -148,4 +151,5 @@ class BookOfferAPI(Loggable, Resource):
 
     @staticmethod
     def _is_offer_available(offer):
-        return offer.status == OfferStatus.ADDED and (not offer.expiresat or offer.expiresat > datetime.datetime.now())
+        return offer.status == OfferStatus.FINALIZED or (
+            offer.status == OfferStatus.ADDED and (not offer.expiresat or offer.expiresat > datetime.datetime.now()))
