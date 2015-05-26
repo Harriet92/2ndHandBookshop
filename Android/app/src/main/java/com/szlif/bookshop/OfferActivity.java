@@ -12,12 +12,18 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import com.octo.android.robospice.persistence.exception.SpiceException;
+import com.szlif.bookshop.models.*;
+import com.szlif.bookshop.network.BookshopRequestListener;
+import com.szlif.bookshop.network.GetUserRequest;
 
 
-public class OfferActivity extends Activity {
+public class OfferActivity extends BaseActivity {
 
     private int bookId;
-    private String tags;
+    private int ownerId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,7 +34,6 @@ public class OfferActivity extends Activity {
         ((TextView)findViewById(R.id.book_name)).setText(in.getStringExtra("name"));
         ((TextView)findViewById(R.id.book_author)).setText(in.getStringExtra("author"));
         ((TextView)findViewById(R.id.offer_price)).setText(Integer.toString(in.getIntExtra("price", 0)));
-        ((TextView)findViewById(R.id.book_owner)).setText(in.getStringExtra("name"));
         ((TextView)findViewById(R.id.book_description)).setText(in.getStringExtra("description"));
         String photobase64 = in.getStringExtra("photo");
         if(photobase64 != null && !photobase64.isEmpty()) {
@@ -37,12 +42,22 @@ public class OfferActivity extends Activity {
         }
 
         bookId = in.getIntExtra("id", -1);
-        tags = in.getStringExtra("tags");
+        ownerId = in.getIntExtra("owner_id", -1);
+        String tags = in.getStringExtra("tags");
         if(tags != null && !tags.isEmpty()) {
             TextView tagsView = (TextView) findViewById(R.id.book_tags);
             tagsView.setText(tags.replace(";", ", "));
             tagsView.setVisibility(View.VISIBLE);
         }
+
+        getOwner();
+
+    }
+
+    private void getOwner(){
+
+        GetUserRequest request = new GetUserRequest(AppData.token, ownerId);
+        spiceManager.execute(request, new GetOwnerListener());
 
     }
 
@@ -64,5 +79,32 @@ public class OfferActivity extends Activity {
         getMenuInflater().inflate(R.menu.menu_all, menu);
         getActionBar().setDisplayHomeAsUpEnabled(true);
         return true;
+    }
+
+    private class GetOwnerListener extends BookshopRequestListener<User> {
+
+        @Override
+        public void onRequestCompleted(User user) {
+
+            TextView ownerField = (TextView) findViewById(R.id.book_owner);
+            ownerField.setText(user.name + " (show)");
+            ownerField.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    // TODO
+                }
+            });
+
+        }
+
+        @Override
+        public void onRequestError(com.szlif.bookshop.models.Error error) {
+            Toast.makeText(getApplicationContext(), "Unable to get owner", Toast.LENGTH_SHORT);
+        }
+
+        @Override
+        public void onRequestFailure(SpiceException spiceException) {
+            Toast.makeText(getApplicationContext(), "Unable to connect", Toast.LENGTH_SHORT);
+        }
     }
 }

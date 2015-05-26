@@ -65,7 +65,7 @@
                 android:id="@+id/book_owner"
                 android:layout_width="fill_parent"
                 android:layout_height="fill_parent"
-                android:text="Lalalala"
+                android:text="Loading..."
                 android:textStyle="bold"
                 android:gravity="center_horizontal" />
         </LinearLayout>

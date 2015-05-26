@@ -7,6 +7,9 @@ public class User extends Error {
     public String name;
     public String url;
     public String email;
+    public int id;
+    public int sold;
+    public int bought;
     public int money;
 
     public static class List extends Error {
