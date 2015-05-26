@@ -1,4 +1,5 @@
 from ..app import app
+from sqlalchemy import or_
 
 def get_object_or_404(cls, **kwargs):
     obj = cls.query.filter_by(**kwargs).first()

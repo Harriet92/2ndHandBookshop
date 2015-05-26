@@ -2,7 +2,7 @@ import datetime
 
 from flask_restful import Resource, reqparse, marshal
 from flask import g
-from sqlalchemy import desc
+from sqlalchemy import desc, or_
 
 from ..resources.representations import offers_fields, offer_detail
 from ..models import BookOffer, db
@@ -50,21 +50,21 @@ class BookOfferListAPI(Loggable, Resource):
     @require_arguments(offers_filter_parameters)
     def get(self, params):
         query = BookOffer.query
-        if params.owner_id and params.purchaser_id:
-            query = query.filter(
-                (BookOffer.purchaserid == params.purchaser_id) | (BookOffer.ownerid == params.owner_id))
-        elif params.owner_id:
-            query = query.filter_by(ownerid=params.owner_id)
-        elif params.purchaser_id:
-            query = query.filter_by(purchaserid=params.purchaser_id)
+        not_null_filters = []
+        if params.purchaser_id is not None:
+            not_null_filters.append(BookOffer.purchaserid == params.purchaser_id)
+        if params.owner_id is not None:
+            not_null_filters.append(BookOffer.ownerid == params.owner_id)
+        if params.title is not None:
+            not_null_filters.append(BookOffer.booktitle.ilike(self.filter_to_query(params.title)))
+        if params.author is not None:
+            not_null_filters.append(BookOffer.bookauthor.ilike(self.filter_to_query(params.author)))
+
+        if len(not_null_filters) > 0:
+            query = query.filter(or_(*not_null_filters))
 
         if params.status:
             query = query.filter_by(status=params.status)
-
-        if params.title:
-            query = query.filter(BookOffer.booktitle.ilike(self.filter_to_query(params.title)))
-        if params.author:
-            query = query.filter(BookOffer.bookauthor.ilike(self.filter_to_query(params.author)))
 
         if params.tags:
             query = query.filter(BookOffer.tags.ilike(self.filter_to_query(params.tags)))
