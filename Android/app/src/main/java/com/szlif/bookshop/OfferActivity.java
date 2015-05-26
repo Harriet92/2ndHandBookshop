@@ -91,7 +91,9 @@ public class OfferActivity extends BaseActivity {
             ownerField.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    // TODO
+                    Intent intent = new Intent(OfferActivity.this, ProfileActivity.class);
+                    intent.putExtra("user_id", ownerId);
+                    startActivity(intent);
                 }
             });
 

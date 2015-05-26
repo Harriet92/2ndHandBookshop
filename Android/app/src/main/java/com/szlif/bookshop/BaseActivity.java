@@ -39,6 +39,7 @@ public class BaseActivity extends Activity {
         }
         if (id == R.id.action_bar_profile) {
             Intent intent = new Intent(this, ProfileActivity.class);
+            intent.putExtra("user_id", AppData.user.id);
             startActivity(intent);
         }
         if (id == R.id.action_bar_add_offer) {

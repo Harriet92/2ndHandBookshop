@@ -3,23 +3,25 @@ package com.szlif.bookshop.network;
 import com.octo.android.robospice.request.retrofit.RetrofitSpiceRequest;
 import com.szlif.bookshop.models.User;
 
-public class GetUserRequest extends RetrofitSpiceRequest<User, Bookshop> {
+public class UpdateUserRequest extends RetrofitSpiceRequest<User, Bookshop> {
 
     private String token;
+    private int money;
     private int userId;
 
-    public GetUserRequest(String token, int userId) {
+    public UpdateUserRequest(String token, int userId, int money) {
 
         super(User.class, Bookshop.class);
         this.userId = userId;
         this.token = token;
 
+        this.money = money;
     }
 
     @Override
     public User loadDataFromNetwork() throws Exception {
 
-        return getService().GetUser(token, userId);
+        return getService().UpdateUser(token, userId, money);
 
     }
 }

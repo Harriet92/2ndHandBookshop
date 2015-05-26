@@ -18,6 +18,10 @@ public interface Bookshop {
     User GetUser(@Query("token") String token, @Path("id") int userId);
 
     @FormUrlEncoded
+    @PATCH("/users/{id}")
+    User UpdateUser(@Query("token") String token, @Path("id") int userId, @Field("money") int money);
+
+    @FormUrlEncoded
     @POST("/users")
     User CreateUser(@Field("name") String name, @Field("password") String password, @Field("email") String email);
 

@@ -45,13 +45,14 @@
     <string-array name="tags">
         <item>Undefined</item>
         <item>Drama</item>
-        <item>ScienceFiction</item>
-        <item>Historical</item>
-        <item>Education</item>
-        <item>Cooking</item>
+        <item>SciFi</item>
+        <item>History</item>
+        <item>Edu</item>
+        <item>Cook</item>
         <item>Fantasy</item>
         <item>Romance</item>
         <item>Criminal</item>
-        <item>Children</item>
+        <item>Child</item>
     </string-array>
+    <string name="title_activity_buy_currency">BuyCurrency</string>
 </resources>

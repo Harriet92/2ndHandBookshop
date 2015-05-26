@@ -167,6 +167,9 @@ public class AddOfferActivity extends BaseActivity {
         @Override
         public void onRequestCompleted(OfferDetail offerDetail) {
             Toast.makeText(getApplicationContext(), "Offfer created!", Toast.LENGTH_LONG).show();
+            Intent in = new Intent(getApplicationContext(), ProfileActivity.class);
+            in.putExtra("user_id", AppData.user.id);
+            startActivity(in);
             finish();
         }
 
