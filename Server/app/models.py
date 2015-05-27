@@ -70,8 +70,8 @@ class BookOffer(db.Model):
     status = db.Column(db.Integer, default=OfferStatus.ADDED, nullable=False)
     photobase64 = db.Column(db.String)
     tags = db.Column(db.String)
-    latitude = db.Column(db.String)
-    longitude = db.Column(db.String)
+    latitude = db.Column(db.Float)
+    longitude = db.Column(db.Float)
 
     @classmethod
     def create(cls, title, author, ownerid, description, price, photobase64, tags, expiration_time_in_sec, longitude,

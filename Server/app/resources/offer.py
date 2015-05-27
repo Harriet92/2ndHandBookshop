@@ -21,8 +21,8 @@ new_offer_parameters = (
     reqparse.Argument('photobase64', type=str),
     reqparse.Argument('price', type=int, required=True, help="You must provide book price!"),
     reqparse.Argument('tags', type=str),
-    reqparse.Argument('longitude', type=str),
-    reqparse.Argument('latitude', type=str)
+    reqparse.Argument('longitude', type=float),
+    reqparse.Argument('latitude', type=float)
 )
 
 offers_filter_parameters = (
@@ -46,6 +46,7 @@ set_status_parameters = (
 
 class BookOfferListAPI(Loggable, Resource):
     BOOK_EXPIRATION_TIME = 3600 * 24 * 7
+    CLOSE_DISTANCE = 10
 
     @require_login
     @marshal_except_error(offers_fields)
@@ -61,9 +62,6 @@ class BookOfferListAPI(Loggable, Resource):
             not_null_filters.append(BookOffer.booktitle.ilike(self.filter_to_query(params.title)))
         if params.author is not None:
             not_null_filters.append(BookOffer.bookauthor.ilike(self.filter_to_query(params.author)))
-        if params.close == 1 and params.longitude is not None and params.latitude is not None:
-            not_null_filters.append()
-#TODO: zrobic magiczny filtr ktory uzyje metodki _is_nearby
 
         if len(not_null_filters) > 0:
             query = query.filter(or_(*not_null_filters))
@@ -73,11 +71,20 @@ class BookOfferListAPI(Loggable, Resource):
 
         if params.tags:
             query = query.filter(BookOffer.tags.ilike(self.filter_to_query(params.tags)))
+        query = query.order_by(desc(BookOffer.created))
 
-        query = query.order_by(desc(BookOffer.created)).offset(params.offers_per_page * params.page).limit(
-            params.offers_per_page)
-
-        return {'array': query.all()}
+        if params.close == 1 and params.longitude is not None and params.latitude is not None:
+            with_location = filter(
+                lambda offer: offer.longitude is not None and offer.latitude is not None,
+                query.all())
+            close = filter(
+                lambda offer: self._is_nearby(offer.longitude, params.longitude, offer.latitude, params.latitude),
+                with_location)
+            offset = params.offers_per_page * params.page
+            array = close[offset: offset + params.offers_per_page]
+        else:
+            array = query.offset(params.offers_per_page * params.page).limit(params.offers_per_page).all()
+        return {'array': array}
 
     @staticmethod
     def filter_to_query(filter):
@@ -115,8 +122,7 @@ class BookOfferListAPI(Loggable, Resource):
     def _is_title_long_enough(string):
         return len(string) > 3
 
-    @staticmethod
-    def _is_nearby(distance, long1, long2, lat1, lat2):
+    def _is_nearby(self, long1, long2, lat1, lat2):
         r = 6371
         dlat = _to_radian(lat2 - lat1)
         dlon = _to_radian(long2 - long1)
@@ -124,7 +130,7 @@ class BookOfferListAPI(Loggable, Resource):
             _to_radian(lat2)) * math.sin(dlon / 2) * math.sin(dlon / 2)
         c = 2 * math.asin(min(1, math.sqrt(a)))
         d = r * c
-        return d < distance
+        return d < self.CLOSE_DISTANCE
 
 
 def _to_radian(val):
