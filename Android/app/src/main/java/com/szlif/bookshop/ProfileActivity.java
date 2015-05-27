@@ -77,15 +77,7 @@ public class ProfileActivity extends BaseActivity {
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 Intent in = new Intent(getApplicationContext(), OfferActivity.class);
                 OfferDetail selectedItem = (OfferDetail)adapterView.getItemAtPosition(i);
-                in.putExtra("name", selectedItem.booktitle);
-                in.putExtra("author", selectedItem.bookauthor);
-                in.putExtra("price", selectedItem.price);
-                in.putExtra("id", selectedItem.id);
-                in.putExtra("owner_id", selectedItem.ownerid);
-                in.putExtra("description", selectedItem.description);
-                in.putExtra("photo", selectedItem.photobase64);
-                in.putExtra("status", selectedItem.status);
-                in.putExtra("tags", selectedItem.tags);
+                in.putExtra("offer_id", selectedItem.id);
                 startActivity(in);
             }
         });

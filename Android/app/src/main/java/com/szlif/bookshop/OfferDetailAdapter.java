@@ -48,24 +48,14 @@ class OffersArrayAdapter extends PagingBaseAdapter<OfferDetail> {
         authorView.setText(offer.bookauthor);
         priceView.setText(Integer.toString(offer.price));
 
-        if(offer.photobase64 != null && !offer.photobase64.isEmpty()) {
-            byte[] decodedString = Base64.decode(offer.photobase64, Base64.DEFAULT);
-            coverView.setImageBitmap(getResizedBitmap(BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length), 100));
+        ImageEncoder encoder = new ImageEncoder(100);
+        Bitmap image = encoder.DecodeFromBase64String(offer.photobase64);
+        if(image != null) {
+            coverView.setImageBitmap(image);
         } else {
             coverView.setImageResource(R.drawable.book);
         }
 
         return convertView;
-    }
-
-    public Bitmap getResizedBitmap(Bitmap bm, int maxSize) {
-        int width = bm.getWidth();
-        int height = bm.getHeight();
-        float biggerDim = width > height ? width : height;
-        float scale = maxSize / biggerDim;
-        Matrix matrix = new Matrix();
-        matrix.postScale(scale, scale);
-
-        return Bitmap.createBitmap(bm, 0, 0, width, height, matrix, false);
     }
 }

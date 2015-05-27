@@ -124,16 +124,14 @@ public class AddOfferActivity extends BaseActivity {
 
         String photobase64 = null;
         if(photoTaken) {
-            try {
-                ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-                Bitmap bmp = ((BitmapDrawable) mCoverField.getDrawable()).getBitmap();
-                bmp = getResizedBitmap(bmp, 300);
-                bmp.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream);
-                byte[] byteArray = byteArrayOutputStream.toByteArray();
-                photobase64 = Base64.encodeToString(byteArray, Base64.DEFAULT);
-            }
-            catch(Exception e) {
+            ImageEncoder encoder = new ImageEncoder(300);
+            photobase64 = encoder.EncodeToBas64String(((BitmapDrawable) mCoverField.getDrawable()).getBitmap());
+
+            if(photobase64 == null) {
                 Toast.makeText(getApplicationContext(), "Unable to decode image", Toast.LENGTH_SHORT).show();
+                photoTaken = false;
+                mCoverField.setImageResource(R.drawable.book);
+                return;
             }
         }
 
