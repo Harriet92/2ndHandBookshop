@@ -39,6 +39,8 @@ offer_detail = {
     'expiresat': fields.DateTime,
     'booktitle': fields.String,
     'bookauthor': fields.String,
+    'latitude': fields.Float,
+    'longitude': fields.Float,
     'description': fields.String,
     'tags': fields.String,
     'photobase64': fields.Raw,
