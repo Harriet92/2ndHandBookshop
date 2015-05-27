@@ -1,4 +1,5 @@
 import datetime
+import math
 
 from flask_restful import Resource, reqparse, marshal
 from flask import g
@@ -33,6 +34,8 @@ offers_filter_parameters = (
     reqparse.Argument('owner_id', type=str),
     reqparse.Argument('purchaser_id', type=str),
     reqparse.Argument('tags', type=str),
+    reqparse.Argument('longitude', type=float),
+    reqparse.Argument('latitude', type=float),
     reqparse.Argument('status', type=int)
 )
 
@@ -42,7 +45,6 @@ set_status_parameters = (
 
 
 class BookOfferListAPI(Loggable, Resource):
-
     BOOK_EXPIRATION_TIME = 3600 * 24 * 7
 
     @require_login
@@ -59,6 +61,9 @@ class BookOfferListAPI(Loggable, Resource):
             not_null_filters.append(BookOffer.booktitle.ilike(self.filter_to_query(params.title)))
         if params.author is not None:
             not_null_filters.append(BookOffer.bookauthor.ilike(self.filter_to_query(params.author)))
+        if params.close == 1 and params.longitude is not None and params.latitude is not None:
+            not_null_filters.append()
+#TODO: zrobic magiczny filtr ktory uzyje metodki _is_nearby
 
         if len(not_null_filters) > 0:
             query = query.filter(or_(*not_null_filters))
@@ -69,7 +74,8 @@ class BookOfferListAPI(Loggable, Resource):
         if params.tags:
             query = query.filter(BookOffer.tags.ilike(self.filter_to_query(params.tags)))
 
-        query = query.order_by(desc(BookOffer.created)).offset(params.offers_per_page * params.page).limit(params.offers_per_page)
+        query = query.order_by(desc(BookOffer.created)).offset(params.offers_per_page * params.page).limit(
+            params.offers_per_page)
 
         return {'array': query.all()}
 
@@ -108,6 +114,21 @@ class BookOfferListAPI(Loggable, Resource):
     @staticmethod
     def _is_title_long_enough(string):
         return len(string) > 3
+
+    @staticmethod
+    def _is_nearby(distance, long1, long2, lat1, lat2):
+        r = 6371
+        dlat = _to_radian(lat2 - lat1)
+        dlon = _to_radian(long2 - long1)
+        a = math.sin(dlat / 2) * math.sin(dlat / 2) + math.cos(_to_radian(lat1)) * math.cos(
+            _to_radian(lat2)) * math.sin(dlon / 2) * math.sin(dlon / 2)
+        c = 2 * math.asin(min(1, math.sqrt(a)))
+        d = r * c
+        return d < distance
+
+
+def _to_radian(val):
+    return (math.pi / 180) * val
 
 
 class BookOfferAPI(Loggable, Resource):
