@@ -1,0 +1,119 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    android:layout_height="match_parent" android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:orientation="vertical"
+    tools:context="com.szlif.bookshop.OfferActivity">
+
+    <ProgressBar android:id="@+id/load_progress" style="?android:attr/progressBarStyleLarge"
+        android:layout_width="match_parent" android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp" android:layout_gravity="center"
+        android:visibility="gone"/>
+    <LinearLayout
+        android:visibility="visible"
+        android:id="@+id/offer_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+        <TextView
+            android:text="Bookname"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:textSize="30sp"
+            android:textStyle="bold"
+            android:id="@+id/book_name" />
+        <TextView
+            android:text="Author"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:textSize="20sp"
+            android:id="@+id/book_author" />
+        <TextView
+            android:id="@+id/book_tags"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="gone"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <ImageView
+                android:layout_width="150sp"
+                android:layout_height="150sp"
+                android:src="@drawable/book"
+                android:id="@+id/book_cover" />
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:orientation="vertical">
+                <TextView
+                    android:layout_width="fill_parent"
+                    android:layout_height="50dp"
+                    android:text="Price"
+                    android:padding="5sp"
+                    android:gravity="center_horizontal|bottom" />
+                <TextView
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:text="5060"
+                    android:padding="5sp"
+                    android:textSize="20sp"
+                    android:id="@+id/offer_price"
+                    android:textStyle="bold"
+                    android:gravity="center_horizontal|top" />
+                <TextView
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Owner"
+                    android:padding="5sp"
+                    android:gravity="center_horizontal" />
+                <TextView
+                    android:id="@+id/book_owner"
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:text="Loading..."
+                    android:textStyle="bold"
+                    android:gravity="center_horizontal" />
+            </LinearLayout>
+        </LinearLayout>
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1">
+            <TextView
+                android:text="Lorepm impsum tralsalsadfpwerhsdhfwaerwaer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="15sp"
+                android:id="@+id/book_description" />
+        </ScrollView>
+        <TextView
+            android:id="@+id/offer_additional_info"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Additional info"
+            android:textStyle="italic"
+            android:gravity="center"
+            android:textSize="18sp"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="50sp">
+            <Button
+                android:id="@+id/offer_button_1"
+                android:layout_width="0dp"
+                android:layout_height="fill_parent"
+                android:layout_weight="1"
+                android:text="Buy offer"/>
+            <Button
+                android:id="@+id/offer_button_2"
+                android:layout_width="0dp"
+                android:layout_height="fill_parent"
+                android:layout_weight="1"
+                android:text="Cancel"/>
+        </LinearLayout>
+    </LinearLayout>
+</LinearLayout>

@@ -1,0 +1,3 @@
+<resources>
+    <string name="endpoint">https://sheltered-forest-8633.herokuapp.com/</string>
+</resources>
