@@ -5,6 +5,10 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
+import android.location.GpsStatus;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.util.Base64;
 import android.view.LayoutInflater;
@@ -44,6 +48,8 @@ public class SearchActivity extends BaseActivity {
 
     private int pager = 0;
     private int offersPerPage = 15;
+    LocationManager locationManager;
+    Location lastKnownLocation;
 
     private Integer searchOnlyClose;
     private String lastSearchQuery;
@@ -56,10 +62,24 @@ public class SearchActivity extends BaseActivity {
 
         setContentView(R.layout.activity_search);
 
+        locationManager = (LocationManager)getSystemService(Context.LOCATION_SERVICE);
         mSearchView = getAndSetupSearchView(R.id.search_query_view);
         mListView = getAndSetupListView(R.id.search_list_view);
         mTagView = getAndSetupSpinnerView(R.id.tags_spinner);
         mCloseView = (CheckBox) findViewById(R.id.close_checkbox_field);
+
+        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 10, 50, new LocationListener() {
+            @Override
+            public void onLocationChanged(Location location) {
+                lastKnownLocation = location;
+            }
+            @Override
+            public void onStatusChanged(String s, int i, Bundle bundle) {}
+            @Override
+            public void onProviderEnabled(String s) { }
+            @Override
+            public void onProviderDisabled(String s) {}
+        }, null);
     }
 
     private Spinner getAndSetupSpinnerView(int id) {
@@ -99,7 +119,7 @@ public class SearchActivity extends BaseActivity {
         view.setPagingableListener(new PagingListView.Pagingable() {
             @Override
             public void onLoadMoreItems() {
-                performSearch();
+                checkLocationAndPerformSearch();
             }
         });
         view.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -114,9 +134,26 @@ public class SearchActivity extends BaseActivity {
         return view;
     }
 
-    private void performSearch() {
+    private void checkLocationAndPerformSearch() {
+        if(searchOnlyClose == null) {
+            performSearch(null);
+        } else if(lastKnownLocation == null || lastKnownLocation.getAccuracy() > 150) {
+            mListView.onFinishLoading(false, null);
+            adapter.removeAllItems();
+            Toast.makeText(getApplicationContext(), "Unable to get current location!", Toast.LENGTH_SHORT).show();
+        } else {
+            performSearch(lastKnownLocation);
+        }
+    }
+
+    private void performSearch(Location location) {
+
+        Float latitude = location != null ? (float)location.getLatitude() : null;
+        Float longitude = location != null ? (float)location.getLongitude() : null;
         GetOffersRequest request = new GetOffersRequest(AppData.token, offersPerPage, pager,
-                lastSearchQuery, lastSearchQuery, searchOnlyClose, null, null, lastSearchTags, 1);
+                lastSearchQuery, lastSearchQuery, location != null ? 1 : 0, null, null,
+                lastSearchTags, 1, longitude, latitude);
+
         spiceManager.execute(request, new GetOffersRequestListener());
         pager++;
     }

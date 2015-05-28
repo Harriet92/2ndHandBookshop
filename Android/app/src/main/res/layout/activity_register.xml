@@ -4,11 +4,12 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     android:paddingBottom="@dimen/activity_vertical_margin"
+    android:orientation="vertical"
     tools:context="com.szlif.bookshop.RegisterActivity">
 
     <!-- Login progress -->
     <ProgressBar android:id="@+id/login_progress" style="?android:attr/progressBarStyleLarge"
-        android:layout_width="wrap_content" android:layout_height="wrap_content"
+        android:layout_width="match_parent" android:layout_height="wrap_content"
         android:layout_marginBottom="8dp" android:visibility="gone" />
 
     <ScrollView android:id="@+id/register_form" android:layout_width="match_parent"

@@ -36,13 +36,15 @@ public interface Bookshop {
     OfferDetail.List GetOffers(@Query("token") String token, @Query("offers_per_page") Integer per_page,
                                @Query("page") Integer page, @Query("author") String author, @Query("title") String title,
                                @Query("close") Integer close, @Query("owner_id") Integer ownerId, @Query("purchaser_id") Integer purchaserId,
-                               @Query("tags") String tags, @Query("status") Integer status);
+                               @Query("tags") String tags, @Query("status") Integer status, @Query("latitude") Float latitude,
+                               @Query("longitude") Float longitude);
 
     @FormUrlEncoded
     @POST("/offers")
     OfferDetail CreateOffer(@Query("token") String token, @Field("booktitle") String bookTitle,
                             @Field("price") int price, @Field("bookauthor") String author, @Field("description") String description, @Field("photobase64") String photo,
-                            @Field("tags") String tags, @Field("status") int status);
+                            @Field("tags") String tags, @Field("status") int status, @Field("latitude") Float latitude,
+                            @Field("longitude") Float longitude);
 
     @GET("/offers/{id}")
     OfferDetail GetOffer(@Query("token") String token, @Path("id") int offerId);

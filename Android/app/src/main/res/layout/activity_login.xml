@@ -28,14 +28,6 @@
                 android:inputType="textPassword"
                 android:maxLines="1" android:singleLine="true" />
 
-            <CheckBox
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/login_activity_remember_text"
-                android:id="@+id/remember_box"
-                android:layout_gravity="center_horizontal"
-                android:checked="true" />
-
             <Button android:id="@+id/email_sign_in_button" style="?android:textAppearanceSmall"
                 android:layout_width="match_parent" android:layout_height="wrap_content"
                 android:layout_marginTop="16dp" android:text="@string/action_sign_in"
@@ -48,6 +40,13 @@
                 android:textStyle="bold"
                 android:onClick="openRegisterActivity"/>
 
+            <com.facebook.login.widget.LoginButton
+                android:id="@+id/login_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="30dp"
+                android:layout_marginBottom="30dp" />
         </LinearLayout>
     </ScrollView>
 

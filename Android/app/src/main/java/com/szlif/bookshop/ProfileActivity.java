@@ -35,6 +35,8 @@ public class ProfileActivity extends BaseActivity {
     private OffersArrayAdapter adapter;
     private PagingListView itemsView;
 
+    private TextView emailView;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,6 +47,7 @@ public class ProfileActivity extends BaseActivity {
         boughtField = (TextView) findViewById(R.id.bought_view);
         currencyView = findViewById(R.id.currency_view);
         currentCurrencyView = (TextView) findViewById(R.id.currency);
+        emailView = (TextView) findViewById(R.id.user_email);
         progressBar = (ProgressBar) findViewById(R.id.load_progress);
         userView = findViewById(R.id.user_view);
         itemsView = getAndSetupListView(R.id.items_list_view);
@@ -58,7 +61,7 @@ public class ProfileActivity extends BaseActivity {
         });
 
         Intent in = getIntent();
-        refresh(in.getIntExtra("user_id", -1));
+        refresh(in.getIntExtra("user_id", -1), in.getBooleanExtra("show_email", false));
     }
 
     private PagingListView getAndSetupListView(int id) {
@@ -84,36 +87,38 @@ public class ProfileActivity extends BaseActivity {
         return view;
     }
 
-    private void refresh(int user_id) {
+    private void refresh(int user_id, boolean showEmail) {
         userView.setVisibility(View.GONE);
         progressBar.setVisibility(View.VISIBLE);
         this.user_id = user_id;
-        getUser(user_id);
+        getUser(user_id, showEmail);
     }
 
     @Override
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
-        refresh(intent.getIntExtra("user_id", -1));
+        refresh(intent.getIntExtra("user_id", -1), intent.getBooleanExtra("show_email", false));
     }
 
     @Override
     protected void onResume() {
         super.onResume();
         Intent in = getIntent();
-        refresh(in.getIntExtra("user_id", -1));
+        refresh(in.getIntExtra("user_id", -1), in.getBooleanExtra("show_email", false));
     }
 
-    private void getUser(int id){
+    private void getUser(int id, boolean showEmail){
 
         GetUserRequest request = new GetUserRequest(AppData.token, id);
-        spiceManager.execute(request, new GetUserListener());
+        spiceManager.execute(request, new GetUserListener(showEmail));
     }
 
 
     private void performSearch() {
+        boolean isMyProfile = AppData.user.id == user_id;
         GetOffersRequest request = new GetOffersRequest(AppData.token, offersPerPage, pager,
-                null, null, null, user_id, null, null, AppData.user.id == user_id ? null : 1);
+                null, null, null, user_id, isMyProfile ? user_id : null, null,
+                AppData.user.id == user_id ? null : 1, null, null);
         spiceManager.execute(request, new GetOffersRequestListener());
         pager++;
     }
@@ -156,6 +161,13 @@ public class ProfileActivity extends BaseActivity {
 
     private class GetUserListener extends BookshopRequestListener<User> {
 
+        private boolean showEmail;
+
+        public GetUserListener(boolean showEmail) {
+
+            this.showEmail = showEmail;
+        }
+
         @Override
         public void onRequestCompleted(User user) {
             usernameField.setText(user.name);
@@ -166,6 +178,15 @@ public class ProfileActivity extends BaseActivity {
                 currencyView.setVisibility(View.VISIBLE);
                 currentCurrencyView.setText(Integer.toString(user.money));
                 AppData.user = user;
+            } else {
+                currencyView.setVisibility(View.GONE);
+            }
+
+            if(AppData.user.id == user.id || this.showEmail) {
+                emailView.setText(user.email);
+                emailView.setVisibility(View.VISIBLE);
+            } else {
+                emailView.setVisibility(View.GONE);
             }
 
             clearData();

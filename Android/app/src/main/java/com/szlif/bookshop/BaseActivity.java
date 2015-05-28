@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.view.MenuItem;
 
+import com.facebook.login.LoginManager;
 import com.octo.android.robospice.SpiceManager;
 import com.szlif.bookshop.network.BookshopService;
 
@@ -44,6 +45,14 @@ public class BaseActivity extends Activity {
         }
         if (id == R.id.action_bar_add_offer) {
             Intent intent = new Intent(this, AddOfferActivity.class);
+            startActivity(intent);
+        }
+        if (id == R.id.action_bar_logout) {
+            AppData.user = null;
+            AppData.token = null;
+            Intent intent = new Intent(this, LoginActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            LoginManager.getInstance().logOut();
             startActivity(intent);
         }
         if(id == android.R.id.home){

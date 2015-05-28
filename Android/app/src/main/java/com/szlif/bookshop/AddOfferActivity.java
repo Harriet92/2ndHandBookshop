@@ -1,9 +1,13 @@
 package com.szlif.bookshop;
 
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Matrix;
 import android.graphics.drawable.BitmapDrawable;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Base64;
@@ -36,6 +40,8 @@ public class AddOfferActivity extends BaseActivity {
     private ImageView mCoverField;
 
     private boolean photoTaken = false;
+    private LocationManager locationManager;
+    private Location lastKnownLocation;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,6 +71,19 @@ public class AddOfferActivity extends BaseActivity {
             }
         });
 
+        locationManager = (LocationManager)getSystemService(Context.LOCATION_SERVICE);
+        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 10, 50, new LocationListener() {
+            @Override
+            public void onLocationChanged(Location location) {
+                lastKnownLocation = location;
+            }
+            @Override
+            public void onStatusChanged(String s, int i, Bundle bundle) {}
+            @Override
+            public void onProviderEnabled(String s) { }
+            @Override
+            public void onProviderDisabled(String s) {}
+        }, null);
     }
 
     private void takePhoto() {
@@ -86,19 +105,19 @@ public class AddOfferActivity extends BaseActivity {
     }
 
     private void tryToMakeOffer() {
-        String title = mTitleField.getText().toString();
-        String author = mAuthorField.getText().toString();
-        String description = mDescriptionField.getText().toString();
+        final String title = mTitleField.getText().toString();
+        final String author = mAuthorField.getText().toString();
+        final String description = mDescriptionField.getText().toString();
         String priceString = mPriceField.getText().toString();
-        int price;
+        final int price;
 
-        if(title.length() < 3) {
+        if(title.length() < 6) {
             mTitleField.setError("Title too short");
             mTitleField.requestFocus();
             return;
         }
 
-        if(author.length() < 3) {
+        if(author.length() < 6) {
             mAuthorField.setError("Author too short");
             mAuthorField.requestFocus();
             return;
@@ -136,21 +155,19 @@ public class AddOfferActivity extends BaseActivity {
         }
 
         Toast.makeText(getApplicationContext(), "Processing...", Toast.LENGTH_SHORT).show();
-        CreateOfferRequest request = new CreateOfferRequest(AppData.token, title, price, author, description, photobase64, tags, 1);
+        CreateOfferRequest request;
+        if(lastKnownLocation != null && lastKnownLocation.getAccuracy() < 150) {
+            Float latitude = (float)lastKnownLocation.getLatitude();
+            Float longitude = (float)lastKnownLocation.getLongitude();
+            request = new CreateOfferRequest(AppData.token, title, price, author,
+                    description, photobase64, tags, 1, latitude, longitude);
+        } else {
+            request = new CreateOfferRequest(AppData.token, title, price, author,
+                    description, photobase64, tags, 1, null, null);
+        }
+
         spiceManager.execute(request, new CreateOfferRequestListener());
     }
-
-    public Bitmap getResizedBitmap(Bitmap bm, int maxSize) {
-        int width = bm.getWidth();
-        int height = bm.getHeight();
-        float biggerDim = width > height ? width : height;
-        float scale = maxSize / biggerDim;
-        Matrix matrix = new Matrix();
-        matrix.postScale(scale, scale);
-
-        return Bitmap.createBitmap(bm, 0, 0, width, height, matrix, false);
-    }
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

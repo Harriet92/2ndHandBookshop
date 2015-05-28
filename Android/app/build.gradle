@@ -35,4 +35,5 @@ dependencies {
     compile 'com.github.nicolasjafelle:paginglistview:1.2'
     compile 'com.squareup.okhttp:okhttp:2.0.0'
     compile 'com.squareup.okhttp:okhttp-urlconnection:2.0.0'
+    compile 'com.facebook.android:facebook-android-sdk:4.1.0'
 }

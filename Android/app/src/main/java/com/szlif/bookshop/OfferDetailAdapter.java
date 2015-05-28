@@ -13,6 +13,7 @@ import android.widget.TextView;
 
 import com.paging.listview.PagingBaseAdapter;
 import com.szlif.bookshop.models.OfferDetail;
+import com.szlif.bookshop.models.OfferStatus;
 
 class OffersArrayAdapter extends PagingBaseAdapter<OfferDetail> {
 
@@ -42,6 +43,7 @@ class OffersArrayAdapter extends PagingBaseAdapter<OfferDetail> {
         TextView authorView = (TextView) convertView.findViewById(R.id.book_author);
         TextView priceView = (TextView) convertView.findViewById(R.id.price);
         ImageView coverView = (ImageView) convertView.findViewById(R.id.book_cover);
+        TextView statusView = (TextView) convertView.findViewById(R.id.status_info);
 
         OfferDetail offer = this.getItem(position);
         titleView.setText(offer.booktitle);
@@ -54,6 +56,40 @@ class OffersArrayAdapter extends PagingBaseAdapter<OfferDetail> {
             coverView.setImageBitmap(image);
         } else {
             coverView.setImageResource(R.drawable.book);
+        }
+
+        if(offer.ownerid == AppData.user.id) {
+            statusView.setVisibility(View.VISIBLE);
+
+            if(offer.status == OfferStatus.Added.getValue()) {
+                statusView.setText("You are owner");
+            }
+            if(offer.status == OfferStatus.PurchaseRequested.getValue()) {
+                statusView.setText("Purchase requested!");
+            }
+            if(offer.status == OfferStatus.PurchaseAccepted.getValue()) {
+                statusView.setText("You accepted purchase");
+            }
+            if(offer.status == OfferStatus.Cancelled.getValue()) {
+                statusView.setText("This offer is cancelled");
+            }
+            if(offer.status == OfferStatus.Finalized.getValue()) {
+                statusView.setText("This offer is finalized");
+            }
+        }else if(offer.purchaserid == AppData.user.id) {
+            statusView.setVisibility(View.VISIBLE);
+
+            if(offer.status == OfferStatus.PurchaseRequested.getValue()) {
+                statusView.setText("You are waiting for acceptance");
+            }
+            if(offer.status == OfferStatus.PurchaseAccepted.getValue()) {
+                statusView.setText("Your request is accepted");
+            }
+            if(offer.status == OfferStatus.Finalized.getValue()) {
+                statusView.setText("You bought this offer");
+            }
+        } else {
+            statusView.setVisibility(View.GONE);
         }
 
         return convertView;

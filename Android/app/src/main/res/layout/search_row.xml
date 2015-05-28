@@ -12,18 +12,25 @@
         android:layout_weight="1"
         android:layout_height="wrap_content"
         android:padding="5sp">
-            <TextView
+        <TextView
+            android:id="@+id/status_info"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="10sp"
+            android:textStyle="italic"
+            android:text="You requested this offer"/>
+        <TextView
             android:id="@+id/booktitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textSize="16sp"
             android:text="Ksionszka"/>
-            <TextView
-                android:id="@+id/book_author"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textSize="12sp"
-                android:text="Autor"/>
+        <TextView
+            android:id="@+id/book_author"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="12sp"
+            android:text="Autor"/>
     </LinearLayout>
     <TextView
         android:id="@+id/price"
